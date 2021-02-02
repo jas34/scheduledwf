@@ -3,6 +3,7 @@ package net.jas34.scheduledwf.execution;
 import net.jas34.scheduledwf.run.ScheduledWorkFlow;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Jasbir Singh
@@ -24,5 +25,9 @@ public interface ScheduledProcessRegistry {
 
     List<ScheduledWorkFlow> getTobeShutDownProcesses();
 
-    void shutDownRegistry();
+    void removeProcess(ScheduledWorkFlow scheduledWorkFlow);
+
+    List<ScheduledWorkFlow> getAllRunningProcesses(String managerRefId);
+
+    void shutDownRegistry(String managerRefId, long waitTimeInMillis);
 }

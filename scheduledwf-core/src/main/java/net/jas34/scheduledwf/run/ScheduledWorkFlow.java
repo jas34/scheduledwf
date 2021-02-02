@@ -130,6 +130,7 @@ public class ScheduledWorkFlow extends Auditable {
         INITIALIZED,
         SCHEDULING_FAILED,
         RUNNING,
-        SHUTDOWN;
+        SHUTDOWN,
+        SHUTDOWN_FAILED;
     }
 }

@@ -11,6 +11,8 @@ public interface SchedulerManager {
 
     void manageProcesses();
 
+    void shutdownProcesses();
+
     default String getNodeAddress() {
         return CommonUtils.resolveNodeAddress();
     }
