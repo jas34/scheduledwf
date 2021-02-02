@@ -1,0 +1,48 @@
+package net.jas34.scheduledwf.run;
+
+import com.netflix.conductor.common.metadata.Auditable;
+
+/**
+ * @author Jasbir Singh
+ */
+public class ManagerInfo extends Auditable {
+
+    private String id;
+
+    private String name;
+
+    private String nodeAddress;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getNodeAddress() {
+        return nodeAddress;
+    }
+
+    public void setNodeAddress(String nodeAddress) {
+        this.nodeAddress = nodeAddress;
+    }
+
+    @Override
+    public String toString() {
+        return "ManagerInfo{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", nodeAddress='" + nodeAddress + '\'' +
+                "} " + super.toString();
+    }
+}

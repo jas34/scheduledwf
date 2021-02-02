@@ -17,6 +17,13 @@
             <artifactId>conductor-server</artifactId>
             <version>2.30.4</version>
         </dependency>
+
+<!--        not sure why at the moment I am required core dependency separately-->
+        <dependency>
+            <groupId>com.netflix.conductor</groupId>
+            <artifactId>conductor-core</artifactId>
+            <version>2.30.4</version>
+        </dependency>
     </dependencies>
 
 </project>
