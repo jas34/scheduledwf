@@ -15,17 +15,12 @@ public interface ScheduledWfExecutionDAO {
 
     Optional<ScheduledWorkFlow> getScheduledWfWithNameAndMgrRefId(String name, String managerRefId);
 
-    Optional<ScheduledWorkFlow> getScheduledWfWithStates(String name, String managerRefId,
-            ScheduledWorkFlow.State... states);
+    Optional<List<ScheduledWorkFlow>> getAllScheduledWfWithByManagerRefId(String managerRefId);
 
     Optional<List<ScheduledWorkFlow>> getAllScheduledWfWithStates(String managerRefId,
             ScheduledWorkFlow.State... states);
 
     ScheduledWorkFlow updateStateById(ScheduledWorkFlow.State state, String id);
-
-    Optional<List<ScheduledWorkFlow>> getAllTobeShutDownScheduledWf();
-
-    void removeScheduledWorkflow(String id);
 
     void removeAllScheduledWorkflows(String managerRefId);
 

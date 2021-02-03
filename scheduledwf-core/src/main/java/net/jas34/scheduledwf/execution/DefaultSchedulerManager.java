@@ -100,6 +100,7 @@ public class DefaultSchedulerManager implements SchedulerManager {
         List<ScheduledWorkFlow> runningProcesses = processRegistry.getAllRunningProcesses(managerInfo.getId());
         schedulingAssistant.shutdownAllSchedulersWithFailSafety(runningProcesses);
         processRegistry.shutDownRegistry(managerInfo.getId(),5000);
+        scheduledExecutorService.shutdown();
     }
 
     private void scheduleApplicableWorkflows(List<ScheduleWfDef> unScheduledWorkflows) {
@@ -131,20 +132,22 @@ public class DefaultSchedulerManager implements SchedulerManager {
                         scheduledWorkFlow.getWfName(), scheduledWorkFlow.getWfVersion(),
                         result.getException());
                 scheduledWorkFlow.setState(ScheduledWorkFlow.State.SCHEDULING_FAILED);
+                scheduledWorkFlow.setSchedulingException(result.getException());
             } else {
                 logger.info("Process submitted for scheduling with the id={}, initialDelay={}, period={}",
                         result.getId(), result.getInitialDelay(), result.getPeriod());
                 scheduledWorkFlow.setProcessReference(result.getProcessReference());
                 scheduledWorkFlow.setState(ScheduledWorkFlow.State.RUNNING);
+                scheduledWorkFlow.setSchedulingException(null);
             }
-            processRegistry.updateProcessStateById(scheduledWorkFlow.getState(), scheduledWorkFlow.getId());
+            processRegistry.updateProcessById(scheduledWorkFlow.getProcessReference(), scheduledWorkFlow.getState(), scheduledWorkFlow.getId());
         });
     }
 
     private void manageShutDownProcesses() {
-        List<ScheduledWorkFlow> tobeShutDownProcesses = processRegistry.getTobeShutDownProcesses();
+        List<ScheduledWorkFlow> tobeShutDownProcesses = processRegistry.getTobeShutDownProcesses(managerInfo.getId());
         if (CollectionUtils.isEmpty(tobeShutDownProcesses)) {
-            logger.debug("No process applicable for shutdown");
+            logger.debug("No process found for shutdown with managerRef={}", managerInfo.getId());
             return;
         }
 
@@ -157,7 +160,7 @@ public class DefaultSchedulerManager implements SchedulerManager {
                         shutdownProcess.getWfName(), shutdownProcess.getWfVersion(),
                         result.getException());
                 shutdownProcess.setState(ScheduledWorkFlow.State.SHUTDOWN_FAILED);
-                processRegistry.updateProcessStateById(shutdownProcess.getState(), shutdownProcess.getId());
+                processRegistry.updateProcessById(shutdownProcess.getProcessReference(), shutdownProcess.getState(), shutdownProcess.getId());
             } else {
                 logger.info("Process submit signalled ted for shutdown with the id={}", result.getId());
                 processRegistry.removeProcess(shutdownProcess);

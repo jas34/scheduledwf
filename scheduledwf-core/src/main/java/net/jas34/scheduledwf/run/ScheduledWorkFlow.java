@@ -32,6 +32,8 @@ public class ScheduledWorkFlow extends Auditable {
 
     private String managerRefId;
 
+    private Throwable schedulingException;
+
     public String getId() {
         return id;
     }
@@ -110,6 +112,14 @@ public class ScheduledWorkFlow extends Auditable {
 
     public void setManagerRefId(String managerRefId) {
         this.managerRefId = managerRefId;
+    }
+
+    public Throwable getSchedulingException() {
+        return schedulingException;
+    }
+
+    public void setSchedulingException(Throwable schedulingException) {
+        this.schedulingException = schedulingException;
     }
 
     @Override

@@ -7,7 +7,7 @@ public class Result {
 
     private String id;
     private Status status;
-    private Exception exception;
+    private Throwable exception;
 
     public String getId() {
         return id;
@@ -25,7 +25,7 @@ public class Result {
         this.status = status;
     }
 
-    public Exception getException() {
+    public Throwable getException() {
         return exception;
     }
 

@@ -1,5 +1,6 @@
 package net.jas34.scheduledwf.execution;
 
+import net.jas34.scheduledwf.run.ScheduledProcessReference;
 import net.jas34.scheduledwf.run.ScheduledWorkFlow;
 
 import java.util.List;
@@ -19,11 +20,11 @@ public interface ScheduledProcessRegistry {
      * @return
      * @throws IllegalStateException if state is not one of INITIALIZED, SCHEDULING_FAILED, RUNNING
      */
-    boolean updateProcessStateById(ScheduledWorkFlow.State state, String id) throws IllegalStateException;
+    boolean updateProcessById(ScheduledProcessReference<?> processReference, ScheduledWorkFlow.State state, String id) throws IllegalStateException;
 
     boolean isProcessTobeScheduled(String name, String managerRefId);
 
-    List<ScheduledWorkFlow> getTobeShutDownProcesses();
+    List<ScheduledWorkFlow> getTobeShutDownProcesses(String managerRefId);
 
     void removeProcess(ScheduledWorkFlow scheduledWorkFlow);
 
