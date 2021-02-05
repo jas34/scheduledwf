@@ -20,7 +20,8 @@ public interface ScheduledProcessRegistry {
      * @return
      * @throws IllegalStateException if state is not one of INITIALIZED, SCHEDULING_FAILED, RUNNING
      */
-    boolean updateProcessById(ScheduledProcessReference<?> processReference, ScheduledWorkFlow.State state, String id) throws IllegalStateException;
+    boolean updateProcessById(ScheduledProcessReference<?> processReference, ScheduledWorkFlow.State state,
+            String id) throws IllegalStateException;
 
     boolean isProcessTobeScheduled(String name, String managerRefId);
 

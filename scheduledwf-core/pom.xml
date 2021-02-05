@@ -18,11 +18,22 @@
             <version>2.30.4</version>
         </dependency>
 
-<!--        not sure why at the moment I am required core dependency separately-->
+        <!--        not sure why at the moment I am required core dependency separately-->
         <dependency>
             <groupId>com.netflix.conductor</groupId>
             <artifactId>conductor-core</artifactId>
             <version>2.30.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.coreoz</groupId>
+            <artifactId>wisp</artifactId>
+            <version>2.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.cronutils</groupId>
+            <artifactId>cron-utils</artifactId>
+            <version>8.0.0</version>
         </dependency>
     </dependencies>
 

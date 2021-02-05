@@ -6,11 +6,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.jas34.scheduledwf.dao.ScheduledWfExecutionDAO;
 import net.jas34.scheduledwf.run.ScheduledProcessReference;
 import net.jas34.scheduledwf.run.ScheduledWorkFlow;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * CAUTION: Not thread safe. Should be operated by a single thread at a time.
@@ -141,12 +141,4 @@ public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry
             processReferenceMap.put(scheduledWorkFlow.getId(), scheduledWorkFlow.getProcessReference());
         }
     }
-
-    // private void assertIsValidStateForUpdate(ScheduledWorkFlow.State state) {
-    //
-    // if(state != ScheduledWorkFlow.State.INITIALIZED || state !=
-    // ScheduledWorkFlow.State.SCHEDULING_FAILED || state != ScheduledWorkFlow.State.RUNNING) {
-    // throw new IllegalStateException();
-    // }
-    // }
 }
