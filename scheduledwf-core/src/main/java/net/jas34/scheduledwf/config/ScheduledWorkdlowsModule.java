@@ -3,6 +3,7 @@ package net.jas34.scheduledwf.config;
 import com.coreoz.wisp.Scheduler;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
+import com.google.inject.TypeLiteral;
 import net.jas34.scheduledwf.dao.IndexScheduledWfDAO;
 import net.jas34.scheduledwf.dao.ScheduledWfExecutionDAO;
 import net.jas34.scheduledwf.dao.ScheduledWfMetadataDAO;
@@ -21,6 +22,7 @@ import net.jas34.scheduledwf.scheduler.DefaultIndexExecutionDataCallback;
 import net.jas34.scheduledwf.scheduler.DefaultScheduledTaskProvider;
 import net.jas34.scheduledwf.scheduler.DefaultWorkflowSchedulerFactory;
 import net.jas34.scheduledwf.scheduler.IndexExecutionDataCallback;
+import net.jas34.scheduledwf.scheduler.ScheduledProcess;
 import net.jas34.scheduledwf.scheduler.ScheduledTaskProvider;
 import net.jas34.scheduledwf.scheduler.WorkflowJob;
 import net.jas34.scheduledwf.scheduler.WorkflowScheduler;
@@ -34,29 +36,30 @@ import net.jas34.scheduledwf.service.MetadataServiceImpl;
 public class ScheduledWorkdlowsModule extends AbstractModule {
     @Override
     protected void configure() {
-        //TODO: this is not final config. Will be revisited later
-        //DAO Config...
+        // TODO: this is not final config. Will be revisited later
+        // DAO Config...
         bind(IndexScheduledWfDAO.class).to(LoggingBasedIndexScheduledWfDAO.class);
         bind(ScheduledWfExecutionDAO.class).to(InMemoryScheduledWfExecutionDAO.class);
         bind(ScheduledWfMetadataDAO.class).to(InMemoryScheduledWfMetadataDAO.class);
         bind(SchedulerManagerExecutionDAO.class).to(InMemorySchedulerManagerExecutionDAO.class);
 
-        //metadata service
+        // metadata service
         bind(MetadataService.class).to(MetadataServiceImpl.class);
 
-        //scheduler config....
+        // scheduler config....
         bind(Scheduler.class).toProvider(WispSchedulerProvider.class).in(Scopes.SINGLETON);
         bind(IndexExecutionDataCallback.class).to(DefaultIndexExecutionDataCallback.class);
         bind(ScheduledTaskProvider.class).to(DefaultScheduledTaskProvider.class);
         bind(WorkflowScheduler.class).to(CronBasedWorkflowScheduler.class);
         bind(WorkflowJob.class).to(CronBasedWorkflowScheduler.class);
-        bind(WorkflowSchedulerFactory.class).to(DefaultWorkflowSchedulerFactory.class).asEagerSingleton();
+        bind(new TypeLiteral<WorkflowSchedulerFactory<ScheduledProcess>>() {})
+                .to(new TypeLiteral<DefaultWorkflowSchedulerFactory>() {});
 
-        //execution config
+        // execution config
         bind(WorkflowSchedulingAssistant.class).to(DefaultWorkflowSchedulingAssistant.class);
         bind(ScheduledProcessRegistry.class).to(DefaultScheduledProcessRegistry.class);
 
-        //configure manager
+        // configure manager
         bind(DefaultSchedulerManager.class).asEagerSingleton();
     }
 }

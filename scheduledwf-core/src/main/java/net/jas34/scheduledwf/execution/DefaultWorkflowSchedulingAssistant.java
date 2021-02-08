@@ -22,7 +22,7 @@ import net.jas34.scheduledwf.scheduler.WorkflowSchedulerFactory;
 @Singleton
 public class DefaultWorkflowSchedulingAssistant implements WorkflowSchedulingAssistant {
 
-    private final WorkflowSchedulerFactory<ScheduledProcess> factory;
+    private WorkflowSchedulerFactory<ScheduledProcess> factory;
 
     @Inject
     public DefaultWorkflowSchedulingAssistant(WorkflowSchedulerFactory<ScheduledProcess> factory) {

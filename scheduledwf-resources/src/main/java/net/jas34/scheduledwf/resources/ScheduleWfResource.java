@@ -21,7 +21,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @Api(value = "/metadata", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON,
         tags = "Scheduling Metadata Management")
-@Path("/metadata")
+@Path("/scheduling/metadata")
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
 public class ScheduleWfResource {
