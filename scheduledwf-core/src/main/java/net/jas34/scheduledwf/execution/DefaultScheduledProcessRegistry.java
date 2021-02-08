@@ -6,25 +6,29 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.jas34.scheduledwf.dao.ScheduledWfExecutionDAO;
-import net.jas34.scheduledwf.run.ScheduledProcessReference;
 import net.jas34.scheduledwf.run.ScheduledWorkFlow;
+import net.jas34.scheduledwf.scheduler.ScheduledProcess;
 
 /**
  * CAUTION: Not thread safe. Should be operated by a single thread at a time.
  *
  * @author Jasbir Singh
  */
+@Singleton
 public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry {
 
     private final Logger logger = LoggerFactory.getLogger(DefaultSchedulerManager.class);
     // TODO: need to go through Refrecnce class of java.lang to check whether this map requires
     // attention or not?
-    private final Map<String, ScheduledProcessReference> processReferenceMap;
+    private final Map<String, ScheduledProcess> processReferenceMap;
     private final ScheduledWfExecutionDAO wfExecutionDAO;
 
+    @Inject
     public DefaultScheduledProcessRegistry(ScheduledWfExecutionDAO wfExecutionDAO) {
         this.processReferenceMap = new HashMap<>();
         this.wfExecutionDAO = wfExecutionDAO;
@@ -42,13 +46,13 @@ public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry
     }
 
     @Override
-    public boolean updateProcessById(ScheduledProcessReference<?> processReference,
-            ScheduledWorkFlow.State state, String id) throws IllegalStateException {
+    public boolean updateProcessById(ScheduledProcess processReference,
+                                     ScheduledWorkFlow.State state, String id, String name) throws IllegalStateException {
         // TODO: IllegalStateException still to be validated for
         if (!isProcessPresentInRegistry(id)) {
             // TODO: lets revisit for mitigation of this scenario.
         }
-        ScheduledWorkFlow scheduledWorkFlow = wfExecutionDAO.updateStateById(state, id);
+        ScheduledWorkFlow scheduledWorkFlow = wfExecutionDAO.updateStateById(state, id, name);
         updateProcessRefMapIfApplicable(scheduledWorkFlow);
         return Objects.nonNull(scheduledWorkFlow);
     }
@@ -124,10 +128,10 @@ public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry
 
     private void updateProcessReferences(List<ScheduledWorkFlow> scheduledWorkFlows) {
         scheduledWorkFlows.forEach(scheduledWorkFlow -> {
-            ScheduledProcessReference<?> processReference =
+            ScheduledProcess processReference =
                     processReferenceMap.get(scheduledWorkFlow.getId());
             if (Objects.nonNull(processReference)) {
-                scheduledWorkFlow.setProcessReference(processReference);
+                scheduledWorkFlow.setScheduledProcess(processReference);
 
             } else {
                 logger.warn("This is strange!! processReference not found in processReferenceMap for id={}, state={}",
@@ -137,8 +141,8 @@ public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry
     }
 
     private void updateProcessRefMapIfApplicable(ScheduledWorkFlow scheduledWorkFlow) {
-        if (Objects.nonNull(scheduledWorkFlow.getProcessReference())) {
-            processReferenceMap.put(scheduledWorkFlow.getId(), scheduledWorkFlow.getProcessReference());
+        if (Objects.nonNull(scheduledWorkFlow.getScheduledProcess())) {
+            processReferenceMap.put(scheduledWorkFlow.getId(), scheduledWorkFlow.getScheduledProcess());
         }
     }
 }

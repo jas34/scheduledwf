@@ -12,6 +12,9 @@
     <properties>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
+        <conductor-version>2.30.4</conductor-version>
+        <wisp-version>2.2.0</wisp-version>
+        <cron-utils-version>8.0.0</cron-utils-version>
     </properties>
 
     <dependencies>
@@ -25,6 +28,7 @@
     <modules>
         <module>scheduledwf-core</module>
         <module>scheduledwf-resources</module>
+        <module>scheduledwf-server</module>
     </modules>
 
 

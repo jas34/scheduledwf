@@ -2,45 +2,24 @@ package net.jas34.scheduledwf.run;
 
 import java.util.concurrent.TimeUnit;
 
+import net.jas34.scheduledwf.scheduler.ScheduledProcess;
+
 /**
  * @author Jasbir Singh
  */
 public class SchedulingResult extends Result {
 
-    private long initialDelay;
-    private long period;
-    private TimeUnit timeUnit;
-    private ScheduledProcessReference processReference;
+    private ScheduledProcess processReference;
 
-    public long getInitialDelay() {
-        return initialDelay;
+    public SchedulingResult(String id) {
+        super(id);
     }
 
-    public void setInitialDelay(long initialDelay) {
-        this.initialDelay = initialDelay;
-    }
-
-    public long getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(long period) {
-        this.period = period;
-    }
-
-    public TimeUnit getTimeUnit() {
-        return timeUnit;
-    }
-
-    public void setTimeUnit(TimeUnit timeUnit) {
-        this.timeUnit = timeUnit;
-    }
-
-    public ScheduledProcessReference getProcessReference() {
+    public ScheduledProcess getProcessReference() {
         return processReference;
     }
 
-    public void setProcessReference(ScheduledProcessReference processReference) {
+    public void setProcessReference(ScheduledProcess processReference) {
         this.processReference = processReference;
     }
 }

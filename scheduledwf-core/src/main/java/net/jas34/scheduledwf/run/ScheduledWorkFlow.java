@@ -1,9 +1,10 @@
 package net.jas34.scheduledwf.run;
 
 import com.netflix.conductor.common.metadata.Auditable;
+import net.jas34.scheduledwf.scheduler.ScheduledProcess;
 
-import java.util.Date;
-import java.util.concurrent.ScheduledFuture;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Jasbir Singh
@@ -14,21 +15,20 @@ public class ScheduledWorkFlow extends Auditable {
 
     private String name;
 
-    //this can be threadId
-    private String executorId;
-
-    //TODO: need to revisit this parameter... might be something similar already available in conductor
+    // TODO: need to revisit this parameter... might be something similar already available in conductor
     private String nodeAddress;
 
     private String wfName;
 
     private int wfVersion;
 
-    private String nextRunAt;
+    private Map<String, Object> wfInput = new HashMap<>();
+
+    private String cronExpression;
 
     private State state;
 
-    private ScheduledProcessReference processReference;
+    private ScheduledProcess scheduledProcess;
 
     private String managerRefId;
 
@@ -48,14 +48,6 @@ public class ScheduledWorkFlow extends Auditable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getExecutorId() {
-        return executorId;
-    }
-
-    public void setExecutorId(String executorId) {
-        this.executorId = executorId;
     }
 
     public String getNodeAddress() {
@@ -82,12 +74,20 @@ public class ScheduledWorkFlow extends Auditable {
         this.wfVersion = wfVersion;
     }
 
-    public String getNextRunAt() {
-        return nextRunAt;
+    public Map<String, Object> getWfInput() {
+        return wfInput;
     }
 
-    public void setNextRunAt(String nextRunAt) {
-        this.nextRunAt = nextRunAt;
+    public void setWfInput(Map<String, Object> wfInput) {
+        this.wfInput = wfInput;
+    }
+
+    public String getCronExpression() {
+        return cronExpression;
+    }
+
+    public void setCronExpression(String cronExpression) {
+        this.cronExpression = cronExpression;
     }
 
     public State getState() {
@@ -98,12 +98,12 @@ public class ScheduledWorkFlow extends Auditable {
         this.state = state;
     }
 
-    public ScheduledProcessReference getProcessReference() {
-        return processReference;
+    public ScheduledProcess getScheduledProcess() {
+        return scheduledProcess;
     }
 
-    public void setProcessReference(ScheduledProcessReference processReference) {
-        this.processReference = processReference;
+    public void setScheduledProcess(ScheduledProcess scheduledProcess) {
+        this.scheduledProcess = scheduledProcess;
     }
 
     public String getManagerRefId() {
@@ -122,25 +122,24 @@ public class ScheduledWorkFlow extends Auditable {
         this.schedulingException = schedulingException;
     }
 
+    public enum State {
+        INITIALIZED, SCHEDULING_FAILED, RUNNING, SHUTDOWN, SHUTDOWN_FAILED;
+    }
+
     @Override
     public String toString() {
         return "ScheduledWorkFlow{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", executorId='" + executorId + '\'' +
                 ", nodeAddress='" + nodeAddress + '\'' +
                 ", wfName='" + wfName + '\'' +
-                ", wfVersion='" + wfVersion + '\'' +
-                ", nextRunAt='" + nextRunAt + '\'' +
+                ", wfVersion=" + wfVersion +
+                ", wfInput=" + wfInput +
+                ", cronExpression='" + cronExpression + '\'' +
                 ", state=" + state +
+                ", scheduledProcess=" + scheduledProcess +
+                ", managerRefId='" + managerRefId + '\'' +
+                ", schedulingException=" + schedulingException +
                 "} " + super.toString();
-    }
-
-    public enum State {
-        INITIALIZED,
-        SCHEDULING_FAILED,
-        RUNNING,
-        SHUTDOWN,
-        SHUTDOWN_FAILED;
     }
 }

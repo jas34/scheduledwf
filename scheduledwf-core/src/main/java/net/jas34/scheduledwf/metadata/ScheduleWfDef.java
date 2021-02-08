@@ -2,31 +2,44 @@ package net.jas34.scheduledwf.metadata;
 
 import com.netflix.conductor.common.metadata.Auditable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Jasbir Singh
  */
 public class ScheduleWfDef extends Auditable {
 
-    private String name;
+    private String wfName;
 
-    private int version;
+    private int wfVersion;
+
+    private Map<String, Object> wfInput = new HashMap<>();
 
     private String cronExpression;
 
-    public String getName() {
-        return name;
+    public String getWfName() {
+        return wfName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setWfName(String wfName) {
+        this.wfName = wfName;
     }
 
-    public int getVersion() {
-        return version;
+    public int getWfVersion() {
+        return wfVersion;
     }
 
-    public void setVersion(int version) {
-        this.version = version;
+    public void setWfVersion(int wfVersion) {
+        this.wfVersion = wfVersion;
+    }
+
+    public Map<String, Object> getWfInput() {
+        return wfInput;
+    }
+
+    public void setWfInput(Map<String, Object> wfInput) {
+        this.wfInput = wfInput;
     }
 
     public String getCronExpression() {
@@ -40,8 +53,8 @@ public class ScheduleWfDef extends Auditable {
     @Override
     public String toString() {
         return "ScheduleWfDef{" +
-                "name='" + name + '\'' +
-                ", version='" + version + '\'' +
+                "wfName='" + wfName + '\'' +
+                ", wfVersion='" + wfVersion + '\'' +
                 ", cronExpression='" + cronExpression + '\'' +
                 "} " + super.toString();
     }

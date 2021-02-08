@@ -1,10 +1,9 @@
 package net.jas34.scheduledwf.dao;
 
-import net.jas34.scheduledwf.run.ScheduledWorkFlow;
-
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import net.jas34.scheduledwf.run.ScheduledWorkFlow;
 
 /**
  * @author Jasbir Singh
@@ -20,9 +19,7 @@ public interface ScheduledWfExecutionDAO {
     Optional<List<ScheduledWorkFlow>> getAllScheduledWfWithStates(String managerRefId,
             ScheduledWorkFlow.State... states);
 
-    ScheduledWorkFlow updateStateById(ScheduledWorkFlow.State state, String id);
+    ScheduledWorkFlow updateStateById(ScheduledWorkFlow.State state, String id, String name);
 
     void removeAllScheduledWorkflows(String managerRefId);
-
-    ScheduledWorkFlow updateNextRunAtById(String nextRunAt, String id);
 }

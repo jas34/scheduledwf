@@ -9,6 +9,10 @@ public class Result {
     private Status status;
     private Throwable exception;
 
+    public Result(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }
@@ -29,13 +33,8 @@ public class Result {
         return exception;
     }
 
-    public void setException(Exception exception) {
+    public void setException(Throwable exception) {
         this.exception = exception;
     }
 
-    public enum Status {
-        SUCCESS,
-
-        FAILURE;
-    }
 }

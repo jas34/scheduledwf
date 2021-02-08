@@ -1,15 +1,13 @@
 package net.jas34.scheduledwf.scheduler;
 
+import net.jas34.scheduledwf.run.ScheduledWorkFlow;
+
 /**
  * @author Jasbir Singh
  */
-public interface WorkflowScheduler {
+public interface WorkflowScheduler<T extends ScheduledProcess> {
 
-    String startWorkFlow(String workflowName);
+    T schedule(ScheduledWorkFlow scheduledWorkFlow);
 
-    void shutdown();
-
-    boolean pause();
-
-    boolean resume();
+    Void shutdown(T scheduledProcess);
 }
