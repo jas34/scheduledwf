@@ -1,0 +1,7 @@
+{
+    "wfName": "workflow1",
+    "wfInput": {
+        "name": "Jasbir Singh"
+    },
+    "cronExpression": "0/1 1/1 * 1/1 * ? *"
+}

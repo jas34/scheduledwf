@@ -10,17 +10,10 @@ import net.jas34.scheduledwf.scheduler.ScheduledProcess;
  */
 public interface ScheduledProcessRegistry {
 
-    void addProcess(ScheduledWorkFlow scheduledWorkFlow);
+    boolean addProcess(ScheduledWorkFlow scheduledWorkFlow);
 
-    /**
-     *
-     * @param state
-     * @param id
-     * @return
-     * @throws IllegalStateException if state is not one of INITIALIZED, SCHEDULING_FAILED, RUNNING
-     */
-    boolean updateProcessById(ScheduledProcess processReference, ScheduledWorkFlow.State state,
-                              String id, String name) throws IllegalStateException;
+    boolean updateProcessById(ScheduledProcess processReference, ScheduledWorkFlow.State state, String id,
+            String name) throws IllegalStateException;
 
     boolean isProcessTobeScheduled(String name, String managerRefId);
 

@@ -1,0 +1,13 @@
+[
+    {
+        "name": "log_my_name_task",
+        "description": "This task will log input name",
+        "retryCount": 3,
+        "retryLogic": "FIXED",
+        "retryDelaySeconds": 10,
+        "ownerEmail": "jas34@gmail.com",
+        "timeoutPolicy": "RETRY",
+        "responseTimeoutSeconds": "300",
+        "concurrentExecLimit": 10
+    }
+]

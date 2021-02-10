@@ -1,15 +1,16 @@
 package net.jas34.scheduledwf.execution;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import net.jas34.scheduledwf.dao.ScheduledWfExecutionDAO;
 import net.jas34.scheduledwf.run.ScheduledWorkFlow;
 import net.jas34.scheduledwf.scheduler.ScheduledProcess;
@@ -28,6 +29,8 @@ public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry
     private final Map<String, ScheduledProcess> processReferenceMap;
     private final ScheduledWfExecutionDAO wfExecutionDAO;
 
+    private static final List<ScheduledWorkFlow.State> NON_SCHEDULING_ELIGIBLE_STATES = Arrays.asList(ScheduledWorkFlow.State.RUNNING, ScheduledWorkFlow.State.SHUTDOWN, ScheduledWorkFlow.State.SHUTDOWN_FAILED);
+
     @Inject
     public DefaultScheduledProcessRegistry(ScheduledWfExecutionDAO wfExecutionDAO) {
         this.processReferenceMap = new HashMap<>();
@@ -35,24 +38,23 @@ public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry
     }
 
     @Override
-    public void addProcess(ScheduledWorkFlow scheduledWorkFlow) {
+    public boolean addProcess(ScheduledWorkFlow scheduledWorkFlow) {
         if (isProcessPresentInRegistry(scheduledWorkFlow.getId())) {
-            // TODO: Need to think how this scenario is possible? Manager needs to take process out of this
-            // scenario
-            // state.
+            return false;
         }
         wfExecutionDAO.createScheduledWorkflow(scheduledWorkFlow);
         updateProcessRefMapIfApplicable(scheduledWorkFlow);
+        return true;
     }
 
     @Override
     public boolean updateProcessById(ScheduledProcess processReference,
                                      ScheduledWorkFlow.State state, String id, String name) throws IllegalStateException {
-        // TODO: IllegalStateException still to be validated for
         if (!isProcessPresentInRegistry(id)) {
-            // TODO: lets revisit for mitigation of this scenario.
+            return false;
         }
         ScheduledWorkFlow scheduledWorkFlow = wfExecutionDAO.updateStateById(state, id, name);
+        scheduledWorkFlow.setScheduledProcess(processReference);
         updateProcessRefMapIfApplicable(scheduledWorkFlow);
         return Objects.nonNull(scheduledWorkFlow);
     }
@@ -69,9 +71,7 @@ public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry
         }
 
         ScheduledWorkFlow scheduledWorkFlow = scheduledWorkFlowOptional.get();
-        if (!isProcessPresentInRegistry(scheduledWorkFlow.getId())
-                || ScheduledWorkFlow.State.SHUTDOWN == scheduledWorkFlow.getState()
-                || ScheduledWorkFlow.State.SHUTDOWN_FAILED == scheduledWorkFlow.getState()) {
+        if (!isProcessPresentInRegistry(scheduledWorkFlow.getId()) || !NON_SCHEDULING_ELIGIBLE_STATES.contains(scheduledWorkFlow.getState())) {
             logger.debug(
                     "Scheduled workflow not present in process registry or ScheduledWorkFlow is having state={}. This is to be scheduled.",
                     scheduledWorkFlow.getState());
