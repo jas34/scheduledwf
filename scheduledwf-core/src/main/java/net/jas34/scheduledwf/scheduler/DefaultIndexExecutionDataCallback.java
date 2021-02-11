@@ -34,6 +34,8 @@ public class DefaultIndexExecutionDataCallback implements IndexExecutionDataCall
         scheduledWfExecData.setExecutedAt(CommonUtils.toFormattedDate(schedule.lastExecutionStartedTimeInMillis(scheduledWfName)));
         scheduledWfExecData.setLastExecutionEndedAt(CommonUtils.toFormattedDate(schedule.lastExecutionEndedTimeInMillis(scheduledWfName)));
         scheduledWfExecData.setNextRunAt(CommonUtils.toFormattedDate(schedule.nextExecutionTimeInMillis(scheduledWfName)));
+        scheduledWfExecData.setExecutionStatus(status.name());
+        scheduledWfExecData.setExecutionFailureReason(failureReason);
         indexDAO.indexExecutedScheduledWorkflow(scheduledWfExecData);
     }
 }

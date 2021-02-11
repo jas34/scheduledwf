@@ -9,11 +9,11 @@ public class ScheduledWfExecData {
 
     private String name;
 
-    private String executedAt;
-
     private String wfName;
 
     private int wfVersion;
+
+    private String executedAt;
 
     private String nextRunAt;
 
@@ -100,9 +100,9 @@ public class ScheduledWfExecData {
         return "ScheduledWfExecData{" +
                 "schedulerId='" + schedulerId + '\'' +
                 ", name='" + name + '\'' +
-                ", executedAt='" + executedAt + '\'' +
                 ", wfName='" + wfName + '\'' +
                 ", wfVersion=" + wfVersion +
+                ", executedAt='" + executedAt + '\'' +
                 ", nextRunAt='" + nextRunAt + '\'' +
                 ", lastExecutionEndedAt='" + lastExecutionEndedAt + '\'' +
                 ", executionStatus='" + executionStatus + '\'' +

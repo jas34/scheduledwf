@@ -1,5 +1,6 @@
 package net.jas34.scheduledwf.scheduler;
 
+import java.time.Duration;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 
@@ -10,6 +11,10 @@ import com.coreoz.wisp.schedule.cron.CronSchedule;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import net.jas34.scheduledwf.run.ScheduledWorkFlow;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.PreDestroy;
 
 /**
  * @author Jasbir Singh
@@ -17,6 +22,8 @@ import net.jas34.scheduledwf.run.ScheduledWorkFlow;
 @Singleton
 public class CronBasedWorkflowScheduler
         implements WorkflowScheduler<CronBasedScheduledProcess<Job>>, WorkflowJob {
+    private final Logger logger = LoggerFactory.getLogger(CronBasedWorkflowScheduler.class);
+
     private Scheduler scheduler;
     private ScheduledTaskProvider taskProvider;
 
@@ -31,13 +38,15 @@ public class CronBasedWorkflowScheduler
         Schedule schedule = CronSchedule.parseQuartzCron(scheduledWorkFlow.getCronExpression());
         Job scheduledJob = scheduler.schedule(scheduledWorkFlow.getName(),
                 taskProvider.getTask(scheduledWorkFlow), schedule);
+        logger.info("scheduledWorkFlow scheduled with jobName={}", scheduledJob.name());
         return new CronBasedScheduledProcess<>(scheduledJob);
     }
 
     @Override
     public Void shutdown(CronBasedScheduledProcess<Job> scheduledProcess) {
-        CompletionStage<Job> cancel = scheduler.cancel(scheduledProcess.getJobReference().name());
-        scheduledProcess.setShutdownReference(cancel);
+        String jobName = scheduledProcess.getJobReference().name();
+        scheduler.cancel(jobName);
+        logger.info("scheduledWorkFlow with jobName={} cancelled", jobName);
         return null;
     }
 
@@ -54,6 +63,13 @@ public class CronBasedWorkflowScheduler
     @Override
     public Long lastExecutionEndedTimeInMillis(String scheduledWfName) {
         return resolveJobFromName(scheduledWfName).lastExecutionEndedTimeInMillis();
+    }
+
+    @PreDestroy
+    public void shutDownScheduler() {
+        logger.info("Going to shutdown cron scheduler");
+        scheduler.gracefullyShutdown(Duration.ofMillis(1000));
+        logger.info("Cron scheduler shutdown completed");
     }
 
     private Job resolveJobFromName(String scheduledWfName) {

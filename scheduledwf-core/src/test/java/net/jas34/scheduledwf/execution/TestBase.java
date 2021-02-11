@@ -1,5 +1,6 @@
 package net.jas34.scheduledwf.execution;
 
+import com.coreoz.wisp.Job;
 import com.netflix.conductor.core.utils.IDGenerator;
 import net.jas34.scheduledwf.run.ManagerInfo;
 import net.jas34.scheduledwf.run.ScheduledWorkFlow;
@@ -29,7 +30,8 @@ public class TestBase {
         return scheduledWorkFlow;
     }
 
-    public ScheduledWorkFlow createScheduledWorkFlow(ManagerInfo managerInfo, String name, ScheduledWorkFlow.State state) {
+    public ScheduledWorkFlow createScheduledWorkFlow(ManagerInfo managerInfo, String name,
+            ScheduledWorkFlow.State state) {
         ScheduledWorkFlow scheduledWorkFlow = createScheduledWorkFlow(managerInfo, state);
         scheduledWorkFlow.setName(name);
         scheduledWorkFlow.setScheduledProcess(createScheduledProcess(name));
@@ -45,7 +47,12 @@ public class TestBase {
         return managerInfo;
     }
 
-    private ScheduledProcess createScheduledProcess(String name) {
+    public long resolveNextExecutionTime(Job job) {
+        return job.schedule().nextExecutionInMillis(System.currentTimeMillis(), job.executionsCount(),
+                job.lastExecutionEndedTimeInMillis());
+    }
+
+    public ScheduledProcess createScheduledProcess(String name) {
         return new ScheduledProcess() {
             @Override
             public Object getJobReference() {
