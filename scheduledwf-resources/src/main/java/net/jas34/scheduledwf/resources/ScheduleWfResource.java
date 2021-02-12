@@ -38,6 +38,7 @@ public class ScheduleWfResource {
     @ApiOperation("Schedule a new workflow")
     public void create(ScheduleWfDef scheduleWfDef) {
         metadataService.registerScheduleWorkflowDef(scheduleWfDef);
+
     }
 
     @PUT

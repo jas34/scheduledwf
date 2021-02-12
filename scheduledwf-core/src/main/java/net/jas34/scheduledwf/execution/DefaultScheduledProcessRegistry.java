@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import net.jcip.annotations.NotThreadSafe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
@@ -21,6 +22,7 @@ import net.jas34.scheduledwf.scheduler.ScheduledProcess;
  * @author Jasbir Singh
  */
 @Singleton
+@NotThreadSafe
 public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry {
 
     private final Logger logger = LoggerFactory.getLogger(DefaultSchedulerManager.class);
@@ -50,7 +52,7 @@ public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry
     @Override
     public boolean updateProcessById(ScheduledProcess processReference,
                                      ScheduledWorkFlow.State state, String id, String name) throws IllegalStateException {
-        if (!isProcessPresentInRegistry(id)) {
+        if (isProcessPresentInRegistry(id)) {
             return false;
         }
         ScheduledWorkFlow scheduledWorkFlow = wfExecutionDAO.updateStateById(state, id, name);

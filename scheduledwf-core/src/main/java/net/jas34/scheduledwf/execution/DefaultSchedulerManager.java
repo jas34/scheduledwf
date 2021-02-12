@@ -1,5 +1,6 @@
 package net.jas34.scheduledwf.execution;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Executors;
@@ -8,15 +9,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.annotation.PreDestroy;
 
-import net.jas34.scheduledwf.dao.IndexScheduledWfDAO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.cronutils.utils.VisibleForTesting;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
 import com.netflix.conductor.core.utils.IDGenerator;
 import com.netflix.conductor.dao.MetadataDAO;
+import net.jas34.scheduledwf.dao.IndexScheduledWfDAO;
 import net.jas34.scheduledwf.dao.ScheduledWfMetadataDAO;
 import net.jas34.scheduledwf.dao.SchedulerManagerExecutionDAO;
 import net.jas34.scheduledwf.metadata.ScheduleWfDef;
@@ -40,22 +42,41 @@ public class DefaultSchedulerManager implements SchedulerManager {
     private final MetadataDAO metadataDAO;
     private final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
     private final IndexScheduledWfDAO indexDAO;
-    private WorkflowSchedulingAssistant schedulingAssistant;
+    private final WorkflowSchedulingAssistant schedulingAssistant;
     private ManagerInfo managerInfo;
+    private boolean isJunitRun;
 
     @Inject
     public DefaultSchedulerManager(ScheduledWfMetadataDAO scheduledWfMetadataDAO,
             SchedulerManagerExecutionDAO managerExecutionDAO, ScheduledProcessRegistry processRegistry,
             MetadataDAO metadataDAO, IndexScheduledWfDAO indexDAO,
             WorkflowSchedulingAssistant schedulingAssistant) {
+        this(scheduledWfMetadataDAO, managerExecutionDAO, processRegistry, metadataDAO, indexDAO,
+                schedulingAssistant, false);
+    }
+
+    public DefaultSchedulerManager(ScheduledWfMetadataDAO scheduledWfMetadataDAO,
+            SchedulerManagerExecutionDAO managerExecutionDAO, ScheduledProcessRegistry processRegistry,
+            MetadataDAO metadataDAO, IndexScheduledWfDAO indexDAO,
+            WorkflowSchedulingAssistant schedulingAssistant, boolean isJunitRun) {
         this.scheduledWfMetadataDAO = scheduledWfMetadataDAO;
         this.managerExecutionDAO = managerExecutionDAO;
         this.processRegistry = processRegistry;
         this.metadataDAO = metadataDAO;
         this.indexDAO = indexDAO;
         this.schedulingAssistant = schedulingAssistant;
+        this.isJunitRun = isJunitRun;
         registerManager();
-        manageProcesses();
+        if (!isJunitRun) {
+            manageProcesses();
+        }
+    }
+
+    @VisibleForTesting
+    void setManagerInfo(ManagerInfo managerInfo) {
+        if(isJunitRun) {
+            this.managerInfo = managerInfo;
+        }
     }
 
     @Override
@@ -82,7 +103,7 @@ public class DefaultSchedulerManager implements SchedulerManager {
             }
 
             List<ScheduleWfDef> unScheduledWorkflows = scheduledWorkflowOptional.get().stream()
-                    .filter(scheduleWfDef -> !processRegistry
+                    .filter(scheduleWfDef -> processRegistry
                             .isProcessTobeScheduled(scheduleWfDef.getWfName(), managerInfo.getId()))
                     .collect(Collectors.toList());
 
@@ -104,11 +125,13 @@ public class DefaultSchedulerManager implements SchedulerManager {
                 processRegistry.getAllRunningProcesses(managerInfo.getId());
         schedulingAssistant.shutdownAllSchedulersWithFailSafety(runningProcesses);
         processRegistry.shutDownRegistry(managerInfo.getId(), 5000);
-        //TODO: to index shutdown processes using indexDAO.
+        // TODO: to index shutdown processes using indexDAO.
         scheduledExecutorService.shutdown();
     }
 
-    private void scheduleApplicableWorkflows(List<ScheduleWfDef> unScheduledWorkflows) {
+    @VisibleForTesting
+    List<SchedulingResult> scheduleApplicableWorkflows(List<ScheduleWfDef> unScheduledWorkflows) {
+        List<SchedulingResult> results = new ArrayList<>();
         unScheduledWorkflows.forEach(unScheduledWorkflow -> {
             Optional<WorkflowDef> workflowDef = metadataDAO.getWorkflowDef(unScheduledWorkflow.getWfName(),
                     unScheduledWorkflow.getWfVersion());
@@ -134,7 +157,9 @@ public class DefaultSchedulerManager implements SchedulerManager {
             scheduledWorkFlow.setCreateTime(System.currentTimeMillis());
             scheduledWorkFlow.setCreatedBy(managerInfo.getNodeAddress() + ":" + managerInfo.getId());
 
-            processRegistry.addProcess(scheduledWorkFlow);
+            if(!processRegistry.addProcess(scheduledWorkFlow) && !isJunitRun) {
+                return;
+            }
             SchedulingResult result = schedulingAssistant.scheduleSchedulerWithFailSafety(scheduledWorkFlow);
             if (Status.FAILURE == result.getStatus()) {
                 logger.error("Unable to  schedule workflow name={}, version={} with some error",
@@ -151,17 +176,21 @@ public class DefaultSchedulerManager implements SchedulerManager {
             processRegistry.updateProcessById(scheduledWorkFlow.getScheduledProcess(),
                     scheduledWorkFlow.getState(), scheduledWorkFlow.getId(), scheduledWorkFlow.getName());
             indexDAO.indexCreatedScheduledWorkFlow(scheduledWorkFlow);
+            results.add(result);
         });
+        return results;
     }
 
-    private void manageShutDownProcesses() {
+    @VisibleForTesting
+    List<ShutdownResult> manageShutDownProcesses() {
         List<ScheduledWorkFlow> tobeShutDownProcesses =
                 processRegistry.getTobeShutDownProcesses(managerInfo.getId());
         if (CollectionUtils.isEmpty(tobeShutDownProcesses)) {
             logger.debug("No process found for shutdown with managerRef={}", managerInfo.getId());
-            return;
+            return null;
         }
 
+        List<ShutdownResult> shutdownResults = new ArrayList<>();
         tobeShutDownProcesses.forEach(shutdownProcess -> {
             ShutdownResult result = schedulingAssistant.shutdownSchedulerWithFailSafety(shutdownProcess);
 
@@ -172,10 +201,13 @@ public class DefaultSchedulerManager implements SchedulerManager {
                 processRegistry.updateProcessById(shutdownProcess.getScheduledProcess(),
                         shutdownProcess.getState(), shutdownProcess.getId(), shutdownProcess.getName());
             } else {
-                logger.info("Process submit signalled ted for shutdown with the id={}", result.getId());
+                logger.info("Process submit signalled for shutdown with the id={}", result.getId());
                 processRegistry.removeProcess(shutdownProcess);
             }
             indexDAO.indexShutdownScheduledWorkFlow(shutdownProcess);
+            shutdownResults.add(result);
         });
+
+        return shutdownResults;
     }
 }

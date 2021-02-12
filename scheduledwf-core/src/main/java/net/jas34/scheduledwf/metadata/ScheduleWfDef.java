@@ -14,6 +14,8 @@ public class ScheduleWfDef extends Auditable {
 
     private int wfVersion;
 
+    private Status status;
+
     private Map<String, Object> wfInput = new HashMap<>();
 
     private String cronExpression;
@@ -34,6 +36,14 @@ public class ScheduleWfDef extends Auditable {
         this.wfVersion = wfVersion;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     public Map<String, Object> getWfInput() {
         return wfInput;
     }
@@ -48,6 +58,11 @@ public class ScheduleWfDef extends Auditable {
 
     public void setCronExpression(String cronExpression) {
         this.cronExpression = cronExpression;
+    }
+
+    public enum Status {
+        RUN,
+        SHUTDOWN;
     }
 
     @Override
