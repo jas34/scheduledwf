@@ -13,11 +13,11 @@ public interface ScheduledProcessRegistry {
     boolean addProcess(ScheduledWorkFlow scheduledWorkFlow);
 
     boolean updateProcessById(ScheduledProcess processReference, ScheduledWorkFlow.State state, String id,
-            String name) throws IllegalStateException;
+            String name);
 
     boolean isProcessTobeScheduled(String name, String managerRefId);
 
-    List<ScheduledWorkFlow> getTobeShutDownProcesses(String managerRefId);
+    List<ScheduledWorkFlow> getTobeShutDownProcesses(String managerRefId, List<String> names);
 
     void removeProcess(ScheduledWorkFlow scheduledWorkFlow);
 

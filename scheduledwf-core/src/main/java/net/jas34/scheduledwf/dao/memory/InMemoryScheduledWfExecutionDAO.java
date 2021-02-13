@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 import com.google.inject.Singleton;
 import net.jas34.scheduledwf.dao.ScheduledWfExecutionDAO;
 import net.jas34.scheduledwf.run.ScheduledWorkFlow;
+import org.apache.commons.collections4.CollectionUtils;
 
 /**
  * @author Jasbir Singh
@@ -33,30 +34,46 @@ public class InMemoryScheduledWfExecutionDAO implements ScheduledWfExecutionDAO 
     }
 
     @Override
+    public Optional<List<ScheduledWorkFlow>> getScheduledWfWithNamesAndMgrRefId(List<String> names,
+            String managerRefId) {
+        if (CollectionUtils.isEmpty(names)) {
+            return Optional.empty();
+        }
+
+        List<ScheduledWorkFlow> scheduledWorkFlows = new ArrayList<>();
+        names.forEach(name -> {
+            if (Objects.nonNull(scheduledWorkFlowStore.get(name))) {
+                scheduledWorkFlows.add(scheduledWorkFlowStore.get(name));
+            }
+        });
+        return Optional.of(scheduledWorkFlows);
+    }
+
+    @Override
     public Optional<List<ScheduledWorkFlow>> getAllScheduledWfWithByManagerRefId(String managerRefId) {
         return Optional.of(new ArrayList<>(scheduledWorkFlowStore.values()));
     }
 
-    @Override
-    public Optional<List<ScheduledWorkFlow>> getAllScheduledWfWithStates(String managerRefId,
-            ScheduledWorkFlow.State... states) {
-        List<ScheduledWorkFlow> collect = scheduledWorkFlowStore.values().stream()
-                .filter(scheduledWorkFlow -> Stream.of(states)
-                        .collect(Collectors.toCollection(ArrayList::new))
-                        .contains(scheduledWorkFlow.getState()))
-                .collect(Collectors.toList());
-        return Optional.of(collect);
-    }
+//    @Override
+//    public Optional<List<ScheduledWorkFlow>> getAllScheduledWfWithStates(String managerRefId,
+//            ScheduledWorkFlow.State... states) {
+//        List<ScheduledWorkFlow> collect = scheduledWorkFlowStore.values().stream()
+//                .filter(scheduledWorkFlow -> Stream.of(states)
+//                        .collect(Collectors.toCollection(ArrayList::new))
+//                        .contains(scheduledWorkFlow.getState()))
+//                .collect(Collectors.toList());
+//        return Optional.of(collect);
+//    }
 
     @Override
-    public ScheduledWorkFlow updateStateById(ScheduledWorkFlow.State state, String id, String name) {
+    public Optional<ScheduledWorkFlow> updateStateById(ScheduledWorkFlow.State state, String id, String name) {
         ScheduledWorkFlow scheduledWorkFlow = scheduledWorkFlowStore.get(name);
-        if(Objects.isNull(scheduledWorkFlow)) {
-            return null;
+        if (Objects.isNull(scheduledWorkFlow)) {
+            return Optional.empty();
         }
         synchronized (scheduledWorkFlowStore) {
             scheduledWorkFlow.setState(state);
-            return scheduledWorkFlow;
+            return Optional.of(scheduledWorkFlow);
         }
     }
 

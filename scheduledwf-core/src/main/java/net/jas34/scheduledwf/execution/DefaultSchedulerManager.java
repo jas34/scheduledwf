@@ -74,7 +74,7 @@ public class DefaultSchedulerManager implements SchedulerManager {
 
     @VisibleForTesting
     void setManagerInfo(ManagerInfo managerInfo) {
-        if(isJunitRun) {
+        if (isJunitRun) {
             this.managerInfo = managerInfo;
         }
     }
@@ -93,26 +93,7 @@ public class DefaultSchedulerManager implements SchedulerManager {
     @Override
     public void manageProcesses() {
         scheduledExecutorService.scheduleAtFixedRate(() -> {
-            Optional<List<ScheduleWfDef>> scheduledWorkflowOptional =
-                    scheduledWfMetadataDAO.getAllScheduledWorkflowDefs();
-
-            if (!scheduledWorkflowOptional.isPresent()
-                    || CollectionUtils.isEmpty(scheduledWorkflowOptional.get())) {
-                logger.debug("No scheduled workflow definitions available. No process to be scheduled");
-                return;
-            }
-
-            List<ScheduleWfDef> unScheduledWorkflows = scheduledWorkflowOptional.get().stream()
-                    .filter(scheduleWfDef -> processRegistry
-                            .isProcessTobeScheduled(scheduleWfDef.getWfName(), managerInfo.getId()))
-                    .collect(Collectors.toList());
-
-            if (CollectionUtils.isEmpty(unScheduledWorkflows)) {
-                logger.info("No workflow left to be scheduled.");
-                return;
-            }
-
-            scheduleApplicableWorkflows(unScheduledWorkflows);
+            scheduleApplicableWorkflows();
             manageShutDownProcesses();
 
         }, 1000, 1000, TimeUnit.MILLISECONDS);
@@ -130,7 +111,26 @@ public class DefaultSchedulerManager implements SchedulerManager {
     }
 
     @VisibleForTesting
-    List<SchedulingResult> scheduleApplicableWorkflows(List<ScheduleWfDef> unScheduledWorkflows) {
+    List<SchedulingResult> scheduleApplicableWorkflows() {
+        Optional<List<ScheduleWfDef>> scheduledWorkflowOptional =
+                scheduledWfMetadataDAO.getAllScheduledWorkflowDefsByStatus(ScheduleWfDef.Status.RUN);
+
+        if (!scheduledWorkflowOptional.isPresent()
+                || CollectionUtils.isEmpty(scheduledWorkflowOptional.get())) {
+            logger.debug("No scheduled workflow definitions available. No process to be scheduled");
+            return null;
+        }
+
+        List<ScheduleWfDef> unScheduledWorkflows = scheduledWorkflowOptional
+                .get().stream().filter(scheduleWfDef -> processRegistry
+                        .isProcessTobeScheduled(scheduleWfDef.getWfName(), managerInfo.getId()))
+                .collect(Collectors.toList());
+
+        if (CollectionUtils.isEmpty(unScheduledWorkflows)) {
+            logger.info("No workflow left to be scheduled.");
+            return null;
+        }
+
         List<SchedulingResult> results = new ArrayList<>();
         unScheduledWorkflows.forEach(unScheduledWorkflow -> {
             Optional<WorkflowDef> workflowDef = metadataDAO.getWorkflowDef(unScheduledWorkflow.getWfName(),
@@ -157,7 +157,7 @@ public class DefaultSchedulerManager implements SchedulerManager {
             scheduledWorkFlow.setCreateTime(System.currentTimeMillis());
             scheduledWorkFlow.setCreatedBy(managerInfo.getNodeAddress() + ":" + managerInfo.getId());
 
-            if(!processRegistry.addProcess(scheduledWorkFlow) && !isJunitRun) {
+            if (!processRegistry.addProcess(scheduledWorkFlow) && !isJunitRun) {
                 return;
             }
             SchedulingResult result = schedulingAssistant.scheduleSchedulerWithFailSafety(scheduledWorkFlow);
@@ -183,10 +183,22 @@ public class DefaultSchedulerManager implements SchedulerManager {
 
     @VisibleForTesting
     List<ShutdownResult> manageShutDownProcesses() {
+        Optional<List<ScheduleWfDef>> tobeShutDownScheduleWfDefsOptional =
+                scheduledWfMetadataDAO.getAllScheduledWorkflowDefsByStatus(ScheduleWfDef.Status.SHUTDOWN);
+        if (!tobeShutDownScheduleWfDefsOptional.isPresent()
+                || CollectionUtils.isEmpty(tobeShutDownScheduleWfDefsOptional.get())) {
+            logger.debug("No ScheduleWfDef marked for shutdown");
+            return null;
+        }
+
+        List<String> names = tobeShutDownScheduleWfDefsOptional.get().stream().map(ScheduleWfDef::getWfName)
+                .collect(Collectors.toList());
+
         List<ScheduledWorkFlow> tobeShutDownProcesses =
-                processRegistry.getTobeShutDownProcesses(managerInfo.getId());
+                processRegistry.getTobeShutDownProcesses(managerInfo.getId(), names);
         if (CollectionUtils.isEmpty(tobeShutDownProcesses)) {
-            logger.debug("No process found for shutdown with managerRef={}", managerInfo.getId());
+            logger.debug("No running process found for shutdown with managerRef={}, with names={}",
+                    managerInfo.getId(), names);
             return null;
         }
 

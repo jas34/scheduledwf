@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.google.inject.Singleton;
 import net.jas34.scheduledwf.dao.ScheduledWfMetadataDAO;
 import net.jas34.scheduledwf.metadata.ScheduleWfDef;
+import net.jas34.scheduledwf.run.ScheduledWorkFlow;
 
 /**
  * @author Jasbir Singh
@@ -28,10 +31,10 @@ public class InMemoryScheduledWfMetadataDAO implements ScheduledWfMetadataDAO {
         scheduleWfDefStore.put(def.getWfName(), def);
     }
 
-    @Override
-    public void removeScheduleWorkflow(String name) {
-        scheduleWfDefStore.remove(name);
-    }
+//    @Override
+//    public void removeScheduleWorkflow(String name) {
+//        scheduleWfDefStore.remove(name);
+//    }
 
     @Override
     public Optional<ScheduleWfDef> getScheduledWorkflowDef(String name, int version) {
@@ -39,7 +42,10 @@ public class InMemoryScheduledWfMetadataDAO implements ScheduledWfMetadataDAO {
     }
 
     @Override
-    public Optional<List<ScheduleWfDef>> getAllScheduledWorkflowDefs() {
-        return Optional.of(new ArrayList<>(scheduleWfDefStore.values()));
+    public Optional<List<ScheduleWfDef>> getAllScheduledWorkflowDefsByStatus(ScheduleWfDef.Status status) {
+        List<ScheduleWfDef> collect = scheduleWfDefStore.values().stream()
+                .filter(scheduleWfDef -> status.equals(scheduleWfDef.getStatus()))
+                .collect(Collectors.toList());
+        return Optional.of(collect);
     }
 }

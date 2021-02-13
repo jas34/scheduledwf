@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import net.jcip.annotations.NotThreadSafe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
@@ -15,6 +14,7 @@ import com.google.inject.Singleton;
 import net.jas34.scheduledwf.dao.ScheduledWfExecutionDAO;
 import net.jas34.scheduledwf.run.ScheduledWorkFlow;
 import net.jas34.scheduledwf.scheduler.ScheduledProcess;
+import net.jcip.annotations.NotThreadSafe;
 
 /**
  * CAUTION: Not thread safe. Should be operated by a single thread at a time.
@@ -31,7 +31,9 @@ public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry
     private final Map<String, ScheduledProcess> processReferenceMap;
     private final ScheduledWfExecutionDAO wfExecutionDAO;
 
-    private static final List<ScheduledWorkFlow.State> NON_SCHEDULING_ELIGIBLE_STATES = Arrays.asList(ScheduledWorkFlow.State.RUNNING, ScheduledWorkFlow.State.SHUTDOWN, ScheduledWorkFlow.State.SHUTDOWN_FAILED);
+    private static final List<ScheduledWorkFlow.State> NON_SCHEDULING_ELIGIBLE_STATES =
+            Arrays.asList(ScheduledWorkFlow.State.RUNNING, ScheduledWorkFlow.State.SHUTDOWN,
+                    ScheduledWorkFlow.State.SHUTDOWN_FAILED);
 
     @Inject
     public DefaultScheduledProcessRegistry(ScheduledWfExecutionDAO wfExecutionDAO) {
@@ -50,15 +52,19 @@ public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry
     }
 
     @Override
-    public boolean updateProcessById(ScheduledProcess processReference,
-                                     ScheduledWorkFlow.State state, String id, String name) throws IllegalStateException {
-        if (isProcessPresentInRegistry(id)) {
+    public boolean updateProcessById(ScheduledProcess processReference, ScheduledWorkFlow.State state,
+            String id, String name) {
+//        if (!isProcessPresentInRegistry(id)) {
+//            return false;
+//        }
+
+        Optional<ScheduledWorkFlow> scheduledWorkFlow = wfExecutionDAO.updateStateById(state, id, name);
+        if(!scheduledWorkFlow.isPresent()) {
             return false;
         }
-        ScheduledWorkFlow scheduledWorkFlow = wfExecutionDAO.updateStateById(state, id, name);
-        scheduledWorkFlow.setScheduledProcess(processReference);
-        updateProcessRefMapIfApplicable(scheduledWorkFlow);
-        return Objects.nonNull(scheduledWorkFlow);
+        scheduledWorkFlow.get().setScheduledProcess(processReference);
+        updateProcessRefMapIfApplicable(scheduledWorkFlow.get());
+        return scheduledWorkFlow.isPresent();
     }
 
     @Override
@@ -73,7 +79,8 @@ public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry
         }
 
         ScheduledWorkFlow scheduledWorkFlow = scheduledWorkFlowOptional.get();
-        if (!isProcessPresentInRegistry(scheduledWorkFlow.getId()) || !NON_SCHEDULING_ELIGIBLE_STATES.contains(scheduledWorkFlow.getState())) {
+        if (!isProcessPresentInRegistry(scheduledWorkFlow.getId())
+                || !NON_SCHEDULING_ELIGIBLE_STATES.contains(scheduledWorkFlow.getState())) {
             logger.debug(
                     "Scheduled workflow not present in process registry or ScheduledWorkFlow is having state={}. This is to be scheduled.",
                     scheduledWorkFlow.getState());
@@ -85,9 +92,9 @@ public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry
     }
 
     @Override
-    public List<ScheduledWorkFlow> getTobeShutDownProcesses(String managerRefId) {
+    public List<ScheduledWorkFlow> getTobeShutDownProcesses(String managerRefId, List<String> names) {
         Optional<List<ScheduledWorkFlow>> optionalScheduledWorkFlow =
-                wfExecutionDAO.getAllScheduledWfWithStates(managerRefId, ScheduledWorkFlow.State.SHUTDOWN);
+                wfExecutionDAO.getScheduledWfWithNamesAndMgrRefId(names, managerRefId);
         if (!optionalScheduledWorkFlow.isPresent()) {
             logger.debug("No scheduled workflows applicable for shutdown found.");
             return null;
@@ -96,6 +103,19 @@ public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry
         updateProcessReferences(optionalScheduledWorkFlow.get());
         return optionalScheduledWorkFlow.get();
     }
+
+    // @Override
+    // public List<ScheduledWorkFlow> getTobeShutDownProcesses(String managerRefId) {
+    // Optional<List<ScheduledWorkFlow>> optionalScheduledWorkFlow =
+    // wfExecutionDAO.getAllScheduledWfWithStates(managerRefId, ScheduledWorkFlow.State.SHUTDOWN);
+    // if (!optionalScheduledWorkFlow.isPresent()) {
+    // logger.debug("No scheduled workflows applicable for shutdown found.");
+    // return null;
+    // }
+    //
+    // updateProcessReferences(optionalScheduledWorkFlow.get());
+    // return optionalScheduledWorkFlow.get();
+    // }
 
     @Override
     public void removeProcess(ScheduledWorkFlow scheduledWorkFlow) {
@@ -130,13 +150,13 @@ public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry
 
     private void updateProcessReferences(List<ScheduledWorkFlow> scheduledWorkFlows) {
         scheduledWorkFlows.forEach(scheduledWorkFlow -> {
-            ScheduledProcess processReference =
-                    processReferenceMap.get(scheduledWorkFlow.getId());
+            ScheduledProcess processReference = processReferenceMap.get(scheduledWorkFlow.getId());
             if (Objects.nonNull(processReference)) {
                 scheduledWorkFlow.setScheduledProcess(processReference);
 
             } else {
-                logger.warn("This is strange!! processReference not found in processReferenceMap for id={}, state={}",
+                logger.warn(
+                        "This is strange!! processReference not found in processReferenceMap for id={}, state={}",
                         scheduledWorkFlow.getId(), scheduledWorkFlow.getState());
             }
         });

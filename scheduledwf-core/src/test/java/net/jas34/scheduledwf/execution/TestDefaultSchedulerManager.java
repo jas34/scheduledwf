@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import net.jas34.scheduledwf.run.ShutdownResult;
 import org.junit.Before;
@@ -68,15 +69,16 @@ public class TestDefaultSchedulerManager extends TestBase {
     @Test
     public void test_manageProcesses_when_no_wfDefIsPresent() {
         Optional<List<ScheduleWfDef>> scheduledWorkflowOptional = Optional.empty();
-        when(scheduledWfMetadataDAO.getAllScheduledWorkflowDefs()).thenReturn(scheduledWorkflowOptional);
+        when(scheduledWfMetadataDAO.getAllScheduledWorkflowDefsByStatus(ScheduleWfDef.Status.RUN)).thenReturn(scheduledWorkflowOptional);
         schedulerManager.manageProcesses();
     }
 
     @Test
     public void test_scheduleApplicableWorkflows_when_wfMetadata_not_present_for_all() {
+        schedulerManager.setManagerInfo(managerInfo);
         Optional<List<ScheduleWfDef>> scheduledWorkflowOptional =
                 Optional.of(createdDefs(TEST_WF_NAME + "-1", TEST_WF_NAME + "-2", TEST_WF_NAME + "-3"));
-        when(scheduledWfMetadataDAO.getAllScheduledWorkflowDefs()).thenReturn(scheduledWorkflowOptional);
+        when(scheduledWfMetadataDAO.getAllScheduledWorkflowDefsByStatus(ScheduleWfDef.Status.RUN)).thenReturn(scheduledWorkflowOptional);
 
         List<ScheduleWfDef> wfDefs = scheduledWorkflowOptional.get();
         when(processRegistry.isProcessTobeScheduled(wfDefs.get(0).getWfName(), managerInfo.getId()))
@@ -107,7 +109,7 @@ public class TestDefaultSchedulerManager extends TestBase {
         schedulingAssistant.setSchedulingResultMap(resultMap);
 
         List<SchedulingResult> results =
-                schedulerManager.scheduleApplicableWorkflows(scheduledWorkflowOptional.get());
+                schedulerManager.scheduleApplicableWorkflows();
         assertNotNull(results);
         assertEquals(2, results.size());
         assertEquals(Status.SUCCESS, results.get(0).getStatus());
@@ -117,13 +119,20 @@ public class TestDefaultSchedulerManager extends TestBase {
     @Test
     public void test_manageShutDownProcesses() {
         schedulerManager.setManagerInfo(managerInfo);
+        Optional<List<ScheduleWfDef>> scheduledWorkflowOptional =
+                Optional.of(createdDefs(TEST_WF_NAME + "-1", TEST_WF_NAME + "-2"));
+        scheduledWorkflowOptional.get().get(0).setStatus(ScheduleWfDef.Status.SHUTDOWN);
+        scheduledWorkflowOptional.get().get(1).setStatus(ScheduleWfDef.Status.SHUTDOWN);
+        when(scheduledWfMetadataDAO.getAllScheduledWorkflowDefsByStatus(ScheduleWfDef.Status.SHUTDOWN)).thenReturn(scheduledWorkflowOptional);
+
         ScheduledWorkFlow scheduledWorkFlow1 = createScheduledWorkFlow(managerInfo, TEST_WF_NAME + "-1",
                 ScheduledWorkFlow.State.SHUTDOWN);
         ScheduledWorkFlow scheduledWorkFlow2 = createScheduledWorkFlow(managerInfo, TEST_WF_NAME + "-2",
                 ScheduledWorkFlow.State.SHUTDOWN);
 
         List<ScheduledWorkFlow> tobeShutDownProcesses = Arrays.asList(scheduledWorkFlow1, scheduledWorkFlow2);
-        when(processRegistry.getTobeShutDownProcesses(managerInfo.getId())).thenReturn(tobeShutDownProcesses);
+        List<String> names = scheduledWorkflowOptional.get().stream().map(ScheduleWfDef::getWfName).collect(Collectors.toList());
+        when(processRegistry.getTobeShutDownProcesses(managerInfo.getId(), names)).thenReturn(tobeShutDownProcesses);
 
         ShutdownResult result1 = createShutdownResult(Status.SUCCESS);
         ShutdownResult result2 = createShutdownResult(Status.FAILURE);

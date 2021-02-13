@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -73,9 +74,9 @@ public class TestDefaultScheduledProcessRegistry extends TestBase {
         processRegistry.addProcess(scheduledWorkFlow1);
         processRegistry.addProcess(scheduledWorkFlow2);
 
-        List<ScheduledWorkFlow> tobeShutDownProcesses = processRegistry.getTobeShutDownProcesses(managerInfo.getId());
-        assertEquals(tobeShutDownProcesses.size(), 1);
-        assertEquals(scheduledWorkFlow2.getName(), tobeShutDownProcesses.get(0).getName());
+        List<ScheduledWorkFlow> tobeShutDownProcesses = processRegistry.getTobeShutDownProcesses(managerInfo.getId(), Arrays.asList(scheduledWorkFlow1.getName(), scheduledWorkFlow2.getName()));
+        assertEquals(tobeShutDownProcesses.size(), 2);
+        assertEquals(scheduledWorkFlow1.getName(), tobeShutDownProcesses.get(0).getName());
     }
 
     @Test
