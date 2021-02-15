@@ -23,5 +23,7 @@ public interface ScheduledWfExecutionDAO {
 
     Optional<ScheduledWorkFlow> updateStateById(ScheduledWorkFlow.State state, String id, String name);
 
+    void removeScheduledWorkflow(String name, String managerRefId);
+
     void removeAllScheduledWorkflows(String managerRefId);
 }

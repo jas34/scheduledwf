@@ -119,7 +119,7 @@ public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry
 
     @Override
     public void removeProcess(ScheduledWorkFlow scheduledWorkFlow) {
-        wfExecutionDAO.removeAllScheduledWorkflows(scheduledWorkFlow.getId());
+        wfExecutionDAO.removeScheduledWorkflow(scheduledWorkFlow.getName(), scheduledWorkFlow.getManagerRefId());
         processReferenceMap.remove(scheduledWorkFlow.getId());
         logger.debug(
                 "scheduled workflow removed from execution data persistence store and processReferenceMap.");

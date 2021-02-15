@@ -20,6 +20,6 @@ public class TestTask implements Runnable {
     @Override
     public void run() {
         System.out.println("I am running a test task for testing. Is this fine with you!");
-        indexExecutionDataCallback.indexData(taskDef, Status.SUCCESS, "");
+        indexExecutionDataCallback.indexData(taskDef, "test_trigger", Status.SUCCESS, "");
     }
 }

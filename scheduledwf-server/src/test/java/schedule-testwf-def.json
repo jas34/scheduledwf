@@ -2,7 +2,7 @@
     "wfName": "workflow1",
     "wfVersion": 1,
     "status": "RUN",
-    "cronExpression": "0/1 1/1 * 1/1 * ? *",
+    "cronExpression": "0 0/5 * 1/1 * ? *",
     "wfInput": {
         "name": "Jasbir Singh"
     }

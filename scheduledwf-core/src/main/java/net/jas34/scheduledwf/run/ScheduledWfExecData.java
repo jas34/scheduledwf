@@ -19,6 +19,8 @@ public class ScheduledWfExecData {
 
     private String lastExecutionEndedAt;
 
+    private String triggerId;
+
     private String executionStatus;
 
     private String executionFailureReason;
@@ -79,6 +81,14 @@ public class ScheduledWfExecData {
         this.lastExecutionEndedAt = lastExecutionEndedAt;
     }
 
+    public String getTriggerId() {
+        return triggerId;
+    }
+
+    public void setTriggerId(String triggerId) {
+        this.triggerId = triggerId;
+    }
+
     public String getExecutionStatus() {
         return executionStatus;
     }
@@ -105,6 +115,7 @@ public class ScheduledWfExecData {
                 ", executedAt='" + executedAt + '\'' +
                 ", nextRunAt='" + nextRunAt + '\'' +
                 ", lastExecutionEndedAt='" + lastExecutionEndedAt + '\'' +
+                ", triggerId='" + triggerId + '\'' +
                 ", executionStatus='" + executionStatus + '\'' +
                 ", executionFailureReason='" + executionFailureReason + '\'' +
                 '}';

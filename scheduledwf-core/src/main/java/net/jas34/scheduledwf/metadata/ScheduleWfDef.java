@@ -1,23 +1,30 @@
 package net.jas34.scheduledwf.metadata;
 
-import com.netflix.conductor.common.metadata.Auditable;
-
 import java.util.HashMap;
 import java.util.Map;
+import javax.validation.constraints.NotEmpty;
+
+import com.netflix.conductor.common.constraints.NoSemiColonConstraint;
+import com.netflix.conductor.common.metadata.Auditable;
 
 /**
  * @author Jasbir Singh
  */
 public class ScheduleWfDef extends Auditable {
 
+    @NotEmpty(message = "WorkflowDef name cannot be null or empty")
+    @NoSemiColonConstraint(message = "Workflow name cannot contain the following set of characters: ':'")
     private String wfName;
 
-    private int wfVersion;
+    private int wfVersion = 1;
 
+    @NotEmpty(message = "status cannot be empty")
     private Status status;
 
     private Map<String, Object> wfInput = new HashMap<>();
 
+    @NotEmpty(
+            message = "cronExpression can not be empty. Should be valid cron expression. Tip: Create definition from http://www.cronmaker.com/")
     private String cronExpression;
 
     public String getWfName() {
@@ -61,16 +68,12 @@ public class ScheduleWfDef extends Auditable {
     }
 
     public enum Status {
-        RUN,
-        SHUTDOWN;
+        RUN, SHUTDOWN, DELETE;
     }
 
     @Override
     public String toString() {
-        return "ScheduleWfDef{" +
-                "wfName='" + wfName + '\'' +
-                ", wfVersion='" + wfVersion + '\'' +
-                ", cronExpression='" + cronExpression + '\'' +
-                "} " + super.toString();
+        return "ScheduleWfDef{" + "wfName='" + wfName + '\'' + ", wfVersion='" + wfVersion + '\''
+                + ", cronExpression='" + cronExpression + '\'' + "} " + super.toString();
     }
 }

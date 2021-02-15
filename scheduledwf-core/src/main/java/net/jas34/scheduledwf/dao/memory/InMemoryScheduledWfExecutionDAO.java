@@ -78,6 +78,11 @@ public class InMemoryScheduledWfExecutionDAO implements ScheduledWfExecutionDAO 
     }
 
     @Override
+    public void removeScheduledWorkflow(String name, String managerRefId) {
+        scheduledWorkFlowStore.remove(name);
+    }
+
+    @Override
     public void removeAllScheduledWorkflows(String managerRefId) {
         scheduledWorkFlowStore.clear();
     }

@@ -8,5 +8,5 @@ import net.jas34.scheduledwf.run.Status;
  */
 public interface IndexExecutionDataCallback {
 
-    void indexData(ScheduledTaskDef scheduledTaskDef, Status status, String failureReason);
+    void indexData(ScheduledTaskDef scheduledTaskDef, String triggerId, Status status, String failureReason);
 }

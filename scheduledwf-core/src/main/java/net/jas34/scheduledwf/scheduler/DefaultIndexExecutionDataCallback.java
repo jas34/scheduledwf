@@ -24,7 +24,7 @@ public class DefaultIndexExecutionDataCallback implements IndexExecutionDataCall
     }
 
     @Override
-    public void indexData(ScheduledTaskDef scheduledTaskDef, Status status, String failureReason) {
+    public void indexData(ScheduledTaskDef scheduledTaskDef, String triggerId, Status status, String failureReason) {
         String scheduledWfName = scheduledTaskDef.getName();
         ScheduledWfExecData scheduledWfExecData = new ScheduledWfExecData();
         scheduledWfExecData.setSchedulerId(scheduledTaskDef.getSchedulerId());
@@ -34,6 +34,7 @@ public class DefaultIndexExecutionDataCallback implements IndexExecutionDataCall
         scheduledWfExecData.setExecutedAt(CommonUtils.toFormattedDate(schedule.lastExecutionStartedTimeInMillis(scheduledWfName)));
         scheduledWfExecData.setLastExecutionEndedAt(CommonUtils.toFormattedDate(schedule.lastExecutionEndedTimeInMillis(scheduledWfName)));
         scheduledWfExecData.setNextRunAt(CommonUtils.toFormattedDate(schedule.nextExecutionTimeInMillis(scheduledWfName)));
+        scheduledWfExecData.setTriggerId(triggerId);
         scheduledWfExecData.setExecutionStatus(status.name());
         scheduledWfExecData.setExecutionFailureReason(failureReason);
         indexDAO.indexExecutedScheduledWorkflow(scheduledWfExecData);

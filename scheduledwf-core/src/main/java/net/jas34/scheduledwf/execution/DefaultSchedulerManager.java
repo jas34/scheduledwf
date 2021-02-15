@@ -29,6 +29,8 @@ import net.jas34.scheduledwf.run.ShutdownResult;
 import net.jas34.scheduledwf.run.Status;
 
 /**
+ * TODO: to implement auto-recovery in case registry and scheduler goes out of sync from each other.
+ *
  * @author Jasbir Singh
  */
 @Singleton
@@ -127,7 +129,7 @@ public class DefaultSchedulerManager implements SchedulerManager {
                 .collect(Collectors.toList());
 
         if (CollectionUtils.isEmpty(unScheduledWorkflows)) {
-            logger.info("No workflow left to be scheduled.");
+            logger.debug("No workflow left to be scheduled.");
             return null;
         }
 
@@ -184,7 +186,8 @@ public class DefaultSchedulerManager implements SchedulerManager {
     @VisibleForTesting
     List<ShutdownResult> manageShutDownProcesses() {
         Optional<List<ScheduleWfDef>> tobeShutDownScheduleWfDefsOptional =
-                scheduledWfMetadataDAO.getAllScheduledWorkflowDefsByStatus(ScheduleWfDef.Status.SHUTDOWN);
+                scheduledWfMetadataDAO.getAllScheduledWorkflowDefsByStatus(ScheduleWfDef.Status.SHUTDOWN,
+                        ScheduleWfDef.Status.DELETE);
         if (!tobeShutDownScheduleWfDefsOptional.isPresent()
                 || CollectionUtils.isEmpty(tobeShutDownScheduleWfDefsOptional.get())) {
             logger.debug("No ScheduleWfDef marked for shutdown");
@@ -199,6 +202,8 @@ public class DefaultSchedulerManager implements SchedulerManager {
         if (CollectionUtils.isEmpty(tobeShutDownProcesses)) {
             logger.debug("No running process found for shutdown with managerRef={}, with names={}",
                     managerInfo.getId(), names);
+
+            cleanUpMetaDataIfApplicable(tobeShutDownScheduleWfDefsOptional.get());
             return null;
         }
 
@@ -219,7 +224,19 @@ public class DefaultSchedulerManager implements SchedulerManager {
             indexDAO.indexShutdownScheduledWorkFlow(shutdownProcess);
             shutdownResults.add(result);
         });
-
+        cleanUpMetaDataIfApplicable(tobeShutDownScheduleWfDefsOptional.get());
         return shutdownResults;
+    }
+
+    private void cleanUpMetaDataIfApplicable(List<ScheduleWfDef> deletaleDefinitions) {
+        List<String> deletableScheduleWfs = deletaleDefinitions.stream()
+                .filter(scheduleWfDef -> ScheduleWfDef.Status.DELETE == scheduleWfDef.getStatus())
+                .map(ScheduleWfDef::getWfName).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(deletableScheduleWfs)) {
+            logger.debug("Remove definitions with status DELETE. Total count:{} and names{}=",
+                    deletableScheduleWfs.size(), deletableScheduleWfs);
+            int removedCount = scheduledWfMetadataDAO.removeScheduleWorkflows(deletableScheduleWfs);
+            logger.debug("Total number of definitions deleted: {}", removedCount);
+        }
     }
 }
