@@ -15,10 +15,10 @@ import net.jas34.scheduledwf.utils.CommonUtils;
 public class DefaultIndexExecutionDataCallback implements IndexExecutionDataCallback {
 
     private final IndexScheduledWfDAO indexDAO;
-    private final WorkflowJob schedule;
+    private final SchedulerStats schedule;
 
     @Inject
-    public DefaultIndexExecutionDataCallback(IndexScheduledWfDAO indexDAO, WorkflowJob schedule) {
+    public DefaultIndexExecutionDataCallback(IndexScheduledWfDAO indexDAO, SchedulerStats schedule) {
         this.indexDAO = indexDAO;
         this.schedule = schedule;
     }

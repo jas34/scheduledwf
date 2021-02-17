@@ -2,6 +2,7 @@ package net.jas34.scheduledwf.run;
 
 import com.netflix.conductor.common.metadata.Auditable;
 import net.jas34.scheduledwf.scheduler.ScheduledProcess;
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +29,7 @@ public class ScheduledWorkFlow extends Auditable {
 
     private State state;
 
+    @JsonIgnore
     private ScheduledProcess scheduledProcess;
 
     private String managerRefId;

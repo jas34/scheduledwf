@@ -2,7 +2,6 @@ package net.jas34.scheduledwf.scheduler;
 
 import java.time.Duration;
 import java.util.Optional;
-import java.util.concurrent.CompletionStage;
 
 import com.coreoz.wisp.Job;
 import com.coreoz.wisp.Scheduler;
@@ -21,7 +20,7 @@ import javax.annotation.PreDestroy;
  */
 @Singleton
 public class CronBasedWorkflowScheduler
-        implements WorkflowScheduler<CronBasedScheduledProcess<Job>>, WorkflowJob {
+        implements WorkflowScheduler<CronBasedScheduledProcess<Job>>, SchedulerStats {
     private final Logger logger = LoggerFactory.getLogger(CronBasedWorkflowScheduler.class);
 
     private Scheduler scheduler;
@@ -63,6 +62,11 @@ public class CronBasedWorkflowScheduler
     @Override
     public Long lastExecutionEndedTimeInMillis(String scheduledWfName) {
         return resolveJobFromName(scheduledWfName).lastExecutionEndedTimeInMillis();
+    }
+
+    @Override
+    public int executionsCount(String scheduledWfName) {
+        return resolveJobFromName(scheduledWfName).executionsCount();
     }
 
     @PreDestroy

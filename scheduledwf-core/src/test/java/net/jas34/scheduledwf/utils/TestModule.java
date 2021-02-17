@@ -6,7 +6,7 @@ import com.google.inject.Scopes;
 import com.google.inject.TypeLiteral;
 import net.jas34.scheduledwf.config.WispSchedulerProvider;
 import net.jas34.scheduledwf.dao.IndexScheduledWfDAO;
-import net.jas34.scheduledwf.dao.memory.LoggingBasedIndexScheduledWfDAO;
+import net.jas34.scheduledwf.dao.memory.InMemoryIndexScheduledWfDAO;
 import net.jas34.scheduledwf.execution.DefaultWorkflowSchedulingAssistant;
 import net.jas34.scheduledwf.execution.WorkflowSchedulingAssistant;
 import net.jas34.scheduledwf.scheduler.CronBasedWorkflowScheduler;
@@ -16,7 +16,7 @@ import net.jas34.scheduledwf.scheduler.IndexExecutionDataCallback;
 import net.jas34.scheduledwf.scheduler.ScheduledProcess;
 import net.jas34.scheduledwf.scheduler.ScheduledTaskProvider;
 import net.jas34.scheduledwf.scheduler.TestScheduledTaskProvider;
-import net.jas34.scheduledwf.scheduler.WorkflowJob;
+import net.jas34.scheduledwf.scheduler.SchedulerStats;
 import net.jas34.scheduledwf.scheduler.WorkflowScheduler;
 import net.jas34.scheduledwf.scheduler.WorkflowSchedulerFactory;
 
@@ -26,12 +26,12 @@ import net.jas34.scheduledwf.scheduler.WorkflowSchedulerFactory;
 public class TestModule extends AbstractModule {
     @Override
     protected void configure() {
-        bind(IndexScheduledWfDAO.class).to(LoggingBasedIndexScheduledWfDAO.class);
+        bind(IndexScheduledWfDAO.class).to(InMemoryIndexScheduledWfDAO.class);
         bind(Scheduler.class).toProvider(WispSchedulerProvider.class).in(Scopes.SINGLETON);
         bind(IndexExecutionDataCallback.class).to(DefaultIndexExecutionDataCallback.class);
         bind(ScheduledTaskProvider.class).to(TestScheduledTaskProvider.class);
         bind(WorkflowScheduler.class).to(CronBasedWorkflowScheduler.class);
-        bind(WorkflowJob.class).to(CronBasedWorkflowScheduler.class);
+        bind(SchedulerStats.class).to(CronBasedWorkflowScheduler.class);
         bind(new TypeLiteral<WorkflowSchedulerFactory<ScheduledProcess>>() {})
                 .to(new TypeLiteral<DefaultWorkflowSchedulerFactory>() {});
 

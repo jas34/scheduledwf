@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import net.jas34.scheduledwf.run.ShutdownResult;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -21,12 +20,12 @@ import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
 import com.netflix.conductor.core.utils.IDGenerator;
 import com.netflix.conductor.dao.MetadataDAO;
 import net.jas34.scheduledwf.dao.ScheduledWfMetadataDAO;
-import net.jas34.scheduledwf.dao.SchedulerManagerExecutionDAO;
-import net.jas34.scheduledwf.dao.memory.LoggingBasedIndexScheduledWfDAO;
+import net.jas34.scheduledwf.dao.memory.InMemoryIndexScheduledWfDAO;
 import net.jas34.scheduledwf.metadata.ScheduleWfDef;
 import net.jas34.scheduledwf.run.ManagerInfo;
 import net.jas34.scheduledwf.run.ScheduledWorkFlow;
 import net.jas34.scheduledwf.run.SchedulingResult;
+import net.jas34.scheduledwf.run.ShutdownResult;
 import net.jas34.scheduledwf.run.Status;
 import net.jas34.scheduledwf.utils.TestSchedulingAssistant;
 
@@ -41,9 +40,6 @@ public class TestDefaultSchedulerManager extends TestBase {
     private ScheduledWfMetadataDAO scheduledWfMetadataDAO;
 
     @Mock
-    private SchedulerManagerExecutionDAO managerExecutionDAO;
-
-    @Mock
     private ScheduledProcessRegistry processRegistry;
 
     @Mock
@@ -56,13 +52,12 @@ public class TestDefaultSchedulerManager extends TestBase {
     @Before
     public void iniit() {
         scheduledWfMetadataDAO = Mockito.mock(ScheduledWfMetadataDAO.class);
-        managerExecutionDAO = Mockito.mock(SchedulerManagerExecutionDAO.class);
         processRegistry = Mockito.mock(ScheduledProcessRegistry.class);
         metadataDAO = Mockito.mock(MetadataDAO.class);
         schedulingAssistant = new TestSchedulingAssistant();
         schedulerManager =
-                new DefaultSchedulerManager(scheduledWfMetadataDAO, managerExecutionDAO, processRegistry,
-                        metadataDAO, new LoggingBasedIndexScheduledWfDAO(), schedulingAssistant, true);
+                new DefaultSchedulerManager(scheduledWfMetadataDAO, processRegistry,
+                        metadataDAO, new InMemoryIndexScheduledWfDAO(), schedulingAssistant, true);
         managerInfo = createManagerInfo();
     }
 

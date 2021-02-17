@@ -20,7 +20,6 @@ import com.netflix.conductor.core.utils.IDGenerator;
 import com.netflix.conductor.dao.MetadataDAO;
 import net.jas34.scheduledwf.dao.IndexScheduledWfDAO;
 import net.jas34.scheduledwf.dao.ScheduledWfMetadataDAO;
-import net.jas34.scheduledwf.dao.SchedulerManagerExecutionDAO;
 import net.jas34.scheduledwf.metadata.ScheduleWfDef;
 import net.jas34.scheduledwf.run.ManagerInfo;
 import net.jas34.scheduledwf.run.ScheduledWorkFlow;
@@ -39,7 +38,6 @@ public class DefaultSchedulerManager implements SchedulerManager {
     private final Logger logger = LoggerFactory.getLogger(DefaultSchedulerManager.class);
 
     private final ScheduledWfMetadataDAO scheduledWfMetadataDAO;
-    private final SchedulerManagerExecutionDAO managerExecutionDAO;
     private final ScheduledProcessRegistry processRegistry;
     private final MetadataDAO metadataDAO;
     private final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
@@ -49,20 +47,18 @@ public class DefaultSchedulerManager implements SchedulerManager {
     private boolean isJunitRun;
 
     @Inject
-    public DefaultSchedulerManager(ScheduledWfMetadataDAO scheduledWfMetadataDAO,
-            SchedulerManagerExecutionDAO managerExecutionDAO, ScheduledProcessRegistry processRegistry,
+    public DefaultSchedulerManager(ScheduledWfMetadataDAO scheduledWfMetadataDAO, ScheduledProcessRegistry processRegistry,
             MetadataDAO metadataDAO, IndexScheduledWfDAO indexDAO,
             WorkflowSchedulingAssistant schedulingAssistant) {
-        this(scheduledWfMetadataDAO, managerExecutionDAO, processRegistry, metadataDAO, indexDAO,
+        this(scheduledWfMetadataDAO, processRegistry, metadataDAO, indexDAO,
                 schedulingAssistant, false);
     }
 
     public DefaultSchedulerManager(ScheduledWfMetadataDAO scheduledWfMetadataDAO,
-            SchedulerManagerExecutionDAO managerExecutionDAO, ScheduledProcessRegistry processRegistry,
+            ScheduledProcessRegistry processRegistry,
             MetadataDAO metadataDAO, IndexScheduledWfDAO indexDAO,
             WorkflowSchedulingAssistant schedulingAssistant, boolean isJunitRun) {
         this.scheduledWfMetadataDAO = scheduledWfMetadataDAO;
-        this.managerExecutionDAO = managerExecutionDAO;
         this.processRegistry = processRegistry;
         this.metadataDAO = metadataDAO;
         this.indexDAO = indexDAO;
@@ -83,13 +79,13 @@ public class DefaultSchedulerManager implements SchedulerManager {
 
     @Override
     public void registerManager() {
-        long currentTimeStamp = System.currentTimeMillis();
         managerInfo = new ManagerInfo();
         managerInfo.setId(IDGenerator.generate());
         managerInfo.setName(DefaultSchedulerManager.class.getSimpleName());
         managerInfo.setNodeAddress(getNodeAddress());
-        managerInfo.setCreateTime(currentTimeStamp);
-        managerExecutionDAO.registerManager(managerInfo);
+        managerInfo.setStatus(ManagerInfo.Status.RUNNING);
+        managerInfo.setCreateTime(System.currentTimeMillis());
+        indexDAO.indexManagerInfo(managerInfo);
     }
 
     @Override
@@ -108,8 +104,10 @@ public class DefaultSchedulerManager implements SchedulerManager {
                 processRegistry.getAllRunningProcesses(managerInfo.getId());
         schedulingAssistant.shutdownAllSchedulersWithFailSafety(runningProcesses);
         processRegistry.shutDownRegistry(managerInfo.getId(), 5000);
-        // TODO: to index shutdown processes using indexDAO.
         scheduledExecutorService.shutdown();
+        managerInfo.setStatus(ManagerInfo.Status.SHUTDOWN);
+        managerInfo.setUpdateTime(System.currentTimeMillis());
+        indexDAO.indexManagerInfo(managerInfo);
     }
 
     @VisibleForTesting
@@ -157,7 +155,7 @@ public class DefaultSchedulerManager implements SchedulerManager {
             scheduledWorkFlow.setCronExpression(unScheduledWorkflow.getCronExpression());
             scheduledWorkFlow.setManagerRefId(managerInfo.getId());
             scheduledWorkFlow.setCreateTime(System.currentTimeMillis());
-            scheduledWorkFlow.setCreatedBy(managerInfo.getNodeAddress() + ":" + managerInfo.getId());
+            scheduledWorkFlow.setCreatedBy(operatedBy());
 
             if (!processRegistry.addProcess(scheduledWorkFlow) && !isJunitRun) {
                 return;
@@ -177,7 +175,7 @@ public class DefaultSchedulerManager implements SchedulerManager {
             }
             processRegistry.updateProcessById(scheduledWorkFlow.getScheduledProcess(),
                     scheduledWorkFlow.getState(), scheduledWorkFlow.getId(), scheduledWorkFlow.getName());
-            indexDAO.indexCreatedScheduledWorkFlow(scheduledWorkFlow);
+            indexDAO.indexScheduledWorkFlow(scheduledWorkFlow);
             results.add(result);
         });
         return results;
@@ -210,7 +208,8 @@ public class DefaultSchedulerManager implements SchedulerManager {
         List<ShutdownResult> shutdownResults = new ArrayList<>();
         tobeShutDownProcesses.forEach(shutdownProcess -> {
             ShutdownResult result = schedulingAssistant.shutdownSchedulerWithFailSafety(shutdownProcess);
-
+            shutdownProcess.setUpdatedBy(operatedBy());
+            shutdownProcess.setUpdateTime(System.currentTimeMillis());
             if (Status.FAILURE == result.getStatus()) {
                 logger.error("Unable to  shutdown workflow name={}, version={} with some error",
                         shutdownProcess.getWfName(), shutdownProcess.getWfVersion(), result.getException());
@@ -221,7 +220,7 @@ public class DefaultSchedulerManager implements SchedulerManager {
                 logger.info("Process submit signalled for shutdown with the id={}", result.getId());
                 processRegistry.removeProcess(shutdownProcess);
             }
-            indexDAO.indexShutdownScheduledWorkFlow(shutdownProcess);
+            indexDAO.indexScheduledWorkFlow(shutdownProcess);
             shutdownResults.add(result);
         });
         cleanUpMetaDataIfApplicable(tobeShutDownScheduleWfDefsOptional.get());
@@ -238,5 +237,9 @@ public class DefaultSchedulerManager implements SchedulerManager {
             int removedCount = scheduledWfMetadataDAO.removeScheduleWorkflows(deletableScheduleWfs);
             logger.debug("Total number of definitions deleted: {}", removedCount);
         }
+    }
+
+    private String operatedBy() {
+        return managerInfo.getNodeAddress() + ":" + managerInfo.getId();
     }
 }

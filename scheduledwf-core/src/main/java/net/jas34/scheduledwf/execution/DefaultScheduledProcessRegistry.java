@@ -25,7 +25,7 @@ import net.jcip.annotations.NotThreadSafe;
 @NotThreadSafe
 public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry {
 
-    private final Logger logger = LoggerFactory.getLogger(DefaultSchedulerManager.class);
+    private final Logger logger = LoggerFactory.getLogger(DefaultScheduledProcessRegistry.class);
     // TODO: need to go through Refrecnce class of java.lang to check whether this map requires
     // attention or not?
     private final Map<String, ScheduledProcess> processReferenceMap;

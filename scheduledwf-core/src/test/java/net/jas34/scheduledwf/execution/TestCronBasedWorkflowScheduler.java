@@ -47,7 +47,7 @@ public class TestCronBasedWorkflowScheduler extends TestBase {
         assertNotNull(scheduler.findJob(scheduledWorkFlow.getName()));
         assertEquals(scheduledWorkFlow.getName(), job.name());
 
-        //lets wait for job to run and then check executionCount. It should be greater than 0
+        //lets wait for job to run and then check executionsCount. It should be greater than 0
         sleepUninterruptibly(2000, TimeUnit.MILLISECONDS);
         assertTrue(0 < job.executionsCount());
 
