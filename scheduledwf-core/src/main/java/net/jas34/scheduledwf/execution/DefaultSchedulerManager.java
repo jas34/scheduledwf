@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.annotation.PreDestroy;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.cronutils.utils.VisibleForTesting;
@@ -175,7 +176,7 @@ public class DefaultSchedulerManager implements SchedulerManager {
             }
             processRegistry.updateProcessById(scheduledWorkFlow.getScheduledProcess(),
                     scheduledWorkFlow.getState(), scheduledWorkFlow.getId(), scheduledWorkFlow.getName());
-            indexDAO.indexScheduledWorkFlow(scheduledWorkFlow);
+            doIndexing(scheduledWorkFlow);
             results.add(result);
         });
         return results;
@@ -220,7 +221,7 @@ public class DefaultSchedulerManager implements SchedulerManager {
                 logger.info("Process submit signalled for shutdown with the id={}", result.getId());
                 processRegistry.removeProcess(shutdownProcess);
             }
-            indexDAO.indexScheduledWorkFlow(shutdownProcess);
+            doIndexing(shutdownProcess);
             shutdownResults.add(result);
         });
         cleanUpMetaDataIfApplicable(tobeShutDownScheduleWfDefsOptional.get());
@@ -241,5 +242,11 @@ public class DefaultSchedulerManager implements SchedulerManager {
 
     private String operatedBy() {
         return managerInfo.getNodeAddress() + ":" + managerInfo.getId();
+    }
+
+    private void doIndexing(ScheduledWorkFlow scheduledWorkFlow) {
+        ScheduledWorkFlow clone = SerializationUtils.clone(scheduledWorkFlow);
+        clone.setScheduledProcess(null);
+        indexDAO.indexScheduledWorkFlow(clone);
     }
 }

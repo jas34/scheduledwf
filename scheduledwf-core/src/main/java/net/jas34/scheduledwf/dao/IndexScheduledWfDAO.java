@@ -2,9 +2,11 @@ package net.jas34.scheduledwf.dao;
 
 import java.util.List;
 
+import com.netflix.conductor.common.run.SearchResult;
 import net.jas34.scheduledwf.run.ManagerInfo;
 import net.jas34.scheduledwf.run.ScheduledWfExecData;
 import net.jas34.scheduledwf.run.ScheduledWorkFlow;
+
 
 /**
  * @author Jasbir Singh
@@ -27,9 +29,10 @@ public interface IndexScheduledWfDAO {
      * @param nodeAddress
      * @return
      */
-    List<ScheduledWorkFlow> getScheduledWorkflow(String name, String managerId, String nodeAddress);
+    SearchResult<ScheduledWorkFlow> getScheduledWorkflow(String name, String managerId,
+                                      String nodeAddress, int start, int size);
 
-    List<ScheduledWorkFlow> getScheduledWorkflow(String schedulerId);
+    SearchResult<ScheduledWorkFlow> getScheduledWorkflow(String schedulerId, int start, int size);
 
     /**
      * Either of the three parameters are mandatory to be present. Based upon the presence of parameters
@@ -41,9 +44,10 @@ public interface IndexScheduledWfDAO {
      * @param nodeAddress
      * @return
      */
-    List<ScheduledWfExecData> getScheduledWfExecData(String name, String managerId, String nodeAddress);
+    SearchResult<ScheduledWfExecData> getScheduledWfExecData(String name, String managerId,
+            String nodeAddress, int start, int size);
 
-    List<ScheduledWfExecData> getScheduledWfExecData(String schedulerId);
+    SearchResult<ScheduledWfExecData> getScheduledWfExecData(String schedulerId, int start, int size);
 
     List<ManagerInfo> getManagerInfo(String nodeAddress);
 

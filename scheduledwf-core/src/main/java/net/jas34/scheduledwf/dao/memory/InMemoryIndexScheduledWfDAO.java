@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import com.google.inject.Singleton;
+import com.netflix.conductor.common.run.SearchResult;
 import net.jas34.scheduledwf.dao.IndexScheduledWfDAO;
 import net.jas34.scheduledwf.run.ManagerInfo;
 import net.jas34.scheduledwf.run.ScheduledWfExecData;
@@ -40,42 +41,51 @@ public class InMemoryIndexScheduledWfDAO implements IndexScheduledWfDAO {
     }
 
     @Override
-    public List<ScheduledWorkFlow> getScheduledWorkflow(String name, String managerId, String nodeAddress) {
+    public SearchResult<ScheduledWorkFlow> getScheduledWorkflow(String name, String managerId,
+            String nodeAddress, int start, int size) {
+        List<ScheduledWorkFlow> data;
         if (Objects.nonNull(name)) {
-            return scheduledWorkFlowStore.get(name);
+            data = scheduledWorkFlowStore.get(name);
+        } else {
+            data = (List<ScheduledWorkFlow>) scheduledWorkFlowStore.values();
         }
 
-        return (List<ScheduledWorkFlow>) scheduledWorkFlowStore.values();
+        return new SearchResult<>(data.size(), data);
     }
 
     @Override
-    public List<ScheduledWorkFlow> getScheduledWorkflow(String schedulerId) {
+    public SearchResult<ScheduledWorkFlow> getScheduledWorkflow(String schedulerId, int start, int size) {
         List<ScheduledWorkFlow> values = (List<ScheduledWorkFlow>) scheduledWorkFlowStore.values();
         if (Objects.isNull(values)) {
             return null;
         }
-        return values.stream().filter(value -> schedulerId.equals(value.getId()))
+        List<ScheduledWorkFlow> data = values.stream().filter(value -> schedulerId.equals(value.getId()))
                 .collect(Collectors.toList());
+        return new SearchResult<>(data.size(), data);
     }
 
     @Override
-    public List<ScheduledWfExecData> getScheduledWfExecData(String name, String managerId,
-            String nodeAddress) {
+    public SearchResult<ScheduledWfExecData> getScheduledWfExecData(String name, String managerId,
+            String nodeAddress, int start, int size) {
+        List<ScheduledWfExecData> data;
         if (Objects.nonNull(name)) {
-            return scheduledWfExecDataStore.get(name);
-        }
+            data = scheduledWfExecDataStore.get(name);
 
-        return (List<ScheduledWfExecData>) scheduledWfExecDataStore.values();
+        } else {
+            data = (List<ScheduledWfExecData>) scheduledWfExecDataStore.values();
+        }
+        return new SearchResult<>(data.size(), data);
     }
 
     @Override
-    public List<ScheduledWfExecData> getScheduledWfExecData(String schedulerId) {
+    public SearchResult<ScheduledWfExecData> getScheduledWfExecData(String schedulerId, int start, int size) {
         List<ScheduledWfExecData> values = (List<ScheduledWfExecData>) scheduledWfExecDataStore.values();
         if (Objects.isNull(values)) {
             return null;
         }
-        return values.stream().filter(value -> schedulerId.equals(value.getSchedulerId()))
-                .collect(Collectors.toList());
+        List<ScheduledWfExecData> data = values.stream()
+                .filter(value -> schedulerId.equals(value.getSchedulerId())).collect(Collectors.toList());
+        return new SearchResult<>(data.size(), data);
     }
 
     @Override

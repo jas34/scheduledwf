@@ -2,6 +2,7 @@ package net.jas34.scheduledwf.resources;
 
 import java.util.List;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -9,6 +10,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.google.inject.Inject;
+import com.netflix.conductor.common.run.SearchResult;
 import net.jas34.scheduledwf.run.ManagerInfo;
 import net.jas34.scheduledwf.run.ScheduledWfExecData;
 import net.jas34.scheduledwf.run.ScheduledWorkFlow;
@@ -47,18 +49,22 @@ public class SchedulerResource {
     @ApiOperation(
             value = "Search for scheduled workflows based on name, or managerId or nodeAddress or schedulerId")
     @Path("/scheduled/workflows/")
-    public List<ScheduledWorkFlow> searchScheduledWorkFlow(@QueryParam("name") String name,
+    public SearchResult<ScheduledWorkFlow> searchScheduledWorkFlow(@QueryParam("name") String name,
             @QueryParam("managerId") String managerId, @QueryParam("nodeAddress") String nodeAddress,
-            @QueryParam("schedulerId") String schedulerId) {
-        return schedulerExecutionService.searchScheduledWorkflow(name, managerId, nodeAddress, schedulerId);
+            @QueryParam("schedulerId") String schedulerId, @QueryParam("start") @DefaultValue("0") int start,
+            @QueryParam("size") @DefaultValue("100") int size) {
+        return schedulerExecutionService.searchScheduledWorkflow(name, managerId, nodeAddress, schedulerId,
+                start, size);
     }
 
     @GET
     @ApiOperation("Search for scheduled workflows executions based on name, or managerId or nodeAddress or schedulerId")
     @Path("/scheduled/workflows/executions")
-    public List<ScheduledWfExecData> searchExecutions(@QueryParam("name") String name,
+    public SearchResult<ScheduledWfExecData> searchExecutions(@QueryParam("name") String name,
             @QueryParam("managerId") String managerId, @QueryParam("nodeAddress") String nodeAddress,
-            @QueryParam("schedulerId") String schedulerId) {
-        return schedulerExecutionService.searchScheduledWfExecData(name, managerId, nodeAddress, schedulerId);
+            @QueryParam("schedulerId") String schedulerId, @QueryParam("start") @DefaultValue("0") int start,
+            @QueryParam("size") @DefaultValue("100") int size) {
+        return schedulerExecutionService.searchScheduledWfExecData(name, managerId, nodeAddress, schedulerId,
+                start, size);
     }
 }

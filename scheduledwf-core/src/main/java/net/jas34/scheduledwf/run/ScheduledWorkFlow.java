@@ -4,13 +4,14 @@ import com.netflix.conductor.common.metadata.Auditable;
 import net.jas34.scheduledwf.scheduler.ScheduledProcess;
 import net.minidev.json.annotate.JsonIgnore;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author Jasbir Singh
  */
-public class ScheduledWorkFlow extends Auditable {
+public class ScheduledWorkFlow extends Auditable implements Serializable {
 
     private String id;
 

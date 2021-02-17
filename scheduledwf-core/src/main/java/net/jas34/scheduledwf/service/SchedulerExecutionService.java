@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.netflix.conductor.common.run.SearchResult;
 import com.netflix.conductor.core.execution.ApplicationException;
 import net.jas34.scheduledwf.dao.IndexScheduledWfDAO;
 import net.jas34.scheduledwf.run.ManagerInfo;
@@ -24,28 +25,28 @@ public class SchedulerExecutionService {
         this.indexScheduledWfDAO = indexScheduledWfDAO;
     }
 
-    public List<ScheduledWorkFlow> searchScheduledWorkflow(String name, String managerId, String nodeAddress,
-            String schedulerId) {
+    public SearchResult<ScheduledWorkFlow> searchScheduledWorkflow(String name, String managerId, String nodeAddress,
+                                                                   String schedulerId, int start, int size) {
         if (Objects.nonNull(schedulerId)) {
-            return indexScheduledWfDAO.getScheduledWorkflow(schedulerId);
+            return indexScheduledWfDAO.getScheduledWorkflow(schedulerId, start, size);
         }
         if (Objects.isNull(name) && Objects.isNull(managerId) && Objects.isNull(nodeAddress)) {
             throw new ApplicationException(ApplicationException.Code.INVALID_INPUT,
                     "Either scheduler name or managerId or nodeAddress or schedulerId should be provided.");
         }
-        return indexScheduledWfDAO.getScheduledWorkflow(name, managerId, nodeAddress);
+        return indexScheduledWfDAO.getScheduledWorkflow(name, managerId, nodeAddress, start, size);
     }
 
-    public List<ScheduledWfExecData> searchScheduledWfExecData(String name, String managerId,
-            String nodeAddress, String schedulerId) {
+    public SearchResult<ScheduledWfExecData> searchScheduledWfExecData(String name, String managerId,
+            String nodeAddress, String schedulerId, int start, int size) {
         if (Objects.nonNull(schedulerId)) {
-            return indexScheduledWfDAO.getScheduledWfExecData(schedulerId);
+            return indexScheduledWfDAO.getScheduledWfExecData(schedulerId, start, size);
         }
         if (Objects.isNull(name) && Objects.isNull(managerId) && Objects.isNull(nodeAddress)) {
             throw new ApplicationException(ApplicationException.Code.INVALID_INPUT,
                     "Either scheduler name or managerId or nodeAddress or schedulerId should be provided.");
         }
-        return indexScheduledWfDAO.getScheduledWfExecData(name, managerId, nodeAddress);
+        return indexScheduledWfDAO.getScheduledWfExecData(name, managerId, nodeAddress, start, size);
     }
 
     public List<ManagerInfo> getManagerInfo(String nodeAddress) {
