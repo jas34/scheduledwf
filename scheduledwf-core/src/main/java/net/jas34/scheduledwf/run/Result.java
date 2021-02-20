@@ -9,8 +9,17 @@ public class Result {
     private Status status;
     private Throwable exception;
 
+    public Result() {
+    }
+
     public Result(String id) {
+        this(id, null, null);
+    }
+
+    public Result(String id, Status status, Throwable exception) {
         this.id = id;
+        this.status = status;
+        this.exception = exception;
     }
 
     public String getId() {

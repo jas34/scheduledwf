@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import javax.annotation.PreDestroy;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.cronutils.utils.VisibleForTesting;
@@ -48,16 +47,14 @@ public class DefaultSchedulerManager implements SchedulerManager {
     private boolean isJunitRun;
 
     @Inject
-    public DefaultSchedulerManager(ScheduledWfMetadataDAO scheduledWfMetadataDAO, ScheduledProcessRegistry processRegistry,
-            MetadataDAO metadataDAO, IndexScheduledWfDAO indexDAO,
+    public DefaultSchedulerManager(ScheduledWfMetadataDAO scheduledWfMetadataDAO,
+            ScheduledProcessRegistry processRegistry, MetadataDAO metadataDAO, IndexScheduledWfDAO indexDAO,
             WorkflowSchedulingAssistant schedulingAssistant) {
-        this(scheduledWfMetadataDAO, processRegistry, metadataDAO, indexDAO,
-                schedulingAssistant, false);
+        this(scheduledWfMetadataDAO, processRegistry, metadataDAO, indexDAO, schedulingAssistant, false);
     }
 
     public DefaultSchedulerManager(ScheduledWfMetadataDAO scheduledWfMetadataDAO,
-            ScheduledProcessRegistry processRegistry,
-            MetadataDAO metadataDAO, IndexScheduledWfDAO indexDAO,
+            ScheduledProcessRegistry processRegistry, MetadataDAO metadataDAO, IndexScheduledWfDAO indexDAO,
             WorkflowSchedulingAssistant schedulingAssistant, boolean isJunitRun) {
         this.scheduledWfMetadataDAO = scheduledWfMetadataDAO;
         this.processRegistry = processRegistry;
@@ -219,6 +216,7 @@ public class DefaultSchedulerManager implements SchedulerManager {
                         shutdownProcess.getState(), shutdownProcess.getId(), shutdownProcess.getName());
             } else {
                 logger.info("Process submit signalled for shutdown with the id={}", result.getId());
+                shutdownProcess.setState(ScheduledWorkFlow.State.SHUTDOWN);
                 processRegistry.removeProcess(shutdownProcess);
             }
             doIndexing(shutdownProcess);
@@ -245,8 +243,6 @@ public class DefaultSchedulerManager implements SchedulerManager {
     }
 
     private void doIndexing(ScheduledWorkFlow scheduledWorkFlow) {
-        ScheduledWorkFlow clone = SerializationUtils.clone(scheduledWorkFlow);
-        clone.setScheduledProcess(null);
-        indexDAO.indexScheduledWorkFlow(clone);
+        indexDAO.indexScheduledWorkFlow(scheduledWorkFlow.cloneWithoutProcessRef());
     }
 }

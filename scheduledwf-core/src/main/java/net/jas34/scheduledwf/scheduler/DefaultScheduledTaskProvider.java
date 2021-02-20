@@ -17,18 +17,21 @@ public class DefaultScheduledTaskProvider implements ScheduledTaskProvider {
     private final WorkflowService workflowService;
 
     @Inject
-    public DefaultScheduledTaskProvider(IndexExecutionDataCallback callback, WorkflowService workflowService) {
+    public DefaultScheduledTaskProvider(IndexExecutionDataCallback callback,
+            WorkflowService workflowService) {
         this.callback = callback;
         this.workflowService = workflowService;
     }
 
     @Override
     public Runnable getTask(ScheduledWorkFlow scheduledWorkFlow) {
-        return new TriggerScheduledWorkFlowTask(prepareScheduledTaskDef(scheduledWorkFlow), callback, workflowService);
+        return new TriggerScheduledWorkFlowTask(prepareScheduledTaskDef(scheduledWorkFlow), callback,
+                workflowService);
     }
 
     private ScheduledTaskDef prepareScheduledTaskDef(ScheduledWorkFlow scheduledWorkFlow) {
         return new ScheduledTaskDef(scheduledWorkFlow.getName(), scheduledWorkFlow.getWfName(),
-                scheduledWorkFlow.getWfVersion(), scheduledWorkFlow.getWfInput(), scheduledWorkFlow.getId());
+                scheduledWorkFlow.getWfVersion(), scheduledWorkFlow.getWfInput(), scheduledWorkFlow.getId(),
+                scheduledWorkFlow.getManagerRefId());
     }
 }

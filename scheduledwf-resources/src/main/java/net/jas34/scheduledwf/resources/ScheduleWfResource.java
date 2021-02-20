@@ -24,7 +24,7 @@ import io.swagger.annotations.ApiOperation;
  * @author Jasbir Singh
  */
 @Api(value = "/scheduling/metadata", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON,
-        tags = "Scheduled Workflows Management")
+        tags = "Scheduling Workflows Management")
 @Path("/scheduling/metadata")
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})

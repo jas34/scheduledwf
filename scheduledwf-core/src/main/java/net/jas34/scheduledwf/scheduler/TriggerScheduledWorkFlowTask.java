@@ -3,6 +3,7 @@ package net.jas34.scheduledwf.scheduler;
 import com.netflix.conductor.service.WorkflowService;
 import net.jas34.scheduledwf.metadata.ScheduledTaskDef;
 import net.jas34.scheduledwf.run.Status;
+import net.jas34.scheduledwf.run.TriggerResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,22 +32,26 @@ public class TriggerScheduledWorkFlowTask implements Runnable {
         // TODO: acquire lock
 
         // start workflow
-        String failureReason = null;
-        String workflowId = null;
+        TriggerResult result = new TriggerResult();
+
         try {
             //TODO: we can add throttling here by looking at number of running of workflows .... Let revisit later
 
             logger.debug("Going to start workflow with name={}", taskDef.getName());
-            workflowId = workflowService.startWorkflow(taskDef.getWfName(), taskDef.getWfVersion(),
+            String workflowId = workflowService.startWorkflow(taskDef.getWfName(), taskDef.getWfVersion(),
                     taskDef.getSchedulerId(), taskDef.getInput());
+            result.setId(workflowId);
+            result.setStatus(Status.SUCCESS);
             logger.debug("Workflow with name={} started and workflowId={}", taskDef.getName(), workflowId);
 
         } catch (Exception e) {
-            failureReason = e.getMessage() + ", cause: " + e.getCause();
+            result.setException(e);
+            result.setStatus(Status.FAILURE);
             logger.error("Unable to start workflow due to error.", e);
         }
 
         // TODO: release lock
-        indexExecutionDataCallback.indexData(taskDef, workflowId, Status.SUCCESS, failureReason);
+        result.setUpdateTime(System.currentTimeMillis());
+        indexExecutionDataCallback.indexData(taskDef, result);
     }
 }

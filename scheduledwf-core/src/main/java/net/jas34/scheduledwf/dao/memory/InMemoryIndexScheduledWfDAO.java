@@ -1,6 +1,8 @@
 package net.jas34.scheduledwf.dao.memory;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -47,7 +49,7 @@ public class InMemoryIndexScheduledWfDAO implements IndexScheduledWfDAO {
         if (Objects.nonNull(name)) {
             data = scheduledWorkFlowStore.get(name);
         } else {
-            data = (List<ScheduledWorkFlow>) scheduledWorkFlowStore.values();
+            data = new ArrayList<>(scheduledWorkFlowStore.values());
         }
 
         return new SearchResult<>(data.size(), data);
@@ -55,7 +57,7 @@ public class InMemoryIndexScheduledWfDAO implements IndexScheduledWfDAO {
 
     @Override
     public SearchResult<ScheduledWorkFlow> getScheduledWorkflow(String schedulerId, int start, int size) {
-        List<ScheduledWorkFlow> values = (List<ScheduledWorkFlow>) scheduledWorkFlowStore.values();
+        Collection<ScheduledWorkFlow> values = scheduledWorkFlowStore.values();
         if (Objects.isNull(values)) {
             return null;
         }
@@ -72,14 +74,14 @@ public class InMemoryIndexScheduledWfDAO implements IndexScheduledWfDAO {
             data = scheduledWfExecDataStore.get(name);
 
         } else {
-            data = (List<ScheduledWfExecData>) scheduledWfExecDataStore.values();
+            data = new ArrayList<>(scheduledWfExecDataStore.values());
         }
         return new SearchResult<>(data.size(), data);
     }
 
     @Override
     public SearchResult<ScheduledWfExecData> getScheduledWfExecData(String schedulerId, int start, int size) {
-        List<ScheduledWfExecData> values = (List<ScheduledWfExecData>) scheduledWfExecDataStore.values();
+        Collection<ScheduledWfExecData> values =  scheduledWfExecDataStore.values();
         if (Objects.isNull(values)) {
             return null;
         }

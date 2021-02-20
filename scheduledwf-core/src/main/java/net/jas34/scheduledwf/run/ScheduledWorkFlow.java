@@ -1,12 +1,12 @@
 package net.jas34.scheduledwf.run;
 
-import com.netflix.conductor.common.metadata.Auditable;
-import net.jas34.scheduledwf.scheduler.ScheduledProcess;
-import net.minidev.json.annotate.JsonIgnore;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.netflix.conductor.common.metadata.Auditable;
+import net.jas34.scheduledwf.scheduler.ScheduledProcess;
+import net.minidev.json.annotate.JsonIgnore;
 
 /**
  * @author Jasbir Singh
@@ -127,6 +127,25 @@ public class ScheduledWorkFlow extends Auditable implements Serializable {
 
     public enum State {
         INITIALIZED, SCHEDULING_FAILED, RUNNING, SHUTDOWN, SHUTDOWN_FAILED;
+    }
+
+    public ScheduledWorkFlow cloneWithoutProcessRef() {
+        ScheduledWorkFlow newScheduledWorkFlow = new ScheduledWorkFlow();
+        newScheduledWorkFlow.setId(this.getId());
+        newScheduledWorkFlow.setName(this.getName());
+        newScheduledWorkFlow.setNodeAddress(this.getNodeAddress());
+        newScheduledWorkFlow.setWfName(this.getWfName());
+        newScheduledWorkFlow.setWfVersion(this.getWfVersion());
+        newScheduledWorkFlow.setWfInput(this.getWfInput());
+        newScheduledWorkFlow.setState(this.getState());
+        newScheduledWorkFlow.setCronExpression(this.getCronExpression());
+        newScheduledWorkFlow.setManagerRefId(this.getId());
+        newScheduledWorkFlow.setSchedulingException(this.getSchedulingException());
+        newScheduledWorkFlow.setCreateTime(System.currentTimeMillis());
+        newScheduledWorkFlow.setCreatedBy(this.getCreatedBy());
+        newScheduledWorkFlow.setUpdateTime(this.getUpdateTime());
+        newScheduledWorkFlow.setUpdatedBy(this.getUpdatedBy());
+        return newScheduledWorkFlow;
     }
 
     @Override
