@@ -33,9 +33,12 @@ public class DefaultIndexExecutionDataCallback implements IndexExecutionDataCall
         scheduledWfExecData.setName(scheduledWfName);
         scheduledWfExecData.setWfName(scheduledTaskDef.getWfName());
         scheduledWfExecData.setWfVersion(scheduledTaskDef.getWfVersion());
-        scheduledWfExecData.setExecutedAt(CommonUtils.toFormattedDate(schedule.lastExecutionStartedTimeInMillis(scheduledWfName)));
-        scheduledWfExecData.setLastExecutionEndedAt(CommonUtils.toFormattedDate(schedule.lastExecutionEndedTimeInMillis(scheduledWfName)));
-        scheduledWfExecData.setNextRunAt(CommonUtils.toFormattedDate(schedule.nextExecutionTimeInMillis(scheduledWfName)));
+        scheduledWfExecData.setExecutedAt(
+                CommonUtils.toFormattedDate(schedule.lastExecutionStartedTimeInMillis(scheduledWfName)));
+        scheduledWfExecData.setLastExecutionEndedAt(
+                CommonUtils.toFormattedDate(schedule.lastExecutionEndedTimeInMillis(scheduledWfName)));
+        scheduledWfExecData.setNextRunAt(
+                CommonUtils.toFormattedDate(schedule.nextExecutionTimeInMillis(scheduledWfName)));
         scheduledWfExecData.setExecutionFailureReason(result.getFailureReason());
         scheduledWfExecData.setManagerRefId(scheduledTaskDef.getManagerRefId());
         scheduledWfExecData.setNodeAddress(scheduledTaskDef.getNodeAddress());

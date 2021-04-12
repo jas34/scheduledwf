@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import com.netflix.conductor.service.WorkflowService;
 import net.jas34.scheduledwf.metadata.ScheduledTaskDef;
 import net.jas34.scheduledwf.run.ScheduledWorkFlow;
+import net.jas34.scheduledwf.service.LockingService;
 
 /**
  * @author Jasbir Singh
@@ -16,17 +17,20 @@ public class DefaultScheduledTaskProvider implements ScheduledTaskProvider {
 
     private final WorkflowService workflowService;
 
+    private LockingService lockingService;
+
     @Inject
     public DefaultScheduledTaskProvider(IndexExecutionDataCallback callback,
-            WorkflowService workflowService) {
+            WorkflowService workflowService, LockingService lockingService) {
         this.callback = callback;
         this.workflowService = workflowService;
+        this.lockingService = lockingService;
     }
 
     @Override
     public Runnable getTask(ScheduledWorkFlow scheduledWorkFlow) {
         return new TriggerScheduledWorkFlowTask(prepareScheduledTaskDef(scheduledWorkFlow), callback,
-                workflowService);
+                workflowService, lockingService);
     }
 
     private ScheduledTaskDef prepareScheduledTaskDef(ScheduledWorkFlow scheduledWorkFlow) {
