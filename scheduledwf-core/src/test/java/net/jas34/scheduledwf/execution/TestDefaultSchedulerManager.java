@@ -118,7 +118,7 @@ public class TestDefaultSchedulerManager extends TestBase {
                 Optional.of(createdDefs(TEST_WF_NAME + "-1", TEST_WF_NAME + "-2"));
         scheduledWorkflowOptional.get().get(0).setStatus(ScheduleWfDef.Status.SHUTDOWN);
         scheduledWorkflowOptional.get().get(1).setStatus(ScheduleWfDef.Status.SHUTDOWN);
-        when(scheduledWfMetadataDAO.getAllScheduledWorkflowDefsByStatus(ScheduleWfDef.Status.SHUTDOWN)).thenReturn(scheduledWorkflowOptional);
+        when(scheduledWfMetadataDAO.getAllScheduledWorkflowDefsByStatus(ScheduleWfDef.Status.SHUTDOWN, ScheduleWfDef.Status.DELETE)).thenReturn(scheduledWorkflowOptional);
 
         ScheduledWorkFlow scheduledWorkFlow1 = createScheduledWorkFlow(managerInfo, TEST_WF_NAME + "-1",
                 ScheduledWorkFlow.State.SHUTDOWN);
