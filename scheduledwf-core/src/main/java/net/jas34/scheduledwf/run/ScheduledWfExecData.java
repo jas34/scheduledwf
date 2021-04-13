@@ -1,9 +1,13 @@
 package net.jas34.scheduledwf.run;
 
+import com.netflix.conductor.common.metadata.Auditable;
+
+import java.util.Map;
+
 /**
  * @author Jasbir Singh
  */
-public class ScheduledWfExecData {
+public class ScheduledWfExecData extends Auditable {
 
     private String schedulerId;
 
@@ -13,15 +17,23 @@ public class ScheduledWfExecData {
 
     private int wfVersion;
 
+    private String nodeAddress;
+
+    private String managerRefId;
+
     private String executedAt;
 
     private String nextRunAt;
 
     private String lastExecutionEndedAt;
 
+    private String triggerId;
+
     private String executionStatus;
 
     private String executionFailureReason;
+
+    private Map<String, Object> input;
 
     public String getSchedulerId() {
         return schedulerId;
@@ -63,6 +75,49 @@ public class ScheduledWfExecData {
         this.wfVersion = wfVersion;
     }
 
+    public Map<String, Object> getInput() {
+        return input;
+    }
+
+    @Override
+    public String toString() {
+        return "ScheduledWfExecData{" +
+                "schedulerId='" + schedulerId + '\'' +
+                ", name='" + name + '\'' +
+                ", wfName='" + wfName + '\'' +
+                ", wfVersion=" + wfVersion +
+                ", nodeAddress='" + nodeAddress + '\'' +
+                ", managerRefId='" + managerRefId + '\'' +
+                ", executedAt='" + executedAt + '\'' +
+                ", nextRunAt='" + nextRunAt + '\'' +
+                ", lastExecutionEndedAt='" + lastExecutionEndedAt + '\'' +
+                ", triggerId='" + triggerId + '\'' +
+                ", executionStatus='" + executionStatus + '\'' +
+                ", executionFailureReason='" + executionFailureReason + '\'' +
+                ", input=" + input +
+                "} " + super.toString();
+    }
+
+    public void setInput(Map<String, Object> input) {
+        this.input = input;
+    }
+
+    public String getNodeAddress() {
+        return nodeAddress;
+    }
+
+    public void setNodeAddress(String nodeAddress) {
+        this.nodeAddress = nodeAddress;
+    }
+
+    public String getManagerRefId() {
+        return managerRefId;
+    }
+
+    public void setManagerRefId(String managerRefId) {
+        this.managerRefId = managerRefId;
+    }
+
     public String getNextRunAt() {
         return nextRunAt;
     }
@@ -77,6 +132,14 @@ public class ScheduledWfExecData {
 
     public void setLastExecutionEndedAt(String lastExecutionEndedAt) {
         this.lastExecutionEndedAt = lastExecutionEndedAt;
+    }
+
+    public String getTriggerId() {
+        return triggerId;
+    }
+
+    public void setTriggerId(String triggerId) {
+        this.triggerId = triggerId;
     }
 
     public String getExecutionStatus() {
@@ -95,18 +158,4 @@ public class ScheduledWfExecData {
         this.executionFailureReason = executionFailureReason;
     }
 
-    @Override
-    public String toString() {
-        return "ScheduledWfExecData{" +
-                "schedulerId='" + schedulerId + '\'' +
-                ", name='" + name + '\'' +
-                ", wfName='" + wfName + '\'' +
-                ", wfVersion=" + wfVersion +
-                ", executedAt='" + executedAt + '\'' +
-                ", nextRunAt='" + nextRunAt + '\'' +
-                ", lastExecutionEndedAt='" + lastExecutionEndedAt + '\'' +
-                ", executionStatus='" + executionStatus + '\'' +
-                ", executionFailureReason='" + executionFailureReason + '\'' +
-                '}';
-    }
 }

@@ -2,6 +2,7 @@ package net.jas34.scheduledwf.scheduler;
 
 import net.jas34.scheduledwf.metadata.ScheduledTaskDef;
 import net.jas34.scheduledwf.run.Status;
+import net.jas34.scheduledwf.run.TriggerResult;
 
 /**
  * @author Jasbir Singh
@@ -20,6 +21,6 @@ public class TestTask implements Runnable {
     @Override
     public void run() {
         System.out.println("I am running a test task for testing. Is this fine with you!");
-        indexExecutionDataCallback.indexData(taskDef, Status.SUCCESS, "");
+        indexExecutionDataCallback.indexData(taskDef, new TriggerResult("test_trigger", Status.SUCCESS, null, null));
     }
 }

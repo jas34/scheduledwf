@@ -15,6 +15,10 @@ import net.jas34.scheduledwf.run.ScheduledWorkFlow;
 import org.apache.commons.collections4.CollectionUtils;
 
 /**
+ * Currently we do not see any prominent use case to have external persistence of this data layer.
+ * Hence, we will go with in memory persistence for fixed number of records.
+ * Execution data will be exposed from external persistence store via {@link net.jas34.scheduledwf.dao.IndexScheduledWfDAO}
+ *
  * @author Jasbir Singh
  */
 @Singleton
@@ -75,6 +79,11 @@ public class InMemoryScheduledWfExecutionDAO implements ScheduledWfExecutionDAO 
             scheduledWorkFlow.setState(state);
             return Optional.of(scheduledWorkFlow);
         }
+    }
+
+    @Override
+    public void removeScheduledWorkflow(String name, String managerRefId) {
+        scheduledWorkFlowStore.remove(name);
     }
 
     @Override

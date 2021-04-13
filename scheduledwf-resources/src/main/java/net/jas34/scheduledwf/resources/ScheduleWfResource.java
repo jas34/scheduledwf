@@ -1,6 +1,8 @@
 package net.jas34.scheduledwf.resources;
 
+import java.util.List;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -17,10 +19,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 /**
+ * Populates metadata definitions {@link ScheduleWfDef} of objects.
+ *
  * @author Jasbir Singh
  */
-@Api(value = "/metadata", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON,
-        tags = "Scheduling Metadata Management")
+@Api(value = "/scheduling/metadata", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON,
+        tags = "Scheduling Workflows Management")
 @Path("/scheduling/metadata")
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
@@ -38,20 +42,33 @@ public class ScheduleWfResource {
     @ApiOperation("Schedule a new workflow")
     public void create(ScheduleWfDef scheduleWfDef) {
         metadataService.registerScheduleWorkflowDef(scheduleWfDef);
-
     }
 
     @PUT
-    @Path("/scheduleWf")
-    @ApiOperation("Update a scheduled workflow definition")
-    public void update(ScheduleWfDef scheduleWfDef) {
-        metadataService.updateScheduledWorkflowDef(scheduleWfDef);
+    @Path("/scheduleWf/{name}")
+    @ApiOperation("Update status of a schedule workflow definition")
+    public void update(@PathParam("name") String name, @QueryParam("status") ScheduleWfDef.Status status) {
+        metadataService.updateScheduledWorkflowDef(name, status);
     }
 
     @GET
-    @ApiOperation("Retrieves scheduled workflow definition")
+    @ApiOperation("Retrieves schedule workflow definition")
     @Path("/scheduleWf/{name}")
-    public ScheduleWfDef get(@PathParam("name") String name, @QueryParam("version") Integer version) {
-        return metadataService.getScheduledWorkflowDef(name, version);
+    public ScheduleWfDef get(@PathParam("name") String name) {
+        return metadataService.getScheduledWorkflowDef(name);
     }
+
+    @GET
+    @ApiOperation("Retrieves all schedule workflow definitions")
+    @Path("/scheduleWf")
+    public List<ScheduleWfDef> getAll() {
+        return metadataService.getScheduleWorkflowDefs();
+    }
+
+//    @DELETE
+//    @Path("/scheduleWf/{name}")
+//    @ApiOperation("Removes schedule workflow definition")
+//    public void unregisterDef(@PathParam("name") String name) {
+//        metadataService.unregisterScheduleWorkflowDef(name);
+//    }
 }

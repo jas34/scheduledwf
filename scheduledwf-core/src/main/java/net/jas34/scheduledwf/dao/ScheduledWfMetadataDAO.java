@@ -14,9 +14,13 @@ public interface ScheduledWfMetadataDAO {
 
     void updateScheduleWorkflow(ScheduleWfDef def);
 
-//    void removeScheduleWorkflow(String name);
+    int removeScheduleWorkflow(String name);
 
-    Optional<ScheduleWfDef> getScheduledWorkflowDef(String name, int version);
+    int removeScheduleWorkflows(List<String> names);
 
-    Optional<List<ScheduleWfDef>> getAllScheduledWorkflowDefsByStatus(ScheduleWfDef.Status status);
+    Optional<ScheduleWfDef> getScheduledWorkflowDef(String name);
+
+    Optional<List<ScheduleWfDef>> getAllScheduledWorkflowDefsByStatus(ScheduleWfDef.Status...status);
+
+    Optional<List<ScheduleWfDef>> getAllScheduledWorkflowDefs();
 }

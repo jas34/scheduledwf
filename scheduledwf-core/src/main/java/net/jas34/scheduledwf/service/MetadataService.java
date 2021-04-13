@@ -1,5 +1,10 @@
 package net.jas34.scheduledwf.service;
 
+import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import net.jas34.scheduledwf.metadata.ScheduleWfDef;
 
 /**
@@ -7,9 +12,17 @@ import net.jas34.scheduledwf.metadata.ScheduleWfDef;
  */
 public interface MetadataService {
 
-    void registerScheduleWorkflowDef(ScheduleWfDef def);
+    void registerScheduleWorkflowDef(
+            @NotNull(message = "ScheduleWfDef cannot be null") @Valid ScheduleWfDef def);
 
-    void updateScheduledWorkflowDef(ScheduleWfDef def);
+    void updateScheduledWorkflowDef(@NotEmpty(message = "Workflow name cannot be null or empty") String name,
+            @NotEmpty(message = "scheduling status cannot be null or empty") ScheduleWfDef.Status status);
 
-    ScheduleWfDef getScheduledWorkflowDef(String name, int version);
+    ScheduleWfDef getScheduledWorkflowDef(
+            @NotEmpty(message = "Workflow name cannot be null or empty") String name);
+
+    List<ScheduleWfDef> getScheduleWorkflowDefs();
+
+    void unregisterScheduleWorkflowDef(
+            @NotEmpty(message = "Workflow name cannot be null or empty") String name);
 }
