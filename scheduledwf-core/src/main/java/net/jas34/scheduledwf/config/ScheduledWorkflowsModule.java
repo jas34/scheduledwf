@@ -2,8 +2,10 @@ package net.jas34.scheduledwf.config;
 
 import com.coreoz.wisp.Scheduler;
 import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
 import com.google.inject.Scopes;
 import com.google.inject.TypeLiteral;
+import com.netflix.conductor.core.config.Configuration;
 import net.jas34.scheduledwf.dao.IndexScheduledWfDAO;
 import net.jas34.scheduledwf.dao.ScheduledWfExecutionDAO;
 import net.jas34.scheduledwf.dao.ScheduledWfMetadataDAO;
@@ -33,14 +35,19 @@ import net.jas34.scheduledwf.service.SchedulerExecutionService;
 /**
  * @author Jasbir Singh
  */
-public class ScheduledWorkdlowsModule extends AbstractModule {
+public class ScheduledWorkflowsModule extends AbstractModule {
+
     @Override
     protected void configure() {
         // TODO: this is not final config. Will be revisited later
         // DAO Config...
         bind(IndexScheduledWfDAO.class).to(InMemoryIndexScheduledWfDAO.class);
         bind(ScheduledWfExecutionDAO.class).to(InMemoryScheduledWfExecutionDAO.class);
-        bind(ScheduledWfMetadataDAO.class).to(InMemoryScheduledWfMetadataDAO.class);
+
+//        bind(ScheduledWfMetadataDAO.class).toProvider(InMem.class).in(Scopes.SINGLETON);
+//        if(Configuration.DB.MEMORY.equals(configuration.getDB())) {
+//            bind(ScheduledWfMetadataDAO.class).to(InMemoryScheduledWfMetadataDAO.class);
+//        }
 
         // metadata service
         bind(MetadataService.class).to(MetadataServiceImpl.class);

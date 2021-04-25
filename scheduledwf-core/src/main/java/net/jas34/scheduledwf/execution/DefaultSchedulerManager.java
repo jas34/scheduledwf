@@ -233,8 +233,8 @@ public class DefaultSchedulerManager implements SchedulerManager {
         if (CollectionUtils.isNotEmpty(deletableScheduleWfs)) {
             logger.debug("Remove definitions with status DELETE. Total count:{} and names{}=",
                     deletableScheduleWfs.size(), deletableScheduleWfs);
-            int removedCount = scheduledWfMetadataDAO.removeScheduleWorkflows(deletableScheduleWfs);
-            logger.debug("Total number of definitions deleted: {}", removedCount);
+            scheduledWfMetadataDAO.removeScheduleWorkflows(deletableScheduleWfs);
+            logger.debug("Applicable definitions deleted");
         }
     }
 

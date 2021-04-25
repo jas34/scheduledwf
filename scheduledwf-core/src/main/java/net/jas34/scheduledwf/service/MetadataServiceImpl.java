@@ -88,8 +88,8 @@ public class MetadataServiceImpl implements MetadataService {
     @Override
     @Service
     public void unregisterScheduleWorkflowDef(String name) {
-        int removeScheduleWorkflow = scheduleWorkflowMetadataDao.removeScheduleWorkflow(name);
-        if (removeScheduleWorkflow == 0) {
+        boolean isRemoved = scheduleWorkflowMetadataDao.removeScheduleWorkflow(name);
+        if (!isRemoved) {
             throw new ApplicationException(ApplicationException.Code.INVALID_INPUT,
                     "Cannot find the ScheduleWfDef definition with name=" + name);
         }

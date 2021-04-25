@@ -6,13 +6,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.inject.Singleton;
 import net.jas34.scheduledwf.dao.ScheduledWfMetadataDAO;
 import net.jas34.scheduledwf.metadata.ScheduleWfDef;
-import net.jas34.scheduledwf.run.ScheduledWorkFlow;
 
 /**
  * @author Jasbir Singh
@@ -33,18 +33,22 @@ public class InMemoryScheduledWfMetadataDAO implements ScheduledWfMetadataDAO {
     }
 
     @Override
-    public int removeScheduleWorkflow(String name) {
+    public boolean removeScheduleWorkflow(String name) {
         if (Objects.isNull(scheduleWfDefStore.get(name))) {
-            return 0;
+            return false;
         }
 
         scheduleWfDefStore.remove(name);
-        return 1;
+        return true;
     }
 
     @Override
-    public int removeScheduleWorkflows(List<String> names) {
-        return names.stream().mapToInt(this::removeScheduleWorkflow).sum();
+    public boolean removeScheduleWorkflows(List<String> names) {
+        AtomicBoolean isRemoved = new AtomicBoolean(false);
+        names.forEach(name -> {
+            isRemoved.set(removeScheduleWorkflows(names));
+        });
+        return isRemoved.get();
     }
 
     @Override
