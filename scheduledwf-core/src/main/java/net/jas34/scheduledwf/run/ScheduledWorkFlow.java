@@ -17,7 +17,6 @@ public class ScheduledWorkFlow extends Auditable implements Serializable {
 
     private String name;
 
-    // TODO: need to revisit this parameter... might be something similar already available in conductor
     private String nodeAddress;
 
     private String wfName;

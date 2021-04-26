@@ -15,8 +15,8 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.netflix.conductor.core.execution.ApplicationException;
 import com.netflix.conductor.dao.mysql.MySQLBaseDAO;
-
 import com.netflix.conductor.dao.postgres.Query;
+
 import net.jas34.scheduledwf.dao.ScheduledWfMetadataDAO;
 import net.jas34.scheduledwf.metadata.ScheduleWfDef;
 import net.jas34.scheduledwf.metadata.ScheduleWfDef.Status;
@@ -49,38 +49,6 @@ public class MySQLScheduledWfMetaDataDao extends MySQLBaseDAO implements Schedul
         withTransaction(tx -> insertOrUpdatescheduleWorkflowDef(tx, def));
 
     }
-
-    /*
-     * @Override public void removeScheduleWorkflow(String name) { final String DELETE_WORKFLOW_QUERY =
-     * "DELETE from schedule_wf_def WHERE name = ? ";
-     * 
-     * withTransaction(tx -> { execute(tx, DELETE_WORKFLOW_QUERY, q -> { if
-     * (!q.addParameter(name).executeDelete()) { throw new
-     * ApplicationException(ApplicationException.Code.NOT_FOUND,
-     * String.format("No such ScheduleWfDef : %s ", name)); } });
-     * 
-     * });
-     * 
-     * }
-     */
-    // @Override
-    // public Optional<ScheduleWfDef> getScheduledWorkflowDef(String name, int version) {
-    // final String GET_WORKFLOW_DEF_QUERY =
-    // "SELECT json_input FROM schedule_wf_def WHERE name = ? AND version = ?";
-    // return Optional.ofNullable(queryWithTransaction(GET_WORKFLOW_DEF_QUERY, q -> q.addParameter(name)
-    // .addParameter(String.valueOf(version)).executeAndFetchFirst(ScheduleWfDef.class)));
-    //
-    // }
-
-    // @Override
-    // public Optional<List<ScheduleWfDef>> getAllScheduledWorkflowDefsByStatus(Status status) {
-    // final String FIND_ALL_WORKFLOW_DEF_QUERY = "SELECT json_input FROM schedule_wf_def where status
-    // =?";
-    //
-    // return Optional.of(queryWithTransaction(FIND_ALL_WORKFLOW_DEF_QUERY,
-    // q -> q.addParameter(status.name()).executeAndFetch(ScheduleWfDef.class)));
-    //
-    // }
 
     @Override
     public boolean removeScheduleWorkflow(String name) {
@@ -164,23 +132,6 @@ public class MySQLScheduledWfMetaDataDao extends MySQLBaseDAO implements Schedul
         }
 
     }
-
-    // private Optional<ScheduleWfDef> getScheduledWfDefByName(Connection tx, ScheduleWfDef def) {
-    // final String GET_LATEST_WORKFLOW_DEF_VERSION = "SELECT * schedule_wf_def WHERE " + "name = ?";
-    //
-    // Integer val = query(tx, GET_LATEST_WORKFLOW_DEF_VERSION, q -> {
-    // q.addParameter(def.getWfName());
-    // return q.executeAndFetch(rs -> {
-    // if (!rs.next()) {
-    // return null;
-    // }
-    //
-    // return rs.getInt(1);
-    // });
-    // });
-    //
-    // return Optional.ofNullable(val);
-    // }
 
     private void validate(ScheduleWfDef def) {
         Preconditions.checkNotNull(def, "ScheduleWfDef object cannot be null");
