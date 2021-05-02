@@ -36,7 +36,7 @@ public class CronBasedWorkflowScheduler
     public CronBasedScheduledProcess<Job> schedule(ScheduledWorkFlow scheduledWorkFlow) {
         Schedule schedule = CronSchedule.parseQuartzCron(scheduledWorkFlow.getCronExpression());
         Job scheduledJob = scheduler.schedule(scheduledWorkFlow.getName(),
-                taskProvider.getTask(scheduledWorkFlow), schedule);
+                taskProvider.getTask(scheduledWorkFlow, this), schedule);
         logger.info("scheduledWorkFlow scheduled with jobName={}", scheduledJob.name());
         return new CronBasedScheduledProcess<>(scheduledJob);
     }
@@ -62,11 +62,6 @@ public class CronBasedWorkflowScheduler
     @Override
     public Long lastExecutionEndedTimeInMillis(String scheduledWfName) {
         return resolveJobFromName(scheduledWfName).lastExecutionEndedTimeInMillis();
-    }
-
-    @Override
-    public int executionsCount(String scheduledWfName) {
-        return resolveJobFromName(scheduledWfName).executionsCount();
     }
 
     @PreDestroy

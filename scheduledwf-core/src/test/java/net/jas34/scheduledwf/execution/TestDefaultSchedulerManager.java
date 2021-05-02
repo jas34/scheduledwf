@@ -50,7 +50,7 @@ public class TestDefaultSchedulerManager extends TestBase {
     private ManagerInfo managerInfo;
 
     @Before
-    public void iniit() {
+    public void init() {
         scheduledWfMetadataDAO = Mockito.mock(ScheduledWfMetadataDAO.class);
         processRegistry = Mockito.mock(ScheduledProcessRegistry.class);
         metadataDAO = Mockito.mock(MetadataDAO.class);

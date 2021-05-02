@@ -19,7 +19,7 @@ public class TestScheduledTaskProvider implements ScheduledTaskProvider {
     }
 
     @Override
-    public Runnable getTask(ScheduledWorkFlow scheduledWorkFlow) {
+    public Runnable getTask(ScheduledWorkFlow scheduledWorkFlow, SchedulerStats schedulerStats) {
         return new TestTask(prepareScheduledTaskDef(scheduledWorkFlow), callback);
     }
 

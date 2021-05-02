@@ -9,7 +9,7 @@ import com.netflix.conductor.service.WorkflowService;
 import net.jas34.scheduledwf.metadata.ScheduledTaskDef;
 import net.jas34.scheduledwf.run.Status;
 import net.jas34.scheduledwf.run.TriggerResult;
-import net.jas34.scheduledwf.service.LockingService;
+import net.jas34.scheduledwf.concurrent.LockingService;
 
 /**
  * @author Jasbir Singh
@@ -26,18 +26,24 @@ public class TriggerScheduledWorkFlowTask implements Runnable {
 
     private LockingService lockingService;
 
+    private SchedulerStats schedulerStats;
+
     public TriggerScheduledWorkFlowTask(ScheduledTaskDef taskDef,
             IndexExecutionDataCallback indexExecutionDataCallback, WorkflowService workflowService,
-            LockingService lockingService) {
+            LockingService lockingService, SchedulerStats schedulerStats) {
         this.taskDef = taskDef;
         this.indexExecutionDataCallback = indexExecutionDataCallback;
         this.workflowService = workflowService;
         this.lockingService = lockingService;
+        this.schedulerStats = schedulerStats;
     }
 
     @Override
     public void run() {
-        lockingService.acquireLock(resolveLockId());
+        if(!lockingService.acquireLock(taskDef)) {
+            return;
+        }
+
         TriggerResult result = new TriggerResult();
 
         try {
@@ -58,10 +64,14 @@ public class TriggerScheduledWorkFlowTask implements Runnable {
 
         result.setUpdateTime(System.currentTimeMillis());
         indexExecutionDataCallback.indexData(taskDef, result);
-        lockingService.releaseLock(resolveLockId(), true);
+        lockingService.releaseLock(taskDef, true);
     }
 
     private String resolveLockId(){
         return taskDef.getWfName() + "-" + taskDef.getWfVersion();
+    }
+
+    private String resolvePermitId(){
+        return taskDef.getName() + "-" + schedulerStats.nextExecutionTimeInMillis(taskDef.getName() );
     }
 }

@@ -2,39 +2,48 @@ package net.jas34.scheduledwf.dao.memory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+import org.apache.commons.collections4.CollectionUtils;
+
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.inject.Singleton;
+
 import net.jas34.scheduledwf.dao.ScheduledWfExecutionDAO;
 import net.jas34.scheduledwf.run.ScheduledWorkFlow;
-import org.apache.commons.collections4.CollectionUtils;
 
 /**
  * Currently we do not see any prominent use case to have external persistence of this data layer.
- * Hence, we will go with in memory persistence for fixed number of records.
- * Execution data will be exposed from external persistence store via {@link net.jas34.scheduledwf.dao.IndexScheduledWfDAO}
+ * Hence, we will go with in memory persistence for fixed number of records. Execution data will be
+ * exposed from external persistence store via {@link net.jas34.scheduledwf.dao.IndexScheduledWfDAO}
  *
  * @author Jasbir Singh
  */
 @Singleton
 public class InMemoryScheduledWfExecutionDAO implements ScheduledWfExecutionDAO {
+    private static final CacheLoader<String, ScheduledWorkFlow> LOADER =
+            new CacheLoader<String, ScheduledWorkFlow>() {
+                @Override
+                public ScheduledWorkFlow load(String key) throws Exception {
+                    return new ScheduledWorkFlow();
+                }
+            };
 
-    private final Map<String, ScheduledWorkFlow> scheduledWorkFlowStore = new ConcurrentHashMap<>();
+    private static final LoadingCache<String, ScheduledWorkFlow> CACHE =
+            CacheBuilder.newBuilder().maximumSize(100).build(LOADER);
 
     @Override
     public String createScheduledWorkflow(ScheduledWorkFlow scheduledWorkFlow) {
-        scheduledWorkFlowStore.put(scheduledWorkFlow.getName(), scheduledWorkFlow);
+        CACHE.put(scheduledWorkFlow.getName(), scheduledWorkFlow);
         return scheduledWorkFlow.getId();
     }
 
     @Override
     public Optional<ScheduledWorkFlow> getScheduledWfWithNameAndMgrRefId(String name, String managerRefId) {
-        return Optional.ofNullable(scheduledWorkFlowStore.get(name));
+        return Optional.ofNullable(CACHE.getIfPresent(name));
     }
 
     @Override
@@ -46,8 +55,8 @@ public class InMemoryScheduledWfExecutionDAO implements ScheduledWfExecutionDAO 
 
         List<ScheduledWorkFlow> scheduledWorkFlows = new ArrayList<>();
         names.forEach(name -> {
-            if (Objects.nonNull(scheduledWorkFlowStore.get(name))) {
-                scheduledWorkFlows.add(scheduledWorkFlowStore.get(name));
+            if (Objects.nonNull(CACHE.getIfPresent(name))) {
+                scheduledWorkFlows.add(CACHE.getIfPresent(name));
             }
         });
         return Optional.of(scheduledWorkFlows);
@@ -55,39 +64,30 @@ public class InMemoryScheduledWfExecutionDAO implements ScheduledWfExecutionDAO 
 
     @Override
     public Optional<List<ScheduledWorkFlow>> getAllScheduledWfWithByManagerRefId(String managerRefId) {
-        return Optional.of(new ArrayList<>(scheduledWorkFlowStore.values()));
+        return Optional.of(new ArrayList<>(new ArrayList<>(CACHE.asMap().values())));
     }
 
-//    @Override
-//    public Optional<List<ScheduledWorkFlow>> getAllScheduledWfWithStates(String managerRefId,
-//            ScheduledWorkFlow.State... states) {
-//        List<ScheduledWorkFlow> collect = scheduledWorkFlowStore.values().stream()
-//                .filter(scheduledWorkFlow -> Stream.of(states)
-//                        .collect(Collectors.toCollection(ArrayList::new))
-//                        .contains(scheduledWorkFlow.getState()))
-//                .collect(Collectors.toList());
-//        return Optional.of(collect);
-//    }
-
     @Override
-    public Optional<ScheduledWorkFlow> updateStateById(ScheduledWorkFlow.State state, String id, String name) {
-        ScheduledWorkFlow scheduledWorkFlow = scheduledWorkFlowStore.get(name);
+    public Optional<ScheduledWorkFlow> updateStateById(ScheduledWorkFlow.State state, String id,
+            String name) {
+        ScheduledWorkFlow scheduledWorkFlow = CACHE.getIfPresent(name);
         if (Objects.isNull(scheduledWorkFlow)) {
             return Optional.empty();
         }
-        synchronized (scheduledWorkFlowStore) {
+        synchronized (scheduledWorkFlow) {
             scheduledWorkFlow.setState(state);
+            CACHE.put(name, scheduledWorkFlow);
             return Optional.of(scheduledWorkFlow);
         }
     }
 
     @Override
     public void removeScheduledWorkflow(String name, String managerRefId) {
-        scheduledWorkFlowStore.remove(name);
+        CACHE.invalidate(name);
     }
 
     @Override
     public void removeAllScheduledWorkflows(String managerRefId) {
-        scheduledWorkFlowStore.clear();
+        CACHE.invalidateAll();
     }
 }

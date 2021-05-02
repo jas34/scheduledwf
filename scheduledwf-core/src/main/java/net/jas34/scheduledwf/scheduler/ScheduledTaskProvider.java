@@ -6,5 +6,5 @@ import net.jas34.scheduledwf.run.ScheduledWorkFlow;
  * @author Jasbir Singh
  */
 public interface ScheduledTaskProvider {
-    Runnable getTask(ScheduledWorkFlow scheduledWorkFlow);
+    Runnable getTask(ScheduledWorkFlow scheduledWorkFlow, SchedulerStats schedulerStats);
 }

@@ -10,6 +10,4 @@ public interface SchedulerStats {
     Long lastExecutionStartedTimeInMillis(String scheduledWfName);
 
     Long lastExecutionEndedTimeInMillis(String scheduledWfName);
-
-    int executionsCount(String scheduledWfName);
 }

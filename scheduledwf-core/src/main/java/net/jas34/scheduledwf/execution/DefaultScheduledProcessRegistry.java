@@ -9,11 +9,14 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
 import net.jas34.scheduledwf.dao.ScheduledWfExecutionDAO;
 import net.jas34.scheduledwf.run.ScheduledWorkFlow;
 import net.jas34.scheduledwf.scheduler.ScheduledProcess;
+
 import net.jcip.annotations.NotThreadSafe;
 
 /**
@@ -54,12 +57,9 @@ public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry
     @Override
     public boolean updateProcessById(ScheduledProcess processReference, ScheduledWorkFlow.State state,
             String id, String name) {
-//        if (!isProcessPresentInRegistry(id)) {
-//            return false;
-//        }
 
         Optional<ScheduledWorkFlow> scheduledWorkFlow = wfExecutionDAO.updateStateById(state, id, name);
-        if(!scheduledWorkFlow.isPresent()) {
+        if (!scheduledWorkFlow.isPresent()) {
             return false;
         }
         scheduledWorkFlow.get().setScheduledProcess(processReference);
@@ -119,7 +119,8 @@ public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry
 
     @Override
     public void removeProcess(ScheduledWorkFlow scheduledWorkFlow) {
-        wfExecutionDAO.removeScheduledWorkflow(scheduledWorkFlow.getName(), scheduledWorkFlow.getManagerRefId());
+        wfExecutionDAO.removeScheduledWorkflow(scheduledWorkFlow.getName(),
+                scheduledWorkFlow.getManagerRefId());
         processReferenceMap.remove(scheduledWorkFlow.getId());
         logger.debug(
                 "scheduled workflow removed from execution data persistence store and processReferenceMap.");

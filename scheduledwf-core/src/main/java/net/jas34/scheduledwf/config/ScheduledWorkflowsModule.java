@@ -22,7 +22,6 @@ import net.jas34.scheduledwf.scheduler.ScheduledTaskProvider;
 import net.jas34.scheduledwf.scheduler.SchedulerStats;
 import net.jas34.scheduledwf.scheduler.WorkflowScheduler;
 import net.jas34.scheduledwf.scheduler.WorkflowSchedulerFactory;
-import net.jas34.scheduledwf.service.LockingService;
 import net.jas34.scheduledwf.service.MetadataService;
 import net.jas34.scheduledwf.service.MetadataServiceImpl;
 import net.jas34.scheduledwf.service.SchedulerExecutionService;
@@ -34,13 +33,12 @@ public class ScheduledWorkflowsModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        //dao Binding
+        // dao Binding
         bind(ScheduledWfExecutionDAO.class).to(InMemoryScheduledWfExecutionDAO.class);
 
         // metadata service
         bind(MetadataService.class).to(MetadataServiceImpl.class);
         bind(SchedulerExecutionService.class);
-        bind(LockingService.class);
 
         // scheduler config....
         bind(Scheduler.class).toProvider(WispSchedulerProvider.class).in(Scopes.SINGLETON);
