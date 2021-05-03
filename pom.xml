@@ -39,6 +39,7 @@
 
     <modules>
         <module>scheduledwf-core</module>
+        <module>scheduled-mysql-persistence</module>
         <module>scheduledwf-resources</module>
         <module>scheduledwf-server</module>
     </modules>
