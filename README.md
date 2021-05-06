@@ -18,5 +18,6 @@ Schedule Conductor is compatible with Java 8 and has embedded Conductor v2.30.4
 Architecture 
 ---------
 ###High Level Architecture
+
 ![Schedule Conductor](docs/img/scheduled-wf-architecture.png)
 
