@@ -8,7 +8,28 @@
     <artifactId>scheduledwf-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-
+    <name>Scheduled Conductor-Workflow</name>
+    <description>Scheduled Conductor-Workflow is an extension of netflix conductor to provide capability to schedule a workflow in micro service architecture</description>
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Jasbir Singh</name>
+            <email>jasbirsinghkamboj@gmail.com</email>
+        </developer>
+        <developer>
+            <name>Ankit Banka</name>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:git://github.com/jas34/scheduledwf.git</connection>
+        <developerConnection>scm:git:ssh://github.com/jas34/scheduledwf.git</developerConnection>
+        <url>https://github.com/jas34/scheduledwf/tree/persistence_mysql_integration</url>
+    </scm>
     <properties>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
