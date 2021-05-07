@@ -36,5 +36,4 @@ Architecture
 ### Runtime Model
 
 ![Scheduled Conductor](docs/img/scheduled-wf-runtime-model.svg)
-
-- All components in magenta colour 
+ 
