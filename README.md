@@ -1,5 +1,5 @@
 ## Schedule Conductor Workflows
-Schedule Conductor workflow is a scheduler as a service that runs in the cloud with [Neflix conductor](https://github.com/Netflix/conductor)
+Schedule Conductor workflow is a _scheduler as a service_ that runs in the cloud with [Netflix conductor](https://github.com/Netflix/conductor)
 embedded in it. It runs as an extension module of conductor.
 
 Schedule workflow has been developed as an extension of _Conductor_ which allow you to 
@@ -19,5 +19,20 @@ Architecture
 ---------
 ### High Level Architecture
 
-![Schedule Conductor](docs/img/scheduled-wf-architecture.svg)
+![Scheduled Conductor](docs/img/scheduled-wf-architecture.svg)
 
+##### API
+- Expose REST API interface for scheduling a workflow with metadata definition and cron expression (`Scheduling Workflows Management`)
+- Expose REST API interface for managing running schedulers (`Scheduler Management`) 
+
+##### SERVICE
+- Consist of manager to spawn a scheduler process.
+- One stop to manage complete life cycle of schedulers.
+
+##### STORE
+- Currently implemented for MYSQL.
+- Can be extended to other persistence stores offered by conductor.
+
+### Runtime Model
+
+![Scheduled Conductor](docs/img/scheduled-wf-runtime-model.svg)
