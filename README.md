@@ -40,7 +40,7 @@ Architecture
 ##### API
 - Expose REST API interface for scheduling a workflow with metadata definition and cron expression (`Scheduled Workflow Metadata Management`)
 - Expose REST API interface for managing running schedulers (`Scheduler Management`) 
-- Read more about [API operations](#Scheduling And Managing A Workflow) in section   _Scheduling And Managing A Workflow_.
+- Read more about in section _Scheduling And Managing A Workflow_.
 
 ##### SERVICE
 - Consists of manager to spawn a scheduler process.
@@ -88,7 +88,7 @@ Component Details
 ### Scheduler Manager
 - This component is meant to manage lifecycle of scheduled workflow.
 - It takes lifecycle state decision for a scheduler with the help of scheduled jobs registry.
-- It schedules the schedulers through [scheduling assistant](#Scheduling Assistant).
+- It schedules the schedulers through _scheduling assistant_.
 - It index the scheduling information through [IndexScheduledWfDAO](scheduledwf-core/src/main/java/net/jas34/scheduledwf/dao/IndexScheduledWfDAO.java) interface.
 	##### Scheduled Jobs Registry
 	- This registry act a single source of truth to know whether a particular workflow is required to be scheduled, 
