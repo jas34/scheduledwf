@@ -46,6 +46,14 @@ Architecture
 - Currently implemented for MYSQL.
 - Can be extended to other persistence stores offered by conductor.
 
+Getting started
+--------------
+- Download jar from maven central ---here---
+- Alternatively:
+	- you can fork a branch from ---Link to master brnach---
+	- 
+	 
+
 ### Runtime Model
 
 ![Scheduled Conductor](docs/img/scheduled-wf-runtime-model.svg)
@@ -93,19 +101,46 @@ Component Level Details
 	to prevent concurrent execution of same job on more than one server at scheduled time. 
 
 ### Locking Service
-- This is composed of LockProvider available in conductor which can run in three modes
+- `LockingService` is composed of `LockProvider` available in conductor.
+- It contains a [ExecutionPermitter](scheduledwf-core/src/main/java/net/jas34/scheduledwf/concurrent/ExecutionPermitter.java):
+	1. to get execution permit for a fix period of time through `boolean issue(ScheduledTaskDef taskDef)`
+	2. to return back permit after use through `void giveBack(ScheduledTaskDef taskDef)`.
+	##### Execution Permitter
+	- It consists of [PermitDAO](scheduledwf-core/src/main/java/net/jas34/scheduledwf/concurrent/PermitDAO.java) 
+	to persist the `Permit` for a fix period in the persistence store used by `LockProvider`.
+	- This is currently supported for conductor [lock mode](https://netflix.github.io/conductor/server/#setting-up-zookeeper-to-enable-distributed-locking-service):
+		1. local_only
+		2. redis
+	- For any other type of data store, one can implement `PermitDAO`.
 
 ### Persistence Layer
+- The persistence layer has been designed in a way to be completely aligned with [persistence](https://netflix.github.io/conductor/technicaldetails) architecture of conductor.
+- This will be automatically enabled with conductor property `db=MYSQL`. 
+- Currently it has following DAO layers:
+	##### ScheduledWfMetadataDAO
+	- This is used to persist scheduling metadata definitions of workflow through swagger operations under `Scheduling Workflows Management`
+	- This has been currently implemented for MYSQL only. One can implement `ScheduledWfMetadataDAO` for any other type of persistence store.  
+	##### ScheduledWfExecutionDAO
+	- This is used to persist scheduling reference against scheduled workflow.
+	- Currently implemented to operate in memory. We do not see any need to move to any other persistence layer.  
+	##### IndexScheduledWfDAO
+	- This is used to index each run of a scheduled job with many additional details like:
+		- status of last execution
+		- last execution time
+		- next execution time
+		- node on which execution has happened, etc.
+	- This has been currently implemented for MYSQL only. One can implement `IndexScheduledWfDAO` for Elastic search persistence store.
 
-----
-1. multi node env
-2. lock service
+Get Support
+---------
+- This project is maintained by @jas34 and @sudshan as an open source application. Use github issue tracking for filing 
+issues, ideas or support requests. 
+- We have a wide road map to add many features to this service through various customizable hooks described above.
+- In case customization is an immediate for you, feel free to raise open an issue in github. We will consider that as a
+priority request.
 
----
- 	
+Contributions
+----------
+- Whether it is a small documentation correction, bug fix or new features, contributions are highly appreciated. 
+- Discuss new features and explore ideas with us through github issues.
 
- 
- ```java
- 	public class DefaultWorkflowSchedulingAssistant implements WorkflowSchedulingAssistant {
- 		//methods implemented
- 	}
