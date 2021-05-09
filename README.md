@@ -8,11 +8,12 @@ embedded in it. It runs as an extension module of conductor.
 	2. refresh cache everyday at a fix time.
 	3. send an email notification at a scheduled time, etc.
 - If your architecture is micro services based then you have only two options:
-	1. either to add scheduling capability (like Quartz scheduler, spring scheduler, etc) in the service that needs to
+	1. either to add scheduling capability (like Quartz scheduler, Spring scheduler, etc) in the service that needs to
 	 schedule a task.
-	2. or to setup a separate micro service, which will perform scheduling for all use cases. This service interact 
+	2. or to setup a separate micro service, which will perform scheduling for required use cases. This service interact 
 	with other service for data needs through REST APIs.
-- In the end we have unnecessary mesh of schedulers. After certain point of time  the setup is completely out of control.
+- In the end we have unnecessary mesh of schedulers. After certain point of time such kind of setup is completely out 
+of control.
 - Solution to the problem is _Schedule Conductor workflow_:
 	- This can be deployed in place of conductor server.
 	- Embedded conductor provides service orchestration capability.
@@ -39,15 +40,17 @@ Architecture
 ##### API
 - Expose REST API interface for scheduling a workflow with metadata definition and cron expression (`Scheduled Workflow Metadata Management`)
 - Expose REST API interface for managing running schedulers (`Scheduler Management`) 
-- Read more about [API operations](#Scheduling And Managing A Workflow).
+- Read more about [API operations](#Scheduling And Managing A Workflow) in section   _Scheduling And Managing A Workflow_.
 
 ##### SERVICE
 - Consists of manager to spawn a scheduler process.
 - One stop to manage complete life cycle of schedulers.
+- Read details in section _Component Details_. 
 
 ##### STORE
 - Currently implemented for MYSQL.
 - Can be extended to other persistence stores offered by conductor.
+- Get more details on DAO from section _Persistence Layer_.
 
 Getting started
 --------------
