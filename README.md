@@ -4,19 +4,21 @@ embedded in it. It runs as an extension module of conductor.
 
 ### Motivation
 - In digital space there are many use cases that are solved by running schedulers. Some of the common cases are:
-	1. publishing site maps for an e-commerce website.
+	1. publish site map for an e-commerce website.
 	2. refresh cache everyday at a fix time.
-	3. send an email notification to operations regarding health of system and many more.
+	3. send an email notification at a scheduled time, etc.
 - If your architecture is micro services based then you have only two options:
-	1. to add scheduling capability (like Quartz, spring scheduler) in the service which needs to execute some scheduling task.
-	2. to setup a separate micro service, which will solve all scheduling use cases. This service interact with other service for data needs through REST APIs.
-- In the end we have unnecessary mesh of schedulers. After certain point the setup is completely out of control.
+	1. either to add scheduling capability (like Quartz scheduler, spring scheduler, etc) in the service that needs to
+	 schedule a task.
+	2. or to setup a separate micro service, which will perform scheduling for all use cases. This service interact 
+	with other service for data needs through REST APIs.
+- In the end we have unnecessary mesh of schedulers. After certain point of time  the setup is completely out of control.
 - Solution to the problem is _Schedule Conductor workflow_:
-	- This can be deployed as replacement of conductor server.
+	- This can be deployed in place of conductor server.
 	- Embedded conductor provides service orchestration capability.
 	- Extension module provides scheduling capability.
 	- Conductor workflow with cron expression can be scheduled through REST API.
-	- Scheduled job spawned internally starts workflow at scheduled time.
+	- Scheduled job spawned internally starts a workflow at a scheduled time.
 - _Schedule Conductor workflow_ is extendable to work with all persistence stores supported by conductor.
 
 *Quickly use able in _PRODUCTION_*:
@@ -35,8 +37,9 @@ Architecture
 ![Scheduled Conductor](docs/img/scheduled-wf-architecture.svg)
 
 ##### API
-- Expose REST API interface for scheduling a workflow with metadata definition and cron expression (`Scheduled Wofkflow Metadata Management`)
+- Expose REST API interface for scheduling a workflow with metadata definition and cron expression (`Scheduled Workflow Metadata Management`)
 - Expose REST API interface for managing running schedulers (`Scheduler Management`) 
+- Read more about [API operations](#Scheduling And Managing A Workflow).
 
 ##### SERVICE
 - Consists of manager to spawn a scheduler process.
@@ -48,20 +51,20 @@ Architecture
 
 Getting started
 --------------
-- Download jar from maven central ---here---
+- Download jar from maven central ---TBD---
 - Alternatively:
-	- you can fork a branch from ---Link to master brnach---
-	- ./mvnw clean install
-- Executable jar can be found at `scheduledwf/scheduledwf-server/target/scheduledwf-server-1.0-SNAPSHOT.jar`
+	- you can fork a branch from ---Link to master TBD---
+	- run ./mvnw clean install
+- Executable jar can be found at `scheduledwf/scheduledwf-server/target/scheduledwf-server-{version}.jar`
 - start server with command:
-	`java -jar scheduledwf-server-1.0-SNAPSHOT.jar [PATH TO PROPERTY FILE] [log4j.properties file path]`
+	`java -jar scheduledwf-server-{version}T.jar [PATH TO PROPERTY FILE] [log4j.properties file path]`
 	
-Scheduling and Managing a workflow
+Scheduling And Managing A Workflow
 -------------
 - REST operations for scheduling can be accessed on the conductor swagger at http://{host}:{port}
 - _Example_: Let us schedule sample workflow with name [testwf](scheduledwf-server/src/test/resources/testwf-def.json). 
 Assuming workflow definition already exists in conductor server. You can use [Cron Maker](http://www.cronmaker.com/) to generate cron expression.	
-	- From swagger use`Scheduled Wofkflow Metadata Management` to add/update [scheduling metadata](scheduledwf-server/src/test/resources/schedule-testwf-def.json).
+	- From swagger use`Scheduled Workflow Metadata Management` to add/update [scheduling metadata](scheduledwf-server/src/test/resources/schedule-testwf-def.json).
 		- POST /scheduling/metadata/scheduleWf: Schedule new workflow
 		- GET /scheduling/metadata/scheduleWf: Get scheduling metadata of scheduled workflows.
 		- GET /scheduling/metadata/scheduleWf/{name}: Get scheduling metadata of scheduled workflows by workflow name.
@@ -70,33 +73,33 @@ Assuming workflow definition already exists in conductor server. You can use [Cr
 	- From swagger use`Scheduler Management`:
 		- to search about schedule manager running on different nodes of cluster.
 		- to search about scheduled jobs based upon scheduling metadata.
-		- to search about different runs of scheduled jobs at scheduled time. 
+		- to search about different runs of scheduled jobs at scheduled time. The detailed data returned by [IndexScheduledWfDAO](#IndexScheduledWfDAO) 
 
 ### Runtime Model
 
 ![Scheduled Conductor](docs/img/scheduled-wf-runtime-model.svg)
  
-Component Level Details
+Component Details
 ----------------
 
 ### Scheduler Manager
 - This component is meant to manage lifecycle of scheduled workflow.
 - It takes lifecycle state decision for a scheduler with the help of scheduled jobs registry.
-- It schedules the schedulers through scheduling assistant.
-- It index the scheduling information through see the [IndexScheduledWfDAO](scheduledwf-core/src/main/java/net/jas34/scheduledwf/dao/IndexScheduledWfDAO.java) interface.
+- It schedules the schedulers through [scheduling assistant](#Scheduling Assistant).
+- It index the scheduling information through [IndexScheduledWfDAO](scheduledwf-core/src/main/java/net/jas34/scheduledwf/dao/IndexScheduledWfDAO.java) interface.
 	##### Scheduled Jobs Registry
 	- This registry act a single source of truth to know whether a particular workflow is required to be scheduled, 
 	paused or deleted.
 	- It can be customized by implementing [ScheduledProcessRegistry](scheduledwf-core/src/main/java/net/jas34/scheduledwf/execution/ScheduledProcessRegistry.java) interface.
 	- The default implementation can be found here `net.jas34.scheduledwf.execution.DefaultScheduledProcessRegistry`.
-	- It reads metadata for scheduling through `net.jas34.scheduledwf.execution.dao.ScheduledWfExecutionDAO`.
+	- It reads scheduled workflow details through [ScheduledWfExecutionDAO](#ScheduledWfExecutionDAO).
 
 ### Scheduling Assistant
 - This is an abstract layer for job scheduling.
-- Comes with default implementation of [DefaultWorkflowSchedulingAssistant](scheduledwf-core/src/main/java/net/jas34/scheduledwf/execution/DefaultWorkflowSchedulingAssistant.java).
+- It comes with default implementation of [DefaultWorkflowSchedulingAssistant](scheduledwf-core/src/main/java/net/jas34/scheduledwf/execution/DefaultWorkflowSchedulingAssistant.java).
 - It:	
-	1. creates scheduled jobs.
-	2. pause scheduled jobs.
+	1. creates jobs.
+	2. pause jobs.
 	3. delete scheduled jobs.
 - It contains factory [WorkflowSchedulerFactory](scheduledwf-core/src/main/java/net/jas34/scheduledwf/scheduler/WorkflowSchedulerFactory.java) that returns an instance of [WorkflowScheduler](scheduledwf-core/src/main/java/net/jas34/scheduledwf/scheduler/WorkflowScheduler.java) interface.
 - The assistant can be customized with the implementation of [WorkflowSchedulingAssistant](scheduledwf-core/src/main/java/net/jas34/scheduledwf/execution/WorkflowSchedulingAssistant.java) interface.
@@ -109,7 +112,7 @@ Component Level Details
 ### Cron Based Workflow Scheduler (Jobs Scheduling)
 - The scheduling capability is completely customizable by implementing [WorkflowScheduler](scheduledwf-core/src/main/java/net/jas34/scheduledwf/scheduler/WorkflowScheduler.java) interface and by returning applicable instance from `WorkflowSchedulerFactory`.
 - The default behaviour is to enable [CronBasedWorkflowScheduler](scheduledwf-core/src/main/java/net/jas34/scheduledwf/scheduler/CronBasedWorkflowScheduler.java).
-- This is composed of [wisp](https://github.com/Coreoz/Wisp) scheduler. Wisp provides in memory scheduling capabilities. As a result, `CronBasedWorkflowScheduler` also schedules required in memory schedulers using wisp.
+- This is composed of [wisp](https://github.com/Coreoz/Wisp) scheduler. Wisp provides in memory scheduling capabilities. As a result, `CronBasedWorkflowScheduler` also schedules in memory schedulers using wisp.
 - Each scheduled job is provided an instance of `Runnable` task through [ScheduledTaskProvider](scheduledwf-core/src/main/java/net/jas34/scheduledwf/scheduler/ScheduledTaskProvider.java) interface. 
 	##### ScheduledTaskProvider
 	- The default implementation of task provider is [DefaultScheduledTaskProvider](scheduledwf-core/src/main/java/net/jas34/scheduledwf/scheduler/DefaultScheduledTaskProvider.java).
@@ -134,27 +137,27 @@ Component Level Details
 ### Persistence Layer
 - The persistence layer has been designed in a way to be completely aligned with [persistence](https://netflix.github.io/conductor/technicaldetails) architecture of conductor.
 - This will be automatically enabled with conductor property `db=MYSQL`. 
-- Currently it has following DAO layers:
+- Currently it has following DAO interfaces:
 	##### ScheduledWfMetadataDAO
-	- This is used to persist scheduling metadata definitions of workflow through swagger operations under `Scheduled Wofkflow Metadata Management`
+	- This is used to persist scheduling metadata definitions of workflow through swagger operations under `Scheduled Workflow Metadata Management`
 	- This has been currently implemented for MYSQL only. One can implement `ScheduledWfMetadataDAO` for any other type of persistence store.  
 	##### ScheduledWfExecutionDAO
 	- This is used to persist scheduling reference against scheduled workflow.
-	- Currently implemented to operate in memory. We do not see any need to move to any other persistence layer.  
+	- Currently implemented to operate in memory and we do not see any need to move to any other persistence layer.  
 	##### IndexScheduledWfDAO
 	- This is used to index each run of a scheduled job with many additional details like:
 		- status of last execution
 		- last execution time
 		- next execution time
 		- node on which execution has happened, etc.
-	- This has been currently implemented for MYSQL only. One can implement `IndexScheduledWfDAO` for Elastic search persistence store.
+	- This has been currently implemented for MYSQL only. One can implement `IndexScheduledWfDAO` for Elastic Search persistence store.
 
 Get Support
 ---------
 - This project is maintained by @jas34 and @sudshan as an open source application. Use github issue tracking for filing 
 issues, ideas or support requests. 
 - We have a wide road map to add many features to this service through various customizable hooks described above.
-- In case customization is an immediate for you, feel free to raise open an issue in github. We will consider that as a
+- In case customization is an immediate for you, feel free to open an issue in github. We will consider that as a
 priority request.
 
 Contributions
@@ -162,3 +165,6 @@ Contributions
 - Whether it is a small documentation correction, bug fix or new features, contributions are highly appreciated. 
 - Discuss new features and explore ideas with us through github issues.
 
+License
+-------
+TBA
