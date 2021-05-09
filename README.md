@@ -2,7 +2,7 @@
 Schedule Conductor workflow is a _scheduler as a service_ that runs in the cloud with [Netflix conductor](https://github.com/Netflix/conductor)
 embedded in it. It runs as an extension module of conductor.
 
-### Use Case Solved
+### Motivation
 - In digital space there are many use cases that are solved by running schedulers. Some of the common cases are:
 	1. publishing site maps for an e-commerce website.
 	2. refresh cache everyday at a fix time.
@@ -35,7 +35,7 @@ Architecture
 ![Scheduled Conductor](docs/img/scheduled-wf-architecture.svg)
 
 ##### API
-- Expose REST API interface for scheduling a workflow with metadata definition and cron expression (`Scheduling Workflows Management`)
+- Expose REST API interface for scheduling a workflow with metadata definition and cron expression (`Scheduled Wofkflow Metadata Management`)
 - Expose REST API interface for managing running schedulers (`Scheduler Management`) 
 
 ##### SERVICE
@@ -51,8 +51,26 @@ Getting started
 - Download jar from maven central ---here---
 - Alternatively:
 	- you can fork a branch from ---Link to master brnach---
-	- 
-	 
+	- ./mvnw clean install
+- Executable jar can be found at `scheduledwf/scheduledwf-server/target/scheduledwf-server-1.0-SNAPSHOT.jar`
+- start server with command:
+	`java -jar scheduledwf-server-1.0-SNAPSHOT.jar [PATH TO PROPERTY FILE] [log4j.properties file path]`
+	
+Scheduling and Managing a workflow
+-------------
+- REST operations for scheduling can be accessed on the conductor swagger at http://{host}:{port}
+- _Example_: Let us schedule sample workflow with name [testwf](scheduledwf-server/src/test/resources/testwf-def.json). 
+Assuming workflow definition already exists in conductor server. You can use [Cron Maker](http://www.cronmaker.com/) to generate cron expression.	
+	- From swagger use`Scheduled Wofkflow Metadata Management` to add/update [scheduling metadata](scheduledwf-server/src/test/resources/schedule-testwf-def.json).
+		- POST /scheduling/metadata/scheduleWf: Schedule new workflow
+		- GET /scheduling/metadata/scheduleWf: Get scheduling metadata of scheduled workflows.
+		- GET /scheduling/metadata/scheduleWf/{name}: Get scheduling metadata of scheduled workflows by workflow name.
+		- PUT /scheduling/metadata/scheduleWf/{name}: Update the status of scheduled workflow metadata.
+	
+	- From swagger use`Scheduler Management`:
+		- to search about schedule manager running on different nodes of cluster.
+		- to search about scheduled jobs based upon scheduling metadata.
+		- to search about different runs of scheduled jobs at scheduled time. 
 
 ### Runtime Model
 
@@ -118,7 +136,7 @@ Component Level Details
 - This will be automatically enabled with conductor property `db=MYSQL`. 
 - Currently it has following DAO layers:
 	##### ScheduledWfMetadataDAO
-	- This is used to persist scheduling metadata definitions of workflow through swagger operations under `Scheduling Workflows Management`
+	- This is used to persist scheduling metadata definitions of workflow through swagger operations under `Scheduled Wofkflow Metadata Management`
 	- This has been currently implemented for MYSQL only. One can implement `ScheduledWfMetadataDAO` for any other type of persistence store.  
 	##### ScheduledWfExecutionDAO
 	- This is used to persist scheduling reference against scheduled workflow.

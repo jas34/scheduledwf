@@ -1,5 +1,5 @@
 {
-    "wfName": "workflow1",
+    "wfName": "testwf",
     "wfVersion": 1,
     "status": "RUN",
     "cronExpression": "0 0/1 * 1/1 * ? *",
