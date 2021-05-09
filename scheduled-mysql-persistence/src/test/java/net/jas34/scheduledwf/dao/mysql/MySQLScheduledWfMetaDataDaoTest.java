@@ -21,7 +21,7 @@ import net.jas34.scheduledwf.metadata.ScheduleWfDef;
 /**
  * @author Jasbir Singh
  */
-@RunWith(JUnit4.class)
+//@RunWith(JUnit4.class)
 public class MySQLScheduledWfMetaDataDaoTest {
 
     private MySQLDAOTestUtil testUtil;
