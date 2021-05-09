@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -21,7 +22,8 @@ import net.jas34.scheduledwf.metadata.ScheduleWfDef;
 /**
  * @author Jasbir Singh
  */
-//@RunWith(JUnit4.class)
+@RunWith(JUnit4.class)
+@Ignore
 public class MySQLScheduledWfMetaDataDaoTest {
 
     private MySQLDAOTestUtil testUtil;
