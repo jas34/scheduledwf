@@ -66,6 +66,31 @@
         <module>scheduledwf-server</module>
     </modules>
 
+   <dependencyManagement>
+       <dependencies>
+           <dependency>
+               <groupId>net.jas34.scheduledwf</groupId>
+               <artifactId>scheduledwf-core</artifactId>
+               <version>${project.version}</version>
+           </dependency>
+           <dependency>
+               <groupId>net.jas34.scheduledwf</groupId>
+               <artifactId>scheduled-mysql-persistence</artifactId>
+               <version>${project.version}</version>
+           </dependency>
+           <dependency>
+               <groupId>net.jas34.scheduledwf</groupId>
+               <artifactId>scheduledwf-resources</artifactId>
+               <version>${project.version}</version>
+           </dependency>
+           <dependency>
+               <groupId>net.jas34.scheduledwf</groupId>
+               <artifactId>scheduledwf-server</artifactId>
+               <version>${project.version}</version>
+           </dependency>
+       </dependencies>
+   </dependencyManagement>
+
     <build>
         <plugins>
             <plugin>
