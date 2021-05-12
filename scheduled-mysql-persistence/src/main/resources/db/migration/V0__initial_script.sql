@@ -22,7 +22,8 @@ CREATE TABLE `manager_info`
     `json_input`  longtext     NOT NULL,
     `created_on`  timestamp    NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_on`  timestamp    NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    KEY nodeAddress_index (nodeAddress)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 4
   DEFAULT CHARSET = utf8mb4
@@ -38,7 +39,9 @@ CREATE TABLE `scheduled_wf`
     `json_input`   longtext     NOT NULL,
     `created_on`   timestamp    NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_on`   timestamp    NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    KEY scheduler_id_index (scheduler_id),
+    KEY name_manager_id_nodeAddress_index (name, manager_id, nodeAddress)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 4
   DEFAULT CHARSET = utf8mb4
@@ -54,7 +57,9 @@ CREATE TABLE `scheduled_wf_execution`
     `json_input`   longtext     NOT NULL,
     `created_on`   timestamp    NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_on`   timestamp    NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    KEY scheduler_id_index (scheduler_id),
+    KEY name_manager_id_nodeAddress_index (name, manager_id, nodeAddress)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 4
   DEFAULT CHARSET = utf8mb4
