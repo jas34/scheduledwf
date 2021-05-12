@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>scheduledwf-parent</artifactId>
-        <groupId>net.jas34.scheduledwf</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <groupId>io.github.jas34</groupId>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -20,18 +20,14 @@
         <dependency>
             <groupId>net.jas34.scheduledwf</groupId>
             <artifactId>scheduledwf-core</artifactId>
-            <version>1.0-SNAPSHOT</version> <!-- TODO: Version should be removed from here. Requires to be revisited. -->
         </dependency>
         <dependency>
             <groupId>net.jas34.scheduledwf</groupId>
             <artifactId>scheduledwf-resources</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
 		<dependency>
 			<groupId>net.jas34.scheduledwf</groupId>
 			<artifactId>scheduled-mysql-persistence</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 
