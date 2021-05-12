@@ -10,7 +10,7 @@
 		</layout>
 	</appender>
 
-	<logger name="net.jas34.scheduledwf.concurrent.ExecutionPermitter" additivity="false">
+	<logger name="io.github.jas34.scheduledwf.concurrent.ExecutionPermitter" additivity="false">
 		<level value="DEBUG"/>
 		<appender-ref ref="console"/>
 	</logger>

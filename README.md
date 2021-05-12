@@ -23,7 +23,7 @@ of control.
 - _Schedule Conductor workflow_ is extendable to work with all persistence stores supported by conductor.
 
 *Quickly use able in _PRODUCTION_*:
-- Scheduling module can be enabled with property `conductor.additional.modules= net.jas34.scheduledwf.config.ScheduledWfServerModule` 
+- Scheduling module can be enabled with property `conductor.additional.modules= io.github.jas34.scheduledwf.config.ScheduledWfServerModule` 
 - Deploy `scheduledwf-server` instead of `conductor-server`. 
 
 You are done!
@@ -94,7 +94,7 @@ Component Details
 	- This registry act a single source of truth to know whether a particular workflow is required to be scheduled, 
 	paused or deleted.
 	- It can be customized by implementing [ScheduledProcessRegistry](scheduledwf-core/src/main/java/net/jas34/scheduledwf/execution/ScheduledProcessRegistry.java) interface.
-	- The default implementation can be found here `net.jas34.scheduledwf.execution.DefaultScheduledProcessRegistry`.
+	- The default implementation can be found here `io.github.jas34.scheduledwf.execution.DefaultScheduledProcessRegistry`.
 	- It reads scheduled workflow details through [ScheduledWfExecutionDAO](#ScheduledWfExecutionDAO).
 
 ### Scheduling Assistant
