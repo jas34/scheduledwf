@@ -89,48 +89,48 @@ Component Details
 - This component is meant to manage lifecycle of scheduled workflow.
 - It takes lifecycle state decision for a scheduler with the help of scheduled jobs registry.
 - It schedules the schedulers through _scheduling assistant_.
-- It index the scheduling information through [IndexScheduledWfDAO](scheduledwf-core/src/main/java/net/jas34/scheduledwf/dao/IndexScheduledWfDAO.java) interface.
+- It index the scheduling information through [IndexScheduledWfDAO](scheduledwf-core/src/main/java/io.github/jas34/scheduledwf/dao/IndexScheduledWfDAO.java) interface.
 	##### Scheduled Jobs Registry
 	- This registry act a single source of truth to know whether a particular workflow is required to be scheduled, 
 	paused or deleted.
-	- It can be customized by implementing [ScheduledProcessRegistry](scheduledwf-core/src/main/java/net/jas34/scheduledwf/execution/ScheduledProcessRegistry.java) interface.
+	- It can be customized by implementing [ScheduledProcessRegistry](scheduledwf-core/src/main/java/io.github/jas34/scheduledwf/execution/ScheduledProcessRegistry.java) interface.
 	- The default implementation can be found here `io.github.jas34.scheduledwf.execution.DefaultScheduledProcessRegistry`.
 	- It reads scheduled workflow details through [ScheduledWfExecutionDAO](#ScheduledWfExecutionDAO).
 
 ### Scheduling Assistant
 - This is an abstract layer for job scheduling.
-- It comes with default implementation of [DefaultWorkflowSchedulingAssistant](scheduledwf-core/src/main/java/net/jas34/scheduledwf/execution/DefaultWorkflowSchedulingAssistant.java).
+- It comes with default implementation of [DefaultWorkflowSchedulingAssistant](scheduledwf-core/src/main/java/io.github/jas34/scheduledwf/execution/DefaultWorkflowSchedulingAssistant.java).
 - It:	
 	1. creates jobs.
 	2. pause jobs.
 	3. delete scheduled jobs.
-- It contains factory [WorkflowSchedulerFactory](scheduledwf-core/src/main/java/net/jas34/scheduledwf/scheduler/WorkflowSchedulerFactory.java) that returns an instance of [WorkflowScheduler](scheduledwf-core/src/main/java/net/jas34/scheduledwf/scheduler/WorkflowScheduler.java) interface.
-- The assistant can be customized with the implementation of [WorkflowSchedulingAssistant](scheduledwf-core/src/main/java/net/jas34/scheduledwf/execution/WorkflowSchedulingAssistant.java) interface.
+- It contains factory [WorkflowSchedulerFactory](scheduledwf-core/src/main/java/io.github/jas34/scheduledwf/scheduler/WorkflowSchedulerFactory.java) that returns an instance of [WorkflowScheduler](scheduledwf-core/src/main/java/io.github/jas34/scheduledwf/scheduler/WorkflowScheduler.java) interface.
+- The assistant can be customized with the implementation of [WorkflowSchedulingAssistant](scheduledwf-core/src/main/java/io.github/jas34/scheduledwf/execution/WorkflowSchedulingAssistant.java) interface.
 	##### WorkflowSchedulerFactory
 	- This is core abstraction to define Scheduled process of your choice. (`WorkflowSchedulerFactory<T extends ScheduledProcess>`)
-	- `ScheduledProcess` is one of the granular entity that is expected to have reference to scheduled process/thread. Currently implemented as [CronBasedScheduledProcess](scheduledwf-core/src/main/java/net/jas34/scheduledwf/scheduler/CronBasedScheduledProcess.java).
-	- The default implementation can be found here [DefaultWorkflowSchedulerFactory](scheduledwf-core/src/main/java/net/jas34/scheduledwf/scheduler/DefaultWorkflowSchedulerFactory.java).
-	- Currently returns [CronBasedWorkflowScheduler](scheduledwf-core/src/main/java/net/jas34/scheduledwf/scheduler/CronBasedWorkflowScheduler.java). 
+	- `ScheduledProcess` is one of the granular entity that is expected to have reference to scheduled process/thread. Currently implemented as [CronBasedScheduledProcess](scheduledwf-core/src/main/java/io.github/jas34/scheduledwf/scheduler/CronBasedScheduledProcess.java).
+	- The default implementation can be found here [DefaultWorkflowSchedulerFactory](scheduledwf-core/src/main/java/io.github/jas34/scheduledwf/scheduler/DefaultWorkflowSchedulerFactory.java).
+	- Currently returns [CronBasedWorkflowScheduler](scheduledwf-core/src/main/java/io.github/jas34/scheduledwf/scheduler/CronBasedWorkflowScheduler.java). 
 
 ### Cron Based Workflow Scheduler (Jobs Scheduling)
-- The scheduling capability is completely customizable by implementing [WorkflowScheduler](scheduledwf-core/src/main/java/net/jas34/scheduledwf/scheduler/WorkflowScheduler.java) interface and by returning applicable instance from `WorkflowSchedulerFactory`.
-- The default behaviour is to enable [CronBasedWorkflowScheduler](scheduledwf-core/src/main/java/net/jas34/scheduledwf/scheduler/CronBasedWorkflowScheduler.java).
+- The scheduling capability is completely customizable by implementing [WorkflowScheduler](scheduledwf-core/src/main/java/io.github/jas34/scheduledwf/scheduler/WorkflowScheduler.java) interface and by returning applicable instance from `WorkflowSchedulerFactory`.
+- The default behaviour is to enable [CronBasedWorkflowScheduler](scheduledwf-core/src/main/java/io.github/jas34/scheduledwf/scheduler/CronBasedWorkflowScheduler.java).
 - This is composed of [wisp](https://github.com/Coreoz/Wisp) scheduler. Wisp provides in memory scheduling capabilities. As a result, `CronBasedWorkflowScheduler` also schedules in memory schedulers using wisp.
-- Each scheduled job is provided an instance of `Runnable` task through [ScheduledTaskProvider](scheduledwf-core/src/main/java/net/jas34/scheduledwf/scheduler/ScheduledTaskProvider.java) interface. 
+- Each scheduled job is provided an instance of `Runnable` task through [ScheduledTaskProvider](scheduledwf-core/src/main/java/io.github/jas34/scheduledwf/scheduler/ScheduledTaskProvider.java) interface. 
 	##### ScheduledTaskProvider
-	- The default implementation of task provider is [DefaultScheduledTaskProvider](scheduledwf-core/src/main/java/net/jas34/scheduledwf/scheduler/DefaultScheduledTaskProvider.java).
+	- The default implementation of task provider is [DefaultScheduledTaskProvider](scheduledwf-core/src/main/java/io.github/jas34/scheduledwf/scheduler/DefaultScheduledTaskProvider.java).
 	- It creates fully flexible and customizable task for job before scheduling through `getTask()`.
-	- It performs indexing of workflow start executions through callback to [IndexExecutionDataCallback](scheduledwf-core/src/main/java/net/jas34/scheduledwf/scheduler/IndexExecutionDataCallback.java). 
-	- It uses [LockingService](scheduledwf-core/src/main/java/net/jas34/scheduledwf/concurrent/LockingService.java) 
+	- It performs indexing of workflow start executions through callback to [IndexExecutionDataCallback](scheduledwf-core/src/main/java/io.github/jas34/scheduledwf/scheduler/IndexExecutionDataCallback.java). 
+	- It uses [LockingService](scheduledwf-core/src/main/java/io.github/jas34/scheduledwf/concurrent/LockingService.java) 
 	to prevent concurrent execution of same job on more than one server at scheduled time. 
 
 ### Locking Service
 - `LockingService` is composed of `LockProvider` available in conductor.
-- It contains a [ExecutionPermitter](scheduledwf-core/src/main/java/net/jas34/scheduledwf/concurrent/ExecutionPermitter.java):
+- It contains a [ExecutionPermitter](scheduledwf-core/src/main/java/io.github/jas34/scheduledwf/concurrent/ExecutionPermitter.java):
 	1. to get execution permit for a fix period of time through `boolean issue(ScheduledTaskDef taskDef)`
 	2. to return back permit after use through `void giveBack(ScheduledTaskDef taskDef)`.
 	##### Execution Permitter
-	- It consists of [PermitDAO](scheduledwf-core/src/main/java/net/jas34/scheduledwf/concurrent/PermitDAO.java) 
+	- It consists of [PermitDAO](scheduledwf-core/src/main/java/io.github/jas34/scheduledwf/concurrent/PermitDAO.java) 
 	to persist the `Permit` for a fix period in the persistence store used by `LockProvider`.
 	- This is currently supported for conductor [lock mode](https://netflix.github.io/conductor/server/#setting-up-zookeeper-to-enable-distributed-locking-service):
 		1. local_only
