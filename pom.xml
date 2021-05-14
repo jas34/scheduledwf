@@ -27,7 +27,7 @@
 	</developers>
 	<scm>
 		<developerConnection>scm:git:git@github.com:jas34/scheduledwf.git</developerConnection>
-		<connection>scm:git:https://github.com/jas34/scheduledwf.git</connection>
+		<connection>scm:git:git@github.com:jas34/scheduledwf.git</connection>
 		<url>https://github.com/jas34/scheduledwf</url>
 		<tag>HEAD</tag>
 	</scm>
