@@ -30,7 +30,7 @@ of control.
 - _Schedule Conductor workflow_ is extendable to work with all persistence stores supported by conductor.
 
 *Quickly use able in _PRODUCTION_*:
-- Scheduling module can be enabled with property `conductor.additional.modules= io/github.jas34.scheduledwf.config.ScheduledWfServerModule` 
+- Scheduling module can be enabled with property `conductor.additional.modules=io.github.jas34.scheduledwf.config.ScheduledWfServerModule` 
 - Deploy `scheduledwf-server` instead of `conductor-server`. 
 
 You are done!
