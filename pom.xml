@@ -6,10 +6,11 @@
 	<artifactId>scheduledwf-parent</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0.0-rc2-SNAPSHOT</version>
-	<name>Scheduled Conductor-Workflow</name>
+	<name>Scheduled Conductor Workflow</name>
 	<description>Scheduled Conductor-Workflow is an extension of netflix conductor to provide capability to schedule a
 		workflow in micro service architecture
 	</description>
+	<url>https://github.com/jas34/scheduledwf</url>
 	<licenses>
 		<license>
 			<name>The Apache License, Version 2.0</name>
@@ -132,22 +133,22 @@
 							</execution>
 						</executions>
 					</plugin>
-<!--					<plugin>-->
-<!--						<groupId>org.apache.maven.plugins</groupId>-->
-<!--						<artifactId>maven-javadoc-plugin</artifactId>-->
-<!--						<version>2.10.4</version>-->
-<!--						<executions>-->
-<!--							<execution>-->
-<!--								<id>attach-javadocs</id>-->
-<!--								<goals>-->
-<!--									<goal>jar</goal>-->
-<!--								</goals>-->
-<!--							</execution>-->
-<!--						</executions>-->
-<!--						<configuration>-->
-<!--							<stylesheet>java</stylesheet>-->
-<!--						</configuration>-->
-<!--					</plugin>-->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.10.4</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<stylesheet>java</stylesheet>
+						</configuration>
+					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
