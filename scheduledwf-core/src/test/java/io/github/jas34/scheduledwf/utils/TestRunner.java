@@ -1,9 +1,10 @@
 package io.github.jas34.scheduledwf.utils;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /**
  * @author Jasbir Singh

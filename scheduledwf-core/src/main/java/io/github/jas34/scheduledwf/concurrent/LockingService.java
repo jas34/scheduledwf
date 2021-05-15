@@ -2,8 +2,6 @@ package io.github.jas34.scheduledwf.concurrent;
 
 import java.util.concurrent.TimeUnit;
 
-import io.github.jas34.scheduledwf.metadata.ScheduledTaskDef;
-import io.github.jas34.scheduledwf.utils.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +9,9 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.netflix.conductor.core.utils.Lock;
+
+import io.github.jas34.scheduledwf.metadata.ScheduledTaskDef;
+import io.github.jas34.scheduledwf.utils.CommonUtils;
 
 /**
  * @author Jasbir Singh

@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.netflix.conductor.core.utils.IDGenerator;
+
 import io.github.jas34.scheduledwf.run.Result;
 import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 import io.github.jas34.scheduledwf.run.SchedulingResult;
@@ -31,23 +32,28 @@ public class DefaultWorkflowSchedulingAssistant implements WorkflowSchedulingAss
 
     @Override
     public SchedulingResult scheduleSchedulerWithFailSafety(ScheduledWorkFlow scheduledWorkFlow) {
-        WorkflowScheduler<ScheduledProcess> workflowScheduler = factory.getWorkflowSchedulerFactory(scheduledWorkFlow);
+        WorkflowScheduler<ScheduledProcess> workflowScheduler =
+                factory.getWorkflowSchedulerFactory(scheduledWorkFlow);
         SchedulingResult result = new SchedulingResult(IDGenerator.generate());
-        ScheduledProcess scheduledProcess = executeAndpopulateResult(result, () -> workflowScheduler.schedule(scheduledWorkFlow));
+        ScheduledProcess scheduledProcess =
+                executeAndpopulateResult(result, () -> workflowScheduler.schedule(scheduledWorkFlow));
         result.setProcessReference(scheduledProcess);
         return result;
     }
 
     @Override
     public ShutdownResult shutdownSchedulerWithFailSafety(ScheduledWorkFlow scheduledWorkFlow) {
-        WorkflowScheduler<ScheduledProcess> workflowScheduler = factory.getWorkflowSchedulerFactory(scheduledWorkFlow);
+        WorkflowScheduler<ScheduledProcess> workflowScheduler =
+                factory.getWorkflowSchedulerFactory(scheduledWorkFlow);
         ShutdownResult result = new ShutdownResult(IDGenerator.generate());
-        executeAndpopulateResult(result, () -> workflowScheduler.shutdown(scheduledWorkFlow.getScheduledProcess()));
+        executeAndpopulateResult(result,
+                () -> workflowScheduler.shutdown(scheduledWorkFlow.getScheduledProcess()));
         return result;
     }
 
     @Override
-    public List<ShutdownResult> shutdownAllSchedulersWithFailSafety(List<ScheduledWorkFlow> scheduledWorkFlows) {
+    public List<ShutdownResult> shutdownAllSchedulersWithFailSafety(
+            List<ScheduledWorkFlow> scheduledWorkFlows) {
         List<ShutdownResult> results = new ArrayList<>();
         scheduledWorkFlows.forEach(scheduledWorkFlow -> {
             results.add(shutdownSchedulerWithFailSafety(scheduledWorkFlow));
@@ -60,7 +66,7 @@ public class DefaultWorkflowSchedulingAssistant implements WorkflowSchedulingAss
         try {
             return task.get();
 
-        }catch (Throwable e) {
+        } catch (Throwable e) {
             result.setStatus(Status.FAILURE);
             result.setException(e);
             return null;

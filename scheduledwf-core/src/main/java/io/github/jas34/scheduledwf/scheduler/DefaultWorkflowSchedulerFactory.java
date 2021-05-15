@@ -2,6 +2,7 @@ package io.github.jas34.scheduledwf.scheduler;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
 import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 
 /**
@@ -10,7 +11,8 @@ import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 @Singleton
 public class DefaultWorkflowSchedulerFactory implements WorkflowSchedulerFactory<ScheduledProcess> {
 
-    //As of now we have only cron based scheduling Hence factory will return only CronBasedWorkflowScheduler
+    // As of now we have only cron based scheduling Hence factory will return only
+    // CronBasedWorkflowScheduler
     private CronBasedWorkflowScheduler cronBasedWorkflowScheduler;
 
     @Inject
@@ -19,7 +21,8 @@ public class DefaultWorkflowSchedulerFactory implements WorkflowSchedulerFactory
     }
 
     @Override
-    public WorkflowScheduler<ScheduledProcess> getWorkflowSchedulerFactory(ScheduledWorkFlow scheduledWorkFlow) {
-        return (WorkflowScheduler)cronBasedWorkflowScheduler;
+    public WorkflowScheduler<ScheduledProcess> getWorkflowSchedulerFactory(
+            ScheduledWorkFlow scheduledWorkFlow) {
+        return (WorkflowScheduler) cronBasedWorkflowScheduler;
     }
 }

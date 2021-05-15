@@ -18,11 +18,11 @@ import io.github.jas34.scheduledwf.dao.mysql.MySQLScheduledWfMetaDataDao;
  */
 public class MySQLPersistenceModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		bind(MySQLConfiguration.class).to(SystemPropertiesMySQLConfiguration.class);
-		bind(DataSource.class).toProvider(MySQLDataSourceProvider.class).in(Scopes.SINGLETON);
-		bind(ScheduledWfMetadataDAO.class).to(MySQLScheduledWfMetaDataDao.class);
-		bind(IndexScheduledWfDAO.class).to(MySQLIndexScheduledWfDAO.class);
-	}
+    @Override
+    protected void configure() {
+        bind(MySQLConfiguration.class).to(SystemPropertiesMySQLConfiguration.class);
+        bind(DataSource.class).toProvider(MySQLDataSourceProvider.class).in(Scopes.SINGLETON);
+        bind(ScheduledWfMetadataDAO.class).to(MySQLScheduledWfMetaDataDao.class);
+        bind(IndexScheduledWfDAO.class).to(MySQLIndexScheduledWfDAO.class);
+    }
 }

@@ -1,6 +1,7 @@
 package io.github.jas34.scheduledwf.resources;
 
 import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -12,8 +13,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.google.inject.Inject;
+
 import io.github.jas34.scheduledwf.metadata.ScheduleWfDef;
 import io.github.jas34.scheduledwf.service.MetadataService;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -22,8 +25,8 @@ import io.swagger.annotations.ApiOperation;
  *
  * @author Jasbir Singh
  */
-@Api(value = "/scheduling/metadata", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON,
-        tags = "Scheduled Wofkflow Metadata Management")
+@Api(value = "/scheduling/metadata", produces = MediaType.APPLICATION_JSON,
+        consumes = MediaType.APPLICATION_JSON, tags = "Scheduled Wofkflow Metadata Management")
 @Path("/scheduling/metadata")
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
@@ -64,10 +67,10 @@ public class ScheduleWfResource {
         return metadataService.getScheduleWorkflowDefs();
     }
 
-//    @DELETE
-//    @Path("/scheduleWf/{name}")
-//    @ApiOperation("Removes schedule workflow definition")
-//    public void unregisterDef(@PathParam("name") String name) {
-//        metadataService.unregisterScheduleWorkflowDef(name);
-//    }
+    // @DELETE
+    // @Path("/scheduleWf/{name}")
+    // @ApiOperation("Removes schedule workflow definition")
+    // public void unregisterDef(@PathParam("name") String name) {
+    // metadataService.unregisterScheduleWorkflowDef(name);
+    // }
 }

@@ -13,9 +13,9 @@ import io.github.jas34.scheduledwf.dao.memory.InMemoryScheduledWfMetadataDAO;
  */
 public class InMemoryPersistenceModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		bind(ScheduledWfMetadataDAO.class).to(InMemoryScheduledWfMetadataDAO.class);
-		bind(IndexScheduledWfDAO.class).to(InMemoryIndexScheduledWfDAO.class);
-	}
+    @Override
+    protected void configure() {
+        bind(ScheduledWfMetadataDAO.class).to(InMemoryScheduledWfMetadataDAO.class);
+        bind(IndexScheduledWfDAO.class).to(InMemoryIndexScheduledWfDAO.class);
+    }
 }

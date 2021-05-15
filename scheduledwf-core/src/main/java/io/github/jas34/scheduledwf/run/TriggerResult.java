@@ -59,7 +59,7 @@ public class TriggerResult extends Result {
     }
 
     public String getFailureReason() {
-        if(Objects.isNull(getException())) {
+        if (Objects.isNull(getException())) {
             return null;
         }
         return getException().getMessage() + "; cause: " + getException().getCause();

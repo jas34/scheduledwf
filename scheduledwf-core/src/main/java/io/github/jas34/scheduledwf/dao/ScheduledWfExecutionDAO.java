@@ -17,7 +17,8 @@ public interface ScheduledWfExecutionDAO {
 
     Optional<ScheduledWorkFlow> getScheduledWfWithNameAndMgrRefId(String name, String managerRefId);
 
-    Optional<List<ScheduledWorkFlow>> getScheduledWfWithNamesAndMgrRefId(List<String> names, String managerRefId);
+    Optional<List<ScheduledWorkFlow>> getScheduledWfWithNamesAndMgrRefId(List<String> names,
+            String managerRefId);
 
     Optional<List<ScheduledWorkFlow>> getAllScheduledWfWithByManagerRefId(String managerRefId);
 

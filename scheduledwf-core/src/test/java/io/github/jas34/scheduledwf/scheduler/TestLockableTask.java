@@ -2,11 +2,11 @@ package io.github.jas34.scheduledwf.scheduler;
 
 import java.util.concurrent.CountDownLatch;
 
-import io.github.jas34.scheduledwf.metadata.ScheduledTaskDef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.github.jas34.scheduledwf.concurrent.LockingService;
+import io.github.jas34.scheduledwf.metadata.ScheduledTaskDef;
 
 /**
  * @author Jasbir Singh

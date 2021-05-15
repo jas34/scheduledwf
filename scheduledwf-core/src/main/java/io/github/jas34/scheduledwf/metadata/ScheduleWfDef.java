@@ -2,6 +2,7 @@ package io.github.jas34.scheduledwf.metadata;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.validation.constraints.NotEmpty;
 
 import com.netflix.conductor.common.constraints.NoSemiColonConstraint;

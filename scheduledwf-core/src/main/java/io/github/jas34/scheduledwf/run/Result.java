@@ -9,8 +9,7 @@ public class Result {
     private Status status;
     private Throwable exception;
 
-    public Result() {
-    }
+    public Result() {}
 
     public Result(String id) {
         this(id, null, null);

@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import io.github.jas34.scheduledwf.metadata.ScheduleWfDef;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -17,6 +16,8 @@ import org.junit.rules.ExpectedException;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import io.github.jas34.scheduledwf.metadata.ScheduleWfDef;
 
 /**
  * @author Jasbir Singh

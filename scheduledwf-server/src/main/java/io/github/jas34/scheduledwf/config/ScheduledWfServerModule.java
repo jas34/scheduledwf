@@ -26,20 +26,22 @@ public class ScheduledWfServerModule extends AbstractModule {
                 ? Configuration.DB_DEFAULT_VALUE.toUpperCase()
                 : System.getProperty(Configuration.DB_PROPERTY_NAME).toUpperCase();
 
-        if(Configuration.DB.MEMORY.name().equals(database)) {
+        if (Configuration.DB.MEMORY.name().equals(database)) {
             install(new InMemoryPersistenceModule());
 
-        }else if(Configuration.DB.MYSQL.name().equals(database)) {
+        } else if (Configuration.DB.MYSQL.name().equals(database)) {
             install(new MySQLPersistenceModule());
-        }else {
-            throw new UnsupportedOperationException("Only MEMORY AND MYSQL persistence supported for scheduled workflow module.");
+        } else {
+            throw new UnsupportedOperationException(
+                    "Only MEMORY AND MYSQL persistence supported for scheduled workflow module.");
         }
     }
 
     private void configureLockingService() {
-        String lockingServer = StringUtils.isEmpty(System.getProperty(Configuration.LOCKING_SERVER_PROPERTY_NAME))
-                ? Configuration.LOCKING_SERVER_DEFAULT_VALUE.toUpperCase()
-                : System.getProperty(Configuration.LOCKING_SERVER_PROPERTY_NAME).toUpperCase();
+        String lockingServer =
+                StringUtils.isEmpty(System.getProperty(Configuration.LOCKING_SERVER_PROPERTY_NAME))
+                        ? Configuration.LOCKING_SERVER_DEFAULT_VALUE.toUpperCase()
+                        : System.getProperty(Configuration.LOCKING_SERVER_PROPERTY_NAME).toUpperCase();
 
         install(new LockingServiceConfigurationModule(Configuration.LOCKING_SERVER.valueOf(lockingServer)));
     }

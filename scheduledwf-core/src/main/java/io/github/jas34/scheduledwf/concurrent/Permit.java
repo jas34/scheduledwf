@@ -7,59 +7,55 @@ import com.netflix.conductor.core.utils.IDGenerator;
  */
 public class Permit {
 
-	private String id;
+    private String id;
 
-	private String name;
+    private String name;
 
-	private long inUseUpto;
+    private long inUseUpto;
 
-	private boolean used;
+    private boolean used;
 
-	public Permit(String name) {
-		this.name = name;
-		this.id = IDGenerator.generate();
-		this.inUseUpto = System.currentTimeMillis() + 500;
-	}
+    public Permit(String name) {
+        this.name = name;
+        this.id = IDGenerator.generate();
+        this.inUseUpto = System.currentTimeMillis() + 500;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public boolean isUsed() {
-		return used;
-	}
+    public boolean isUsed() {
+        return used;
+    }
 
-	public void setUsed(boolean used) {
-		this.used = used;
-	}
+    public void setUsed(boolean used) {
+        this.used = used;
+    }
 
-	public long getInUseUpto() {
-		return inUseUpto;
-	}
+    public long getInUseUpto() {
+        return inUseUpto;
+    }
 
-	public void setInUseUpto(long inUseUpto) {
-		this.inUseUpto = inUseUpto;
-	}
+    public void setInUseUpto(long inUseUpto) {
+        this.inUseUpto = inUseUpto;
+    }
 
-	@Override
-	public String toString() {
-		return "Permit{" +
-				"id='" + id + '\'' +
-				", name='" + name + '\'' +
-				", inUseUpto=" + inUseUpto +
-				", used=" + used +
-				'}';
-	}
+    @Override
+    public String toString() {
+        return "Permit{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", inUseUpto=" + inUseUpto
+                + ", used=" + used + '}';
+    }
 }
