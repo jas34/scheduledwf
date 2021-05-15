@@ -8,8 +8,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
+
 import com.google.inject.Singleton;
 import com.netflix.conductor.common.run.SearchResult;
+
 import io.github.jas34.scheduledwf.dao.IndexScheduledWfDAO;
 import io.github.jas34.scheduledwf.run.ManagerInfo;
 import io.github.jas34.scheduledwf.run.ScheduledWfExecData;
@@ -81,7 +83,7 @@ public class InMemoryIndexScheduledWfDAO implements IndexScheduledWfDAO {
 
     @Override
     public SearchResult<ScheduledWfExecData> getScheduledWfExecData(String schedulerId, int start, int size) {
-        Collection<ScheduledWfExecData> values =  scheduledWfExecDataStore.values();
+        Collection<ScheduledWfExecData> values = scheduledWfExecDataStore.values();
         if (Objects.isNull(values)) {
             return null;
         }

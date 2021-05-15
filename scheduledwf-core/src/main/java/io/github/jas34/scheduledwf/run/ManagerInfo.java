@@ -53,11 +53,7 @@ public class ManagerInfo extends Auditable {
 
     @Override
     public String toString() {
-        return "ManagerInfo{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", nodeAddress='" + nodeAddress + '\'' +
-                ", status=" + status +
-                "} " + super.toString();
+        return "ManagerInfo{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", nodeAddress='"
+                + nodeAddress + '\'' + ", status=" + status + "} " + super.toString();
     }
 }

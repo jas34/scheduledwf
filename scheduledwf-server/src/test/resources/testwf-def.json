@@ -1,17 +1,17 @@
 {
-    "name": "testwf",
-    "description": "This is a sample workflow for testing",
-    "version": 1,
-    "schemaVersion": 2,
-    "ownerEmail": "jas34@gmail.com",
-    "tasks": [
-        {
-            "name": "log_my_name_task",
-            "taskReferenceName": "log_my_name_task",
-            "inputParameters": {
-                "name": "${workflow.input.name}"
-            },
-            "type": "SIMPLE"
-        }
-    ]
+  "name": "testwf",
+  "description": "This is a sample workflow for testing",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "jas34@gmail.com",
+  "tasks": [
+    {
+      "name": "log_my_name_task",
+      "taskReferenceName": "log_my_name_task",
+      "inputParameters": {
+        "name": "${workflow.input.name}"
+      },
+      "type": "SIMPLE"
+    }
+  ]
 }

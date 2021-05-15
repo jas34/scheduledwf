@@ -7,12 +7,12 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.redisson.Redisson;
 import org.redisson.api.RMapCache;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.conductor.core.config.Configuration;
 
 /**
@@ -59,7 +59,7 @@ public class RedisPermitDAO implements PermitDAO {
     }
 
     private Permit readValue(String json) {
-        if(StringUtils.isEmpty(json)) {
+        if (StringUtils.isEmpty(json)) {
             return null;
         }
 

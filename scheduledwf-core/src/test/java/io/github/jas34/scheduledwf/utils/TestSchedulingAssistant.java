@@ -1,14 +1,14 @@
 package io.github.jas34.scheduledwf.utils;
 
-import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
-import io.github.jas34.scheduledwf.run.SchedulingResult;
-import io.github.jas34.scheduledwf.run.ShutdownResult;
-import io.github.jas34.scheduledwf.execution.WorkflowSchedulingAssistant;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import io.github.jas34.scheduledwf.execution.WorkflowSchedulingAssistant;
+import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
+import io.github.jas34.scheduledwf.run.SchedulingResult;
+import io.github.jas34.scheduledwf.run.ShutdownResult;
 
 /**
  * This schedulingAssistant just meant for testing purpose
@@ -40,7 +40,8 @@ public class TestSchedulingAssistant implements WorkflowSchedulingAssistant {
     }
 
     @Override
-    public List<ShutdownResult> shutdownAllSchedulersWithFailSafety(List<ScheduledWorkFlow> scheduledWorkFlows) {
+    public List<ShutdownResult> shutdownAllSchedulersWithFailSafety(
+            List<ScheduledWorkFlow> scheduledWorkFlows) {
         List<ShutdownResult> results = new ArrayList<>();
         scheduledWorkFlows.forEach(scheduledWorkFlow -> {
             results.add(shutdownSchedulerWithFailSafety(scheduledWorkFlow));

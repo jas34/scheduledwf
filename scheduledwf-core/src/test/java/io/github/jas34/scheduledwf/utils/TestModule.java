@@ -4,11 +4,10 @@ import com.coreoz.wisp.Scheduler;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import com.google.inject.TypeLiteral;
+
 import io.github.jas34.scheduledwf.config.WispSchedulerProvider;
 import io.github.jas34.scheduledwf.dao.IndexScheduledWfDAO;
 import io.github.jas34.scheduledwf.dao.memory.InMemoryIndexScheduledWfDAO;
-import io.github.jas34.scheduledwf.scheduler.TestScheduledTaskProvider;
-import io.github.jas34.scheduledwf.scheduler.WorkflowScheduler;
 import io.github.jas34.scheduledwf.execution.DefaultWorkflowSchedulingAssistant;
 import io.github.jas34.scheduledwf.execution.WorkflowSchedulingAssistant;
 import io.github.jas34.scheduledwf.scheduler.CronBasedWorkflowScheduler;
@@ -18,6 +17,8 @@ import io.github.jas34.scheduledwf.scheduler.IndexExecutionDataCallback;
 import io.github.jas34.scheduledwf.scheduler.ScheduledProcess;
 import io.github.jas34.scheduledwf.scheduler.ScheduledTaskProvider;
 import io.github.jas34.scheduledwf.scheduler.SchedulerStats;
+import io.github.jas34.scheduledwf.scheduler.TestScheduledTaskProvider;
+import io.github.jas34.scheduledwf.scheduler.WorkflowScheduler;
 import io.github.jas34.scheduledwf.scheduler.WorkflowSchedulerFactory;
 
 /**

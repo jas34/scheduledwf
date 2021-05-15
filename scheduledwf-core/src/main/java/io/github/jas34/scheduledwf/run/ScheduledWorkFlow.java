@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.netflix.conductor.common.metadata.Auditable;
+
 import io.github.jas34.scheduledwf.scheduler.ScheduledProcess;
+
 import net.minidev.json.annotate.JsonIgnore;
 
 /**
@@ -149,18 +151,10 @@ public class ScheduledWorkFlow extends Auditable implements Serializable {
 
     @Override
     public String toString() {
-        return "ScheduledWorkFlow{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", nodeAddress='" + nodeAddress + '\'' +
-                ", wfName='" + wfName + '\'' +
-                ", wfVersion=" + wfVersion +
-                ", wfInput=" + wfInput +
-                ", cronExpression='" + cronExpression + '\'' +
-                ", state=" + state +
-                ", scheduledProcess=" + scheduledProcess +
-                ", managerRefId='" + managerRefId + '\'' +
-                ", schedulingException=" + schedulingException +
-                "} " + super.toString();
+        return "ScheduledWorkFlow{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", nodeAddress='"
+                + nodeAddress + '\'' + ", wfName='" + wfName + '\'' + ", wfVersion=" + wfVersion
+                + ", wfInput=" + wfInput + ", cronExpression='" + cronExpression + '\'' + ", state=" + state
+                + ", scheduledProcess=" + scheduledProcess + ", managerRefId='" + managerRefId + '\''
+                + ", schedulingException=" + schedulingException + "} " + super.toString();
     }
 }

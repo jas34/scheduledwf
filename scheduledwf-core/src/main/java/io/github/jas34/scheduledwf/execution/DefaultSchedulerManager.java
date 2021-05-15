@@ -7,7 +7,19 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
 import javax.annotation.PreDestroy;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.cronutils.utils.VisibleForTesting;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
+import com.netflix.conductor.core.utils.IDGenerator;
+import com.netflix.conductor.dao.MetadataDAO;
 
 import io.github.jas34.scheduledwf.dao.IndexScheduledWfDAO;
 import io.github.jas34.scheduledwf.dao.ScheduledWfMetadataDAO;
@@ -17,15 +29,6 @@ import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 import io.github.jas34.scheduledwf.run.SchedulingResult;
 import io.github.jas34.scheduledwf.run.ShutdownResult;
 import io.github.jas34.scheduledwf.run.Status;
-import org.apache.commons.collections4.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.cronutils.utils.VisibleForTesting;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
-import com.netflix.conductor.core.utils.IDGenerator;
-import com.netflix.conductor.dao.MetadataDAO;
 
 /**
  * TODO: to implement auto-recovery in case registry and scheduler goes out of sync from each other.

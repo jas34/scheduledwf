@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import io.github.jas34.scheduledwf.dao.IndexScheduledWfDAO;
-import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 import org.apache.commons.collections4.CollectionUtils;
 
 import com.google.common.cache.CacheBuilder;
@@ -14,7 +12,9 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.inject.Singleton;
 
+import io.github.jas34.scheduledwf.dao.IndexScheduledWfDAO;
 import io.github.jas34.scheduledwf.dao.ScheduledWfExecutionDAO;
+import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 
 /**
  * Currently we do not see any prominent use case to have external persistence of this data layer.

@@ -3,9 +3,10 @@ package io.github.jas34.scheduledwf.dao;
 import java.util.List;
 
 import com.netflix.conductor.common.run.SearchResult;
+
 import io.github.jas34.scheduledwf.run.ManagerInfo;
-import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 import io.github.jas34.scheduledwf.run.ScheduledWfExecData;
+import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 
 
 /**
@@ -19,8 +20,8 @@ public interface IndexScheduledWfDAO {
 
     void indexExecutedScheduledWorkflow(ScheduledWfExecData execData);
 
-    SearchResult<ScheduledWorkFlow> getScheduledWorkflow(String name, String managerId,
-                                      String nodeAddress, int start, int size);
+    SearchResult<ScheduledWorkFlow> getScheduledWorkflow(String name, String managerId, String nodeAddress,
+            int start, int size);
 
     SearchResult<ScheduledWorkFlow> getScheduledWorkflow(String schedulerId, int start, int size);
 

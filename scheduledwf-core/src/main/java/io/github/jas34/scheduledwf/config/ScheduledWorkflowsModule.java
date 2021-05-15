@@ -7,10 +7,6 @@ import com.google.inject.TypeLiteral;
 
 import io.github.jas34.scheduledwf.dao.ScheduledWfExecutionDAO;
 import io.github.jas34.scheduledwf.dao.memory.InMemoryScheduledWfExecutionDAO;
-import io.github.jas34.scheduledwf.scheduler.WorkflowScheduler;
-import io.github.jas34.scheduledwf.service.MetadataService;
-import io.github.jas34.scheduledwf.service.MetadataServiceImpl;
-import io.github.jas34.scheduledwf.service.SchedulerExecutionService;
 import io.github.jas34.scheduledwf.execution.DefaultScheduledProcessRegistry;
 import io.github.jas34.scheduledwf.execution.DefaultSchedulerManager;
 import io.github.jas34.scheduledwf.execution.DefaultWorkflowSchedulingAssistant;
@@ -24,7 +20,11 @@ import io.github.jas34.scheduledwf.scheduler.IndexExecutionDataCallback;
 import io.github.jas34.scheduledwf.scheduler.ScheduledProcess;
 import io.github.jas34.scheduledwf.scheduler.ScheduledTaskProvider;
 import io.github.jas34.scheduledwf.scheduler.SchedulerStats;
+import io.github.jas34.scheduledwf.scheduler.WorkflowScheduler;
 import io.github.jas34.scheduledwf.scheduler.WorkflowSchedulerFactory;
+import io.github.jas34.scheduledwf.service.MetadataService;
+import io.github.jas34.scheduledwf.service.MetadataServiceImpl;
+import io.github.jas34.scheduledwf.service.SchedulerExecutionService;
 
 /**
  * @author Jasbir Singh

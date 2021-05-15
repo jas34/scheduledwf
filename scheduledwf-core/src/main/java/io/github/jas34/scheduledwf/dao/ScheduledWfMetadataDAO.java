@@ -1,9 +1,9 @@
 package io.github.jas34.scheduledwf.dao;
 
-import io.github.jas34.scheduledwf.metadata.ScheduleWfDef;
-
 import java.util.List;
 import java.util.Optional;
+
+import io.github.jas34.scheduledwf.metadata.ScheduleWfDef;
 
 /**
  * @author Jasbir Singh
@@ -20,7 +20,7 @@ public interface ScheduledWfMetadataDAO {
 
     Optional<ScheduleWfDef> getScheduledWorkflowDef(String name);
 
-    Optional<List<ScheduleWfDef>> getAllScheduledWorkflowDefsByStatus(ScheduleWfDef.Status...status);
+    Optional<List<ScheduleWfDef>> getAllScheduledWorkflowDefsByStatus(ScheduleWfDef.Status... status);
 
     Optional<List<ScheduleWfDef>> getAllScheduledWorkflowDefs();
 }

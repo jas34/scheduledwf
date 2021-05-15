@@ -7,7 +7,7 @@ import java.util.Optional;
  */
 public interface PermitDAO {
 
-	void insertOrUpdate(Permit permit);
+    void insertOrUpdate(Permit permit);
 
-	Optional<Permit> fetchByName(String name);
+    Optional<Permit> fetchByName(String name);
 }

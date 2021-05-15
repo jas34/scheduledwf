@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import javax.annotation.PreDestroy;
 
-import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +14,8 @@ import com.coreoz.wisp.schedule.Schedule;
 import com.coreoz.wisp.schedule.cron.CronSchedule;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 
 /**
  * @author Jasbir Singh

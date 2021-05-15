@@ -1,15 +1,15 @@
 package io.github.jas34.scheduledwf.scheduler;
 
 
-import io.github.jas34.scheduledwf.metadata.ScheduledTaskDef;
-import io.github.jas34.scheduledwf.run.Status;
-import io.github.jas34.scheduledwf.run.TriggerResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.netflix.conductor.service.WorkflowService;
 
 import io.github.jas34.scheduledwf.concurrent.LockingService;
+import io.github.jas34.scheduledwf.metadata.ScheduledTaskDef;
+import io.github.jas34.scheduledwf.run.Status;
+import io.github.jas34.scheduledwf.run.TriggerResult;
 
 /**
  * @author Jasbir Singh
@@ -40,7 +40,7 @@ public class TriggerScheduledWorkFlowTask implements Runnable {
 
     @Override
     public void run() {
-        if(!lockingService.acquireLock(taskDef)) {
+        if (!lockingService.acquireLock(taskDef)) {
             return;
         }
 
@@ -67,11 +67,11 @@ public class TriggerScheduledWorkFlowTask implements Runnable {
         lockingService.releaseLock(taskDef, true);
     }
 
-    private String resolveLockId(){
+    private String resolveLockId() {
         return taskDef.getWfName() + "-" + taskDef.getWfVersion();
     }
 
-    private String resolvePermitId(){
-        return taskDef.getName() + "-" + schedulerStats.nextExecutionTimeInMillis(taskDef.getName() );
+    private String resolvePermitId() {
+        return taskDef.getName() + "-" + schedulerStats.nextExecutionTimeInMillis(taskDef.getName());
     }
 }

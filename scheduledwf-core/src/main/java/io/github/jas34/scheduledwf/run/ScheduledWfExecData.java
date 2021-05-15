@@ -1,8 +1,8 @@
 package io.github.jas34.scheduledwf.run;
 
-import com.netflix.conductor.common.metadata.Auditable;
-
 import java.util.Map;
+
+import com.netflix.conductor.common.metadata.Auditable;
 
 /**
  * @author Jasbir Singh
@@ -81,21 +81,13 @@ public class ScheduledWfExecData extends Auditable {
 
     @Override
     public String toString() {
-        return "ScheduledWfExecData{" +
-                "schedulerId='" + schedulerId + '\'' +
-                ", name='" + name + '\'' +
-                ", wfName='" + wfName + '\'' +
-                ", wfVersion=" + wfVersion +
-                ", nodeAddress='" + nodeAddress + '\'' +
-                ", managerRefId='" + managerRefId + '\'' +
-                ", executedAt='" + executedAt + '\'' +
-                ", nextRunAt='" + nextRunAt + '\'' +
-                ", lastExecutionEndedAt='" + lastExecutionEndedAt + '\'' +
-                ", triggerId='" + triggerId + '\'' +
-                ", executionStatus='" + executionStatus + '\'' +
-                ", executionFailureReason='" + executionFailureReason + '\'' +
-                ", input=" + input +
-                "} " + super.toString();
+        return "ScheduledWfExecData{" + "schedulerId='" + schedulerId + '\'' + ", name='" + name + '\''
+                + ", wfName='" + wfName + '\'' + ", wfVersion=" + wfVersion + ", nodeAddress='" + nodeAddress
+                + '\'' + ", managerRefId='" + managerRefId + '\'' + ", executedAt='" + executedAt + '\''
+                + ", nextRunAt='" + nextRunAt + '\'' + ", lastExecutionEndedAt='" + lastExecutionEndedAt
+                + '\'' + ", triggerId='" + triggerId + '\'' + ", executionStatus='" + executionStatus + '\''
+                + ", executionFailureReason='" + executionFailureReason + '\'' + ", input=" + input + "} "
+                + super.toString();
     }
 
     public void setInput(Map<String, Object> input) {

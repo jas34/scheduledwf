@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 
-import io.github.jas34.scheduledwf.concurrent.LocalOnlyPermitDAO;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -22,6 +21,7 @@ import com.netflix.conductor.core.utils.LocalOnlyLock;
 import com.netflix.conductor.core.utils.Lock;
 
 import io.github.jas34.scheduledwf.concurrent.ExecutionPermitter;
+import io.github.jas34.scheduledwf.concurrent.LocalOnlyPermitDAO;
 import io.github.jas34.scheduledwf.concurrent.LockingService;
 import io.github.jas34.scheduledwf.metadata.ScheduledTaskDef;
 

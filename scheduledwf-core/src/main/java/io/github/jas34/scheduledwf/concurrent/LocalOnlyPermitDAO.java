@@ -7,8 +7,8 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
 /**
- * It makes sense to use this DAO only for testing.
- * For distributed env always use {@link RedisPermitDAO}
+ * It makes sense to use this DAO only for testing. For distributed env always use
+ * {@link RedisPermitDAO}
  *
  * @author Jasbir Singh
  */

@@ -7,14 +7,15 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import io.github.jas34.scheduledwf.dao.ScheduledWfExecutionDAO;
-import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
-import io.github.jas34.scheduledwf.scheduler.ScheduledProcess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import io.github.jas34.scheduledwf.dao.ScheduledWfExecutionDAO;
+import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
+import io.github.jas34.scheduledwf.scheduler.ScheduledProcess;
 
 import net.jcip.annotations.NotThreadSafe;
 
