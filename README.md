@@ -3,8 +3,11 @@ Schedule Conductor workflow is a _scheduler as a service_ that runs in the cloud
 embedded in it. It runs as an extension module of conductor.
 
 [![Build Status](https://travis-ci.com/jas34/scheduledwf.svg?token=k2Upd1dy5qz2VgAZDCYD&branch=master)]()
-[![GitHub Release](https://img.shields.io/github/release/jas34/scheduledwf.svg?style=flat)](https://github.com/jas34/scheduledwf/releases) 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.jas34/scheduledwf-server/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.jas34/scheduledwf-server)
+[![GitHub Release](https://img.shields.io/github/release/jas34/scheduledwf.svg?style=flat)](https://github.com/jas34/scheduledwf/releases)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.jas34/scheduledwf-parent.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.jas34%22%20AND%20a:%22scheduledwf-parent%22) 
+
+### Build
+_scheduledwf-server_: [![Maven Central](https://img.shields.io/maven-central/v/io.github.jas34/scheduledwf-server.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.jas34%22%20AND%20a:%22scheduledwf-server%22)
 
 ### Motivation
 - In digital space there are many use cases that are solved by running schedulers. Some of the common cases are:
@@ -58,9 +61,10 @@ Architecture
 
 Getting started
 --------------
-- Download jar from maven central ---TBD---
+- Download jar from maven central [scheduledwf-server
+](https://search.maven.org/artifact/io.github.jas34/scheduledwf-server) 
 - Alternatively:
-	- you can fork a branch from ---Link to master TBD---
+	- you can fork a branch from [master](https://github.com/jas34/scheduledwf.git)
 	- run ./mvnw clean install
 - Executable jar can be found at `scheduledwf/scheduledwf-server/target/scheduledwf-server-{version}.jar`
 - start server with command:
