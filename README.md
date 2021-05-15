@@ -2,6 +2,10 @@
 Schedule Conductor workflow is a _scheduler as a service_ that runs in the cloud with [Netflix conductor](https://github.com/Netflix/conductor)
 embedded in it. It runs as an extension module of conductor.
 
+[![Build Status](https://travis-ci.com/jas34/scheduledwf.svg?token=k2Upd1dy5qz2VgAZDCYD&branch=master)]()
+[![GitHub Release](https://img.shields.io/github/release/jas34/scheduledwf.svg?style=flat)](https://github.com/jas34/scheduledwf/releases) 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.jas34/scheduledwf-server/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.jas34/scheduledwf-server)
+
 ### Motivation
 - In digital space there are many use cases that are solved by running schedulers. Some of the common cases are:
 	1. publish site map for an e-commerce website.
@@ -170,4 +174,14 @@ Contributions
 
 License
 -------
-TBA
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
