@@ -5,6 +5,7 @@ embedded in it. It runs as an extension module of conductor.
 [![Build Status](https://travis-ci.com/jas34/scheduledwf.svg?token=k2Upd1dy5qz2VgAZDCYD&branch=master)]()
 [![GitHub Release](https://img.shields.io/github/release/jas34/scheduledwf.svg?style=flat)]() 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.jas34/scheduledwf-server/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.jas34/scheduledwf-server)
+[![GitHub](https://img.shields.io/github/license/jas34/scheduledwf.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 ### Motivation
 - In digital space there are many use cases that are solved by running schedulers. Some of the common cases are:
