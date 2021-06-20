@@ -6,4 +6,4 @@ jdk:
 after_success:
   - mvn clean test jacoco:report coveralls:report
 
-script: sh build.sh
+script:  mvn --settings settings.xml -P bintray clean install
