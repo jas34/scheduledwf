@@ -6,4 +6,4 @@ jdk:
 after_success:
   - mvn clean test jacoco:report coveralls:report
 
-script: ./build.sh
+script: sh build.sh
