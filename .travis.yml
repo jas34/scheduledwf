@@ -7,4 +7,4 @@ after_success:
   - mvn clean test jacoco:report coveralls:report
 
 install:
-  - mvn --settings settings.xml -P bintray clean install
+  - ./build.sh
