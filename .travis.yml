@@ -3,15 +3,11 @@ language: java
 jdk:
   - openjdk8
 
-#before_install:
-#  - cp settings.xml $HOME/.m2/settings.xml
-
-#after_success:
-#  - mvn --settings settings.xml -P bintray clean test jacoco:report coveralls:report
+after_success:
+  - mvn --settings settings.xml -P bintray clean test jacoco:report coveralls:report
 
 install:
   - mvn --settings settings.xml -P bintray clean install
 
 script:
-  - mvn --settings settings.xml -P bintray clean install
-#  - mvn --settings settings.xml test
+  - mvn --settings settings.xml -P bintray test -B
