@@ -3,9 +3,9 @@ language: java
 jdk:
   - openjdk8
 
-after_success:
-  - mvn clean test jacoco:report coveralls:report
+#after_success:
+#  - mvn clean test jacoco:report coveralls:report
 
 install:
   - mvn --settings settings.xml -P bintray clean install
-  - mvn --settings settings.xml test
+#  - mvn --settings settings.xml test
