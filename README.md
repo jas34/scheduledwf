@@ -69,7 +69,7 @@ Getting started
 	- run `mvn --settings settings.xml -P bintray clean install`
 - Executable jar can be found at `scheduledwf/scheduledwf-server/target/scheduledwf-server-{version}.jar`
 - start server with command:
-	`java -jar scheduledwf-server-{version}T.jar [PATH TO PROPERTY FILE] [log4j.properties file path]`
+	`java -jar scheduledwf-server-{version}.jar [PATH TO PROPERTY FILE] [log4j.properties file path]`
 	
 ##### Running scheduled workflow as a module
 - If you are already running conductor server forked from [Netflix conductor](https://github.com/Netflix/conductor)

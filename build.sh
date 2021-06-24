@@ -1,1 +1,0 @@
- mvn --settings settings.xml -P bintray clean install
