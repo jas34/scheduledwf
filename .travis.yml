@@ -4,4 +4,10 @@ jdk:
   - openjdk8
 
 after_success:
-  - mvn clean test jacoco:report coveralls:report
+  - mvn --settings settings.xml -P bintray clean test jacoco:report coveralls:report
+
+install:
+  - mvn --settings settings.xml -P bintray clean install -Dmaven.test.skip=true
+
+script:
+  - mvn --settings settings.xml -P bintray test -B

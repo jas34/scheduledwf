@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<artifactId>scheduledwf-parent</artifactId>
@@ -8,7 +9,7 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>scheduledwf-resources</artifactId>
+	<artifactId>scheduledwf-module</artifactId>
 
 	<dependencies>
 		<dependency>
@@ -16,10 +17,12 @@
 			<artifactId>scheduledwf-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.netflix.conductor</groupId>
-			<artifactId>conductor-jersey</artifactId>
-			<version>${conductor-version}</version>
+			<groupId>io.github.jas34</groupId>
+			<artifactId>scheduledwf-resources</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.github.jas34</groupId>
+			<artifactId>scheduled-mysql-persistence</artifactId>
 		</dependency>
 	</dependencies>
-
 </project>

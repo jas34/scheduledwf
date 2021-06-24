@@ -60,6 +60,7 @@
 		<conductor-version>2.30.4</conductor-version>
 		<wisp-version>2.2.0</wisp-version>
 		<cron-utils-version>8.0.0</cron-utils-version>
+		<redisson-version>3.11.4</redisson-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -88,6 +89,7 @@
 		<module>scheduled-mysql-persistence</module>
 		<module>scheduledwf-resources</module>
 		<module>scheduledwf-server</module>
+		<module>scheduledwf-module</module>
 	</modules>
 
 	<dependencyManagement>
@@ -110,6 +112,11 @@
 			<dependency>
 				<groupId>io.github.jas34</groupId>
 				<artifactId>scheduledwf-server</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.github.jas34</groupId>
+				<artifactId>scheduledwf-module</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 		</dependencies>
