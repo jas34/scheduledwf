@@ -61,14 +61,32 @@ Architecture
 
 Getting started
 --------------
+##### Running scheduled workflow as a server:
 - Download jar from maven central [scheduledwf-server
 ](https://search.maven.org/artifact/io.github.jas34/scheduledwf-server) 
 - Alternatively:
 	- you can fork a branch from [master](https://github.com/jas34/scheduledwf.git)
-	- run ./mvnw clean install
+	- run `mvn --settings settings.xml -P bintray clean install`
 - Executable jar can be found at `scheduledwf/scheduledwf-server/target/scheduledwf-server-{version}.jar`
 - start server with command:
 	`java -jar scheduledwf-server-{version}T.jar [PATH TO PROPERTY FILE] [log4j.properties file path]`
+	
+##### Running scheduled workflow as a module
+- If you are already running conductor server forked from [Netflix conductor](https://github.com/Netflix/conductor)
+then you can use scheduled workflow as an additional dependency.
+- Add the following dependency in:
+	- maven build:
+		```xml
+		<dependency>
+            <groupId>io.github.jas34</groupId>
+            <artifactId>scheduledwf-module</artifactId>
+            <version>${scheduledwf-version}</version>
+        </dependency>
+		```
+	- gradle build:
+		```xml
+		compile 'io.github.jas34:scheduledwf-module:${scheduledwf-version}'
+		```
 	
 Scheduling And Managing A Workflow
 -------------
