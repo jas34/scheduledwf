@@ -35,6 +35,19 @@
 			<artifactId>redisson</artifactId>
 			<version>${redisson-version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.github.kstyrc</groupId>
+			<artifactId>embedded-redis</artifactId>
+			<version>0.6</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.netflix.conductor</groupId>
+			<artifactId>conductor-redis-lock</artifactId>
+			<version>${conductor-version}</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 </project>
