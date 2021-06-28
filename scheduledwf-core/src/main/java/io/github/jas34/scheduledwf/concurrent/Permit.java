@@ -15,6 +15,9 @@ public class Permit {
 
     private boolean used;
 
+    public Permit() {
+    }
+
     public Permit(String name) {
         this.name = name;
         this.id = IDGenerator.generate();
