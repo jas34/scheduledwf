@@ -31,7 +31,6 @@ public class TestRedisPermitDAO {
 
     private static RedisServer redisServer;
     private static RedissonClient redisson;
-    // private static Config config;
     private static Configuration configuration;
     private static ObjectMapper objectMapper;
     private RedisPermitDAO redisPermitDAO;
