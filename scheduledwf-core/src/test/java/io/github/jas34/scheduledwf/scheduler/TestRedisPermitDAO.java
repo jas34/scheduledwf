@@ -53,13 +53,6 @@ public class TestRedisPermitDAO {
         }
         redisServer.start();
 
-        // RedisLockConfiguration redisLockConfiguration = new SystemPropertiesRedisLockConfiguration() {
-        // @Override
-        // public String getRedisServerAddress() {
-        // return testServerAddress;
-        // }
-        // };
-
         Config redissonConfig = new Config();
         redissonConfig.useSingleServer().setAddress(testServerAddress).setTimeout(10000);
         redisson = Redisson.create(redissonConfig);
