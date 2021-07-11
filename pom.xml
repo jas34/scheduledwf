@@ -219,11 +219,24 @@
 				<groupId>org.eluder.coveralls</groupId>
 				<artifactId>coveralls-maven-plugin</artifactId>
 				<version>4.3.0</version>
+				<configuration>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.7.9</version>
+				<configuration>
+					<excludes>
+						<exclude>**/MySQLPersistenceModule.class</exclude>
+						<exclude>**/dao/mysql/**</exclude>
+						<exclude>**/config/**</exclude>
+						<exclude>**/metadata/**</exclude>
+						<exclude>**/run/**</exclude>
+						<exclude>**/utils/**</exclude>
+						<exclude>**/resources/**</exclude>
+					</excludes>
+				</configuration>
 				<executions>
 					<execution>
 						<id>prepare-agent</id>
