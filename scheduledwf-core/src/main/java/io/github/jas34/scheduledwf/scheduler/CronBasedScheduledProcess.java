@@ -1,9 +1,11 @@
 package io.github.jas34.scheduledwf.scheduler;
 
+import com.coreoz.wisp.Job;
+
 /**
  * @author Jasbir Singh
  */
-public class CronBasedScheduledProcess<Job> extends ScheduledProcess {
+public class CronBasedScheduledProcess extends ScheduledProcess<Job> {
 
     private Job job;
 

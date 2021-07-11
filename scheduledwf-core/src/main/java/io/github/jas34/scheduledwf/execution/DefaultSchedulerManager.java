@@ -31,7 +31,6 @@ import io.github.jas34.scheduledwf.run.ShutdownResult;
 import io.github.jas34.scheduledwf.run.Status;
 
 /**
- * TODO: to implement auto-recovery in case registry and scheduler goes out of sync from each other.
  *
  * @author Jasbir Singh
  */
@@ -157,6 +156,7 @@ public class DefaultSchedulerManager implements SchedulerManager {
             scheduledWorkFlow.setManagerRefId(managerInfo.getId());
             scheduledWorkFlow.setCreateTime(System.currentTimeMillis());
             scheduledWorkFlow.setCreatedBy(operatedBy());
+            scheduledWorkFlow.setReSchedulingEnabled(true);
 
             if (!processRegistry.addProcess(scheduledWorkFlow) && !isJunitRun) {
                 return;
@@ -202,7 +202,7 @@ public class DefaultSchedulerManager implements SchedulerManager {
             logger.debug("No running process found for shutdown with managerRef={}, with names={}",
                     managerInfo.getId(), names);
 
-            cleanUpMetaDataIfApplicable(tobeShutDownScheduleWfDefsOptional.get());
+//            cleanUpMetaDataIfApplicable(tobeShutDownScheduleWfDefsOptional.get());
             return null;
         }
 
@@ -225,12 +225,12 @@ public class DefaultSchedulerManager implements SchedulerManager {
             doIndexing(shutdownProcess);
             shutdownResults.add(result);
         });
-        cleanUpMetaDataIfApplicable(tobeShutDownScheduleWfDefsOptional.get());
+//        cleanUpMetaDataIfApplicable(tobeShutDownScheduleWfDefsOptional.get());
         return shutdownResults;
     }
 
-    private void cleanUpMetaDataIfApplicable(List<ScheduleWfDef> deletaleDefinitions) {
-        List<String> deletableScheduleWfs = deletaleDefinitions.stream()
+    private void cleanUpMetaDataIfApplicable(List<ScheduleWfDef> deletableDefinitions) {
+        List<String> deletableScheduleWfs = deletableDefinitions.stream()
                 .filter(scheduleWfDef -> ScheduleWfDef.Status.DELETE == scheduleWfDef.getStatus())
                 .map(ScheduleWfDef::getWfName).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(deletableScheduleWfs)) {

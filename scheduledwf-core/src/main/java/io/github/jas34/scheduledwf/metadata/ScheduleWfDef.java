@@ -69,7 +69,7 @@ public class ScheduleWfDef extends Auditable {
     }
 
     public enum Status {
-        RUN, SHUTDOWN, DELETE;
+        RUN, SHUTDOWN, DELETE
     }
 
     @Override

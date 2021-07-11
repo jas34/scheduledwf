@@ -47,9 +47,9 @@ public class MetadataServiceImpl implements MetadataService {
 
         Optional<ScheduleWfDef> scheduleWfDef =
                 scheduleWorkflowMetadataDao.getScheduledWorkflowDef(def.getWfName());
-        if (scheduleWfDef.isPresent()) {
+        if (scheduleWfDef.isPresent() && ScheduleWfDef.Status.RUN == scheduleWfDef.get().getStatus()) {
             throw new ApplicationException(ApplicationException.Code.INVALID_INPUT,
-                    "ScheduleWfDef already present. Cannot accept register.");
+                    "ScheduleWfDef already running. Cannot accept register. First SHUTDOWN or DELETE scheduler.");
         }
         assertCronExpressionIsValid(def.getCronExpression());
         scheduleWorkflowMetadataDao.saveScheduleWorkflow(def);

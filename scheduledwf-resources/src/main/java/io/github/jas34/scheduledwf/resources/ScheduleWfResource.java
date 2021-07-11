@@ -19,6 +19,7 @@ import io.github.jas34.scheduledwf.service.MetadataService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 /**
  * Populates metadata definitions {@link ScheduleWfDef} of objects.
@@ -26,7 +27,7 @@ import io.swagger.annotations.ApiOperation;
  * @author Jasbir Singh
  */
 @Api(value = "/scheduling/metadata", produces = MediaType.APPLICATION_JSON,
-        consumes = MediaType.APPLICATION_JSON, tags = "Scheduled Wofkflow Metadata Management")
+        consumes = MediaType.APPLICATION_JSON, tags = "Scheduled Worfkflow Metadata Management")
 @Path("/scheduling/metadata")
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
@@ -48,8 +49,10 @@ public class ScheduleWfResource {
 
     @PUT
     @Path("/scheduleWf/{name}")
-    @ApiOperation("Update status of a schedule workflow definition")
-    public void update(@PathParam("name") String name, @QueryParam("status") ScheduleWfDef.Status status) {
+    @ApiOperation("Update status of a schedule workflow definition.")
+    public void update(@ApiParam(value = "Scheduled workflow name.") @PathParam("name") String name,
+            @ApiParam(
+                    value = "status=SHUTDOWN/DELETE are equal. Either of them can be used.") @QueryParam("status") ScheduleWfDef.Status status) {
         metadataService.updateScheduledWorkflowDef(name, status);
     }
 
@@ -66,11 +69,4 @@ public class ScheduleWfResource {
     public List<ScheduleWfDef> getAll() {
         return metadataService.getScheduleWorkflowDefs();
     }
-
-    // @DELETE
-    // @Path("/scheduleWf/{name}")
-    // @ApiOperation("Removes schedule workflow definition")
-    // public void unregisterDef(@PathParam("name") String name) {
-    // metadataService.unregisterScheduleWorkflowDef(name);
-    // }
 }

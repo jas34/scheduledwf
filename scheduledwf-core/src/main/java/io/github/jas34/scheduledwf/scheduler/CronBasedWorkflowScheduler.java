@@ -1,6 +1,7 @@
 package io.github.jas34.scheduledwf.scheduler;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.PreDestroy;
@@ -22,7 +23,7 @@ import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
  */
 @Singleton
 public class CronBasedWorkflowScheduler
-        implements WorkflowScheduler<CronBasedScheduledProcess<Job>>, SchedulerStats {
+        implements WorkflowScheduler<CronBasedScheduledProcess>, SchedulerStats {
     private final Logger logger = LoggerFactory.getLogger(CronBasedWorkflowScheduler.class);
 
     private Scheduler scheduler;
@@ -35,19 +36,24 @@ public class CronBasedWorkflowScheduler
     }
 
     @Override
-    public CronBasedScheduledProcess<Job> schedule(ScheduledWorkFlow scheduledWorkFlow) {
+    public CronBasedScheduledProcess schedule(ScheduledWorkFlow scheduledWorkFlow) {
         Schedule schedule = CronSchedule.parseQuartzCron(scheduledWorkFlow.getCronExpression());
+        if (scheduledWorkFlow.isReSchedulingEnabled()
+                && Objects.nonNull(scheduledWorkFlow.getScheduledProcess())
+                && Objects.nonNull(resolveJobFromName(scheduledWorkFlow.getWfName()))) {
+            shutdown((CronBasedScheduledProcess) scheduledWorkFlow.getScheduledProcess());
+        }
         Job scheduledJob = scheduler.schedule(scheduledWorkFlow.getName(),
                 taskProvider.getTask(scheduledWorkFlow, this), schedule);
         logger.info("scheduledWorkFlow scheduled with jobName={}", scheduledJob.name());
-        return new CronBasedScheduledProcess<>(scheduledJob);
+        return new CronBasedScheduledProcess(scheduledJob);
     }
 
     @Override
-    public Void shutdown(CronBasedScheduledProcess<Job> scheduledProcess) {
+    public Void shutdown(CronBasedScheduledProcess scheduledProcess) {
         String jobName = scheduledProcess.getJobReference().name();
-        scheduler.cancel(jobName);
-        logger.info("scheduledWorkFlow with jobName={} cancelled", jobName);
+        scheduler.cancel(jobName)
+                .thenRun(() -> logger.info("scheduledWorkFlow with jobName={} cancelled.", jobName));
         return null;
     }
 

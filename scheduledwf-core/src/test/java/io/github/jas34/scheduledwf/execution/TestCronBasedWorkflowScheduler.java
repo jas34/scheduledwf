@@ -43,8 +43,8 @@ public class TestCronBasedWorkflowScheduler extends TestBase {
     @Test
     public void test_scheduler() {
         ScheduledWorkFlow scheduledWorkFlow =
-                createScheduledWorkFlow(managerInfo, TEST_WF_NAME, ScheduledWorkFlow.State.INITIALIZED);
-        CronBasedScheduledProcess<Job> scheduledProcess =
+                createScheduledWorkFlow(managerInfo, TEST_WF_NAME + "-1", ScheduledWorkFlow.State.INITIALIZED);
+        CronBasedScheduledProcess scheduledProcess =
                 cronBasedWorkflowScheduler.schedule(scheduledWorkFlow);
         Job job = scheduledProcess.getJobReference();
 
@@ -56,6 +56,48 @@ public class TestCronBasedWorkflowScheduler extends TestBase {
         assertTrue(0 < job.executionsCount());
 
         // test shutdown
+        cronBasedWorkflowScheduler.shutdown(scheduledProcess);
+        assertEquals(resolveNextExecutionTime(scheduledProcess.getJobReference()), -1L);
+    }
+
+    @Test
+    public void test_reScheduling() {
+        ScheduledWorkFlow scheduledWorkFlow =
+                createScheduledWorkFlow(managerInfo, TEST_WF_NAME + "-2", ScheduledWorkFlow.State.INITIALIZED);
+        scheduledWorkFlow.setReSchedulingEnabled(true);
+        scheduledWorkFlow.setScheduledProcess(null);
+        scheduledWorkFlow.setWfName(TEST_WF_NAME + "-2");
+        CronBasedScheduledProcess scheduledProcess =
+                cronBasedWorkflowScheduler.schedule(scheduledWorkFlow);
+        Job job = scheduledProcess.getJobReference();
+
+        assertNotNull(scheduler.findJob(scheduledWorkFlow.getName()));
+        assertEquals(scheduledWorkFlow.getName(), job.name());
+
+        // lets wait for job to run and then check executionsCount. It should be greater than 0
+        sleepUninterruptibly(3000, TimeUnit.MILLISECONDS);
+        assertTrue(0 < job.executionsCount());
+
+        //override definition for rescheduling.
+        scheduledWorkFlow.setScheduledProcess(scheduledProcess);
+        scheduledWorkFlow.setCronExpression("0/2 1/1 * 1/1 * ? *");
+        System.out.println("Going to schedule updated scheduler definition");
+
+        scheduledProcess = cronBasedWorkflowScheduler.schedule(scheduledWorkFlow);
+        sleepUninterruptibly(5000, TimeUnit.MILLISECONDS);
+        assertTrue(0 < scheduledProcess.getJobReference().executionsCount());
+    }
+
+    @Test
+    public void test_Job_Cacel_Without_Wait_To_Complete() {
+        ScheduledWorkFlow scheduledWorkFlow =
+                createScheduledWorkFlow(managerInfo, TEST_WF_NAME + "-3-sleep", ScheduledWorkFlow.State.INITIALIZED);
+        scheduledWorkFlow.setReSchedulingEnabled(true);
+        scheduledWorkFlow.setScheduledProcess(null);
+        scheduledWorkFlow.setWfName(TEST_WF_NAME + "-3-sleep");
+        CronBasedScheduledProcess scheduledProcess =
+                cronBasedWorkflowScheduler.schedule(scheduledWorkFlow);
+        sleepUninterruptibly(5000, TimeUnit.MILLISECONDS);
         cronBasedWorkflowScheduler.shutdown(scheduledProcess);
         assertEquals(resolveNextExecutionTime(scheduledProcess.getJobReference()), -1L);
     }
