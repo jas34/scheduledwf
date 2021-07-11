@@ -10,7 +10,7 @@ embedded in it. It runs as an extension module of conductor.
 ### Build
 _scheduledwf-server_: [![Maven Central](https://img.shields.io/maven-central/v/io.github.jas34/scheduledwf-server.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.jas34%22%20AND%20a:%22scheduledwf-server%22)
 ## Builds
-| Branch |                                                     Build                                                     |
+| Module |                                                     Build                                                     |
 |:------:|:-------------------------------------------------------------------------------------------------------------:|
 | scheduledwf-server | [![Maven Central](https://img.shields.io/maven-central/v/io.github.jas34/scheduledwf-server.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.jas34%22%20AND%20a:%22scheduledwf-server%22) |
 | scheduledwf-module | [![Maven Central](https://img.shields.io/maven-central/v/io.github.jas34/scheduledwf-module.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.jas34%22%20AND%20a:%22scheduledwf-module%22)
