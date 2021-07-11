@@ -4,10 +4,17 @@ embedded in it. It runs as an extension module of conductor.
 
 [![Build Status](https://travis-ci.com/jas34/scheduledwf.svg?token=k2Upd1dy5qz2VgAZDCYD&branch=master)]()
 [![GitHub Release](https://img.shields.io/github/release/jas34/scheduledwf.svg?style=flat)](https://github.com/jas34/scheduledwf/releases)
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.jas34/scheduledwf-parent.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.jas34%22%20AND%20a:%22scheduledwf-parent%22) 
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.jas34/scheduledwf-parent.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.jas34%22%20AND%20a:%22scheduledwf-parent%22)
+[![Coverage Status](https://coveralls.io/repos/github/jas34/scheduledwf/badge.svg?branch=master)](https://coveralls.io/github/jas34/scheduledwf?branch=master) 
 
 ### Build
 _scheduledwf-server_: [![Maven Central](https://img.shields.io/maven-central/v/io.github.jas34/scheduledwf-server.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.jas34%22%20AND%20a:%22scheduledwf-server%22)
+## Builds
+| Branch |                                                     Build                                                     |
+|:------:|:-------------------------------------------------------------------------------------------------------------:|
+| scheduledwf-server | [![Maven Central](https://img.shields.io/maven-central/v/io.github.jas34/scheduledwf-server.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.jas34%22%20AND%20a:%22scheduledwf-server%22) |
+| scheduledwf-module | [![Maven Central](https://img.shields.io/maven-central/v/io.github.jas34/scheduledwf-module.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.jas34%22%20AND%20a:%22scheduledwf-module%22)
+
 
 ### Motivation
 - In digital space there are many use cases that are solved by running schedulers. Some of the common cases are:
