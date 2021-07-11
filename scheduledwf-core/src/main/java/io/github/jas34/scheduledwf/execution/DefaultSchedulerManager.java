@@ -31,7 +31,6 @@ import io.github.jas34.scheduledwf.run.ShutdownResult;
 import io.github.jas34.scheduledwf.run.Status;
 
 /**
- * TODO: to implement auto-recovery in case registry and scheduler goes out of sync from each other.
  *
  * @author Jasbir Singh
  */
