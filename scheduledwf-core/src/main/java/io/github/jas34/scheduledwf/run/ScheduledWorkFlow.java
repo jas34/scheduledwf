@@ -38,6 +38,8 @@ public class ScheduledWorkFlow extends Auditable implements Serializable {
 
     private Throwable schedulingException;
 
+    private boolean reSchedulingEnabled;
+
     public String getId() {
         return id;
     }
@@ -126,6 +128,14 @@ public class ScheduledWorkFlow extends Auditable implements Serializable {
         this.schedulingException = schedulingException;
     }
 
+    public boolean isReSchedulingEnabled() {
+        return reSchedulingEnabled;
+    }
+
+    public void setReSchedulingEnabled(boolean reSchedulingEnabled) {
+        this.reSchedulingEnabled = reSchedulingEnabled;
+    }
+
     public enum State {
         INITIALIZED, SCHEDULING_FAILED, RUNNING, SHUTDOWN, SHUTDOWN_FAILED;
     }
@@ -151,10 +161,19 @@ public class ScheduledWorkFlow extends Auditable implements Serializable {
 
     @Override
     public String toString() {
-        return "ScheduledWorkFlow{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", nodeAddress='"
-                + nodeAddress + '\'' + ", wfName='" + wfName + '\'' + ", wfVersion=" + wfVersion
-                + ", wfInput=" + wfInput + ", cronExpression='" + cronExpression + '\'' + ", state=" + state
-                + ", scheduledProcess=" + scheduledProcess + ", managerRefId='" + managerRefId + '\''
-                + ", schedulingException=" + schedulingException + "} " + super.toString();
+        return "ScheduledWorkFlow{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", nodeAddress='" + nodeAddress + '\'' +
+                ", wfName='" + wfName + '\'' +
+                ", wfVersion=" + wfVersion +
+                ", wfInput=" + wfInput +
+                ", cronExpression='" + cronExpression + '\'' +
+                ", state=" + state +
+                ", scheduledProcess=" + scheduledProcess +
+                ", managerRefId='" + managerRefId + '\'' +
+                ", schedulingException=" + schedulingException +
+                ", reSchedulingEnabled=" + reSchedulingEnabled +
+                "} " + super.toString();
     }
 }

@@ -21,6 +21,9 @@ public class TestScheduledTaskProvider implements ScheduledTaskProvider {
 
     @Override
     public Runnable getTask(ScheduledWorkFlow scheduledWorkFlow, SchedulerStats schedulerStats) {
+        if (scheduledWorkFlow.getWfName().endsWith("sleep")) {
+            return new TestTaskWithSleep(prepareScheduledTaskDef(scheduledWorkFlow), callback);
+        }
         return new TestTask(prepareScheduledTaskDef(scheduledWorkFlow), callback);
     }
 
