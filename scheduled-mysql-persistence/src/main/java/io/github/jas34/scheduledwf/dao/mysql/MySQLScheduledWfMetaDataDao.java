@@ -32,11 +32,6 @@ public class MySQLScheduledWfMetaDataDao extends MySQLBaseDAO implements Schedul
     public void saveScheduleWorkflow(ScheduleWfDef def) {
         validate(def);
         withTransaction(tx -> {
-            if (scheduleWorkflowDefExists(tx, def)) {
-                throw new ApplicationException(ApplicationException.Code.CONFLICT,
-                        "ScheduleWfDef with " + def.toString() + " already exists!");
-            }
-
             insertOrUpdatescheduleWorkflowDef(tx, def);
         });
 
