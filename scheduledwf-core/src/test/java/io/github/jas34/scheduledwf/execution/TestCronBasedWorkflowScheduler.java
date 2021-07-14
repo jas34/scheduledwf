@@ -60,7 +60,7 @@ public class TestCronBasedWorkflowScheduler extends TestBase {
         assertEquals(resolveNextExecutionTime(scheduledProcess.getJobReference()), -1L);
     }
 
-    @Test
+//    @Test [rescheduling not required hence skipping this test case as of now]
     public void test_reScheduling() {
         ScheduledWorkFlow scheduledWorkFlow =
                 createScheduledWorkFlow(managerInfo, TEST_WF_NAME + "-2", ScheduledWorkFlow.State.INITIALIZED);
@@ -89,7 +89,7 @@ public class TestCronBasedWorkflowScheduler extends TestBase {
     }
 
     @Test
-    public void test_Job_Cacel_Without_Wait_To_Complete() {
+    public void test_Job_Cancel_Without_Wait_To_Complete() {
         ScheduledWorkFlow scheduledWorkFlow =
                 createScheduledWorkFlow(managerInfo, TEST_WF_NAME + "-3-sleep", ScheduledWorkFlow.State.INITIALIZED);
         scheduledWorkFlow.setReSchedulingEnabled(true);
