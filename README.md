@@ -7,6 +7,8 @@ embedded in it. It runs as an extension module of conductor.
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.jas34/scheduledwf-parent.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.jas34%22%20AND%20a:%22scheduledwf-parent%22)
 [![Coverage Status](https://coveralls.io/repos/github/jas34/scheduledwf/badge.svg?branch=master)](https://coveralls.io/github/jas34/scheduledwf?branch=master) 
 
+![caption](docs/img/demo.gif)
+
 ## Builds
 | Module |                                                     Build                                                     |
 |:------:|:-------------------------------------------------------------------------------------------------------------:|
