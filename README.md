@@ -102,7 +102,7 @@ Scheduling And Managing A Workflow
 	2. [check-conductor-health-workflow def](scheduledwf-server/src/test/resources/check_conductor_health_workflow_def.json)
 	2. [check-conductor-health-schedule def](scheduledwf-server/src/test/resources/check_conductor_health_schedule_def.json) <br/>
 (Tip: You can use [Cron Maker](http://www.cronmaker.com/) to generate cron expression.)	
-	- From swagger use`Scheduled Workflow Metadata Management`
+	- From swagger use`Scheduled Workflow Metadata Management` to add/update [scheduling metadata](scheduledwf-server/src/test/resources/schedule-testwf-def.json).
 		- POST /scheduling/metadata/scheduleWf: Schedule new workflow
 		- GET /scheduling/metadata/scheduleWf: Get scheduling metadata of scheduled workflows.
 		- GET /scheduling/metadata/scheduleWf/{name}: Get scheduling metadata of scheduled workflows by workflow name.
