@@ -1,11 +1,12 @@
-## Schedule Conductor Workflows
+## Schedule Conductor Workflows ([A Netflix Conductor Community Project](https://github.com/Netflix/conductor/blob/main/RELATED.md#schedule-conductor-workflow))
 Schedule Conductor workflow is a _scheduler as a service_ that runs in the cloud with [Netflix conductor](https://github.com/Netflix/conductor)
-embedded in it. It runs as an extension module of conductor.
+embedded in it. It runs as an extension module of conductor. This is one of community project of netflix conductor community.
 
 [![Build Status](https://travis-ci.com/jas34/scheduledwf.svg?token=k2Upd1dy5qz2VgAZDCYD&branch=master)]()
 [![GitHub Release](https://img.shields.io/github/release/jas34/scheduledwf.svg?style=flat)](https://github.com/jas34/scheduledwf/releases)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.jas34/scheduledwf-parent.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.jas34%22%20AND%20a:%22scheduledwf-parent%22)
 [![Coverage Status](https://coveralls.io/repos/github/jas34/scheduledwf/badge.svg?branch=master)](https://coveralls.io/github/jas34/scheduledwf?branch=master) 
+
 
 ## Builds
 | Module |                                                     Build                                                     |
@@ -96,9 +97,12 @@ then you can use scheduled workflow as an additional dependency.
 Scheduling And Managing A Workflow
 -------------
 - REST operations for scheduling can be accessed on the conductor swagger at http://{host}:{port}
-- _Example_: Let us schedule sample workflow with name [testwf](scheduledwf-server/src/test/resources/testwf-def.json). 
-Assuming workflow definition already exists in conductor server. You can use [Cron Maker](http://www.cronmaker.com/) to generate cron expression.	
-	- From swagger use`Scheduled Workflow Metadata Management` to add/update [scheduling metadata](scheduledwf-server/src/test/resources/schedule-testwf-def.json).
+- _Example_: Let us schedule sample workflow which checks health of conductor server every 1 minute. Sample definitions are:
+	1. [check-conductor-health-task def](scheduledwf-server/src/test/resources/check_conductor_health_task_def.json)
+	2. [check-conductor-health-workflow def](scheduledwf-server/src/test/resources/check_conductor_health_workflow_def.json)
+	2. [check-conductor-health-schedule def](scheduledwf-server/src/test/resources/check_conductor_health_schedule_def.json) <br/>
+(Tip: You can use [Cron Maker](http://www.cronmaker.com/) to generate cron expression.)	
+	- From swagger use`Scheduled Workflow Metadata Management`
 		- POST /scheduling/metadata/scheduleWf: Schedule new workflow
 		- GET /scheduling/metadata/scheduleWf: Get scheduling metadata of scheduled workflows.
 		- GET /scheduling/metadata/scheduleWf/{name}: Get scheduling metadata of scheduled workflows by workflow name.
@@ -108,7 +112,9 @@ Assuming workflow definition already exists in conductor server. You can use [Cr
 		- to search about schedule manager running on different nodes of cluster.
 		- to search about scheduled jobs based upon scheduling metadata.
 		- to search about different runs of scheduled jobs at scheduled time. The detailed data returned by [IndexScheduledWfDAO](#IndexScheduledWfDAO) 
-
+	- Glimpse of workflow scheduling.
+	![caption](docs/img/demo.gif)
+	 
 ### Runtime Model
 
 ![Scheduled Conductor](docs/img/scheduled-wf-runtime-model.svg)
