@@ -15,19 +15,31 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.utility.DockerImageName;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.github.jas34.scheduledwf.config.MySQLTestConfiguration;
 import io.github.jas34.scheduledwf.metadata.ScheduleWfDef;
 
 /**
  * @author Jasbir Singh
  */
-@RunWith(JUnit4.class)
 @Ignore
+@Import(MySQLTestConfiguration.class)
+@RunWith(SpringRunner.class)
 public class MySQLScheduledWfMetaDataDaoTest {
-
     private MySQLDAOTestUtil testUtil;
     private MySQLScheduledWfMetaDataDao dao;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Rule
     public TestName name = new TestName();
@@ -36,15 +48,19 @@ public class MySQLScheduledWfMetaDataDaoTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Before
-    public void setup() throws Exception {
-        testUtil = new MySQLDAOTestUtil("conductor_unit_test");
+    public void setup() {
+        MySQLContainer<?> mySQLContainer =
+                new MySQLContainer<>(DockerImageName.parse("mysql")).withDatabaseName(name.getMethodName());
+        mySQLContainer.start();
+        testUtil = new MySQLDAOTestUtil(mySQLContainer, objectMapper);
         dao = new MySQLScheduledWfMetaDataDao(testUtil.getObjectMapper(), testUtil.getDataSource());
     }
 
     @After
-    public void teardown() throws Exception {
-        testUtil.resetAllData();
-        testUtil.getDataSource().close();
+    public void teardown() {
+        if (testUtil != null) {
+            testUtil.getDataSource().close();
+        }
     }
 
     @Test

@@ -11,26 +11,30 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit4.SpringRunner;
+
 import com.coreoz.wisp.Job;
 import com.coreoz.wisp.Scheduler;
-import com.google.inject.Inject;
 
+import io.github.jas34.scheduledwf.config.CoreTestConfiguration;
 import io.github.jas34.scheduledwf.run.ManagerInfo;
 import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 import io.github.jas34.scheduledwf.scheduler.CronBasedScheduledProcess;
 import io.github.jas34.scheduledwf.scheduler.CronBasedWorkflowScheduler;
-import io.github.jas34.scheduledwf.utils.TestRunner;
 
 /**
  * @author Jasbir Singh
  */
-@RunWith(TestRunner.class)
+@RunWith(SpringRunner.class)
+@Import(value = {CoreTestConfiguration.class})
 public class TestCronBasedWorkflowScheduler extends TestBase {
 
-    @Inject
+    @Autowired
     private CronBasedWorkflowScheduler cronBasedWorkflowScheduler;
 
-    @Inject
+    @Autowired
     private Scheduler scheduler;
 
     private ManagerInfo managerInfo;
@@ -42,10 +46,9 @@ public class TestCronBasedWorkflowScheduler extends TestBase {
 
     @Test
     public void test_scheduler() {
-        ScheduledWorkFlow scheduledWorkFlow =
-                createScheduledWorkFlow(managerInfo, TEST_WF_NAME + "-1", ScheduledWorkFlow.State.INITIALIZED);
-        CronBasedScheduledProcess scheduledProcess =
-                cronBasedWorkflowScheduler.schedule(scheduledWorkFlow);
+        ScheduledWorkFlow scheduledWorkFlow = createScheduledWorkFlow(managerInfo, TEST_WF_NAME + "-1",
+                ScheduledWorkFlow.State.INITIALIZED);
+        CronBasedScheduledProcess scheduledProcess = cronBasedWorkflowScheduler.schedule(scheduledWorkFlow);
         Job job = scheduledProcess.getJobReference();
 
         assertNotNull(scheduler.findJob(scheduledWorkFlow.getName()));
@@ -60,15 +63,14 @@ public class TestCronBasedWorkflowScheduler extends TestBase {
         assertEquals(resolveNextExecutionTime(scheduledProcess.getJobReference()), -1L);
     }
 
-//    @Test [rescheduling not required hence skipping this test case as of now]
+    // @Test [rescheduling not required hence skipping this test case as of now]
     public void test_reScheduling() {
-        ScheduledWorkFlow scheduledWorkFlow =
-                createScheduledWorkFlow(managerInfo, TEST_WF_NAME + "-2", ScheduledWorkFlow.State.INITIALIZED);
+        ScheduledWorkFlow scheduledWorkFlow = createScheduledWorkFlow(managerInfo, TEST_WF_NAME + "-2",
+                ScheduledWorkFlow.State.INITIALIZED);
         scheduledWorkFlow.setReSchedulingEnabled(true);
         scheduledWorkFlow.setScheduledProcess(null);
         scheduledWorkFlow.setWfName(TEST_WF_NAME + "-2");
-        CronBasedScheduledProcess scheduledProcess =
-                cronBasedWorkflowScheduler.schedule(scheduledWorkFlow);
+        CronBasedScheduledProcess scheduledProcess = cronBasedWorkflowScheduler.schedule(scheduledWorkFlow);
         Job job = scheduledProcess.getJobReference();
 
         assertNotNull(scheduler.findJob(scheduledWorkFlow.getName()));
@@ -78,7 +80,7 @@ public class TestCronBasedWorkflowScheduler extends TestBase {
         sleepUninterruptibly(3000, TimeUnit.MILLISECONDS);
         assertTrue(0 < job.executionsCount());
 
-        //override definition for rescheduling.
+        // override definition for rescheduling.
         scheduledWorkFlow.setScheduledProcess(scheduledProcess);
         scheduledWorkFlow.setCronExpression("0/2 1/1 * 1/1 * ? *");
         System.out.println("Going to schedule updated scheduler definition");
@@ -90,13 +92,12 @@ public class TestCronBasedWorkflowScheduler extends TestBase {
 
     @Test
     public void test_Job_Cancel_Without_Wait_To_Complete() {
-        ScheduledWorkFlow scheduledWorkFlow =
-                createScheduledWorkFlow(managerInfo, TEST_WF_NAME + "-3-sleep", ScheduledWorkFlow.State.INITIALIZED);
+        ScheduledWorkFlow scheduledWorkFlow = createScheduledWorkFlow(managerInfo, TEST_WF_NAME + "-3-sleep",
+                ScheduledWorkFlow.State.INITIALIZED);
         scheduledWorkFlow.setReSchedulingEnabled(true);
         scheduledWorkFlow.setScheduledProcess(null);
         scheduledWorkFlow.setWfName(TEST_WF_NAME + "-3-sleep");
-        CronBasedScheduledProcess scheduledProcess =
-                cronBasedWorkflowScheduler.schedule(scheduledWorkFlow);
+        CronBasedScheduledProcess scheduledProcess = cronBasedWorkflowScheduler.schedule(scheduledWorkFlow);
         sleepUninterruptibly(5000, TimeUnit.MILLISECONDS);
         cronBasedWorkflowScheduler.shutdown(scheduledProcess);
         assertEquals(resolveNextExecutionTime(scheduledProcess.getJobReference()), -1L);

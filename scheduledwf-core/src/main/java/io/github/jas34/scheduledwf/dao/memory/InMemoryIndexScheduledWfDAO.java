@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 
-import com.google.inject.Singleton;
 import com.netflix.conductor.common.run.SearchResult;
 
 import io.github.jas34.scheduledwf.dao.IndexScheduledWfDAO;
@@ -20,7 +19,6 @@ import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 /**
  * @author Jasbir Singh
  */
-@Singleton
 public class InMemoryIndexScheduledWfDAO implements IndexScheduledWfDAO {
 
     private ManagerInfo managerInfo = null;

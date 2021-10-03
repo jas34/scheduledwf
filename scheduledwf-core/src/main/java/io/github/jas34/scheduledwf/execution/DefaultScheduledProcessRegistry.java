@@ -12,9 +12,6 @@ import javax.annotation.concurrent.NotThreadSafe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-
 import io.github.jas34.scheduledwf.dao.ScheduledWfExecutionDAO;
 import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 import io.github.jas34.scheduledwf.scheduler.ScheduledProcess;
@@ -24,7 +21,6 @@ import io.github.jas34.scheduledwf.scheduler.ScheduledProcess;
  *
  * @author Jasbir Singh
  */
-@Singleton
 @NotThreadSafe
 public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry {
 
@@ -36,7 +32,6 @@ public class DefaultScheduledProcessRegistry implements ScheduledProcessRegistry
             Arrays.asList(ScheduledWorkFlow.State.RUNNING, ScheduledWorkFlow.State.SHUTDOWN,
                     ScheduledWorkFlow.State.SHUTDOWN_FAILED);
 
-    @Inject
     public DefaultScheduledProcessRegistry(ScheduledWfExecutionDAO wfExecutionDAO) {
         this.processReferenceMap = new HashMap<>();
         this.wfExecutionDAO = wfExecutionDAO;

@@ -10,7 +10,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.inject.Singleton;
 
 import io.github.jas34.scheduledwf.dao.IndexScheduledWfDAO;
 import io.github.jas34.scheduledwf.dao.ScheduledWfExecutionDAO;
@@ -23,7 +22,6 @@ import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
  *
  * @author Jasbir Singh
  */
-@Singleton
 public class InMemoryScheduledWfExecutionDAO implements ScheduledWfExecutionDAO {
     private static final CacheLoader<String, ScheduledWorkFlow> LOADER =
             new CacheLoader<String, ScheduledWorkFlow>() {

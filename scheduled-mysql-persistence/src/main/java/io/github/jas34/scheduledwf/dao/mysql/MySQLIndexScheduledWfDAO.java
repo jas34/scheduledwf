@@ -6,10 +6,8 @@ import java.util.Optional;
 import javax.sql.DataSource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.netflix.conductor.common.run.SearchResult;
-import com.netflix.conductor.dao.mysql.MySQLBaseDAO;
+import com.netflix.conductor.mysql.dao.MySQLBaseDAO;
 
 import io.github.jas34.scheduledwf.dao.IndexScheduledWfDAO;
 import io.github.jas34.scheduledwf.run.ManagerInfo;
@@ -19,11 +17,9 @@ import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 /**
  * @author Jasbir Singh
  */
-@Singleton
 public class MySQLIndexScheduledWfDAO extends MySQLBaseDAO implements IndexScheduledWfDAO {
 
-    @Inject
-    MySQLIndexScheduledWfDAO(ObjectMapper om, DataSource dataSource) {
+    public MySQLIndexScheduledWfDAO(ObjectMapper om, DataSource dataSource) {
         super(om, dataSource);
     }
 

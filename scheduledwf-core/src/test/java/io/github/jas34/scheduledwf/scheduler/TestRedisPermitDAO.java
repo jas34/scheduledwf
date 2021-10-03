@@ -16,8 +16,6 @@ import org.redisson.config.Config;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.netflix.conductor.core.config.Configuration;
-import com.netflix.conductor.core.config.SystemPropertiesConfiguration;
 
 import io.github.jas34.scheduledwf.concurrent.Permit;
 import io.github.jas34.scheduledwf.concurrent.RedisPermitDAO;
@@ -31,7 +29,6 @@ public class TestRedisPermitDAO {
 
     private static RedisServer redisServer;
     private static RedissonClient redisson;
-    private static Configuration configuration;
     private static ObjectMapper objectMapper;
     private RedisPermitDAO redisPermitDAO;
 
@@ -55,12 +52,11 @@ public class TestRedisPermitDAO {
         Config redissonConfig = new Config();
         redissonConfig.useSingleServer().setAddress(testServerAddress).setTimeout(10000);
         redisson = Redisson.create(redissonConfig);
-        configuration = new SystemPropertiesConfiguration();
     }
 
     @Before
     public void beforeTest() {
-        redisPermitDAO = new RedisPermitDAO((Redisson) redisson, configuration, objectMapper);
+        redisPermitDAO = new RedisPermitDAO((Redisson) redisson, "TestRedisPermitDAO", objectMapper);
     }
 
     @AfterClass

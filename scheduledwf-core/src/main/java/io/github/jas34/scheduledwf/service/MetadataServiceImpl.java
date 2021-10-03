@@ -6,11 +6,8 @@ import java.util.Optional;
 import com.cronutils.model.CronType;
 import com.cronutils.model.definition.CronDefinitionBuilder;
 import com.cronutils.parser.CronParser;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.netflix.conductor.annotations.Service;
 import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
-import com.netflix.conductor.core.execution.ApplicationException;
+import com.netflix.conductor.core.exception.ApplicationException;
 import com.netflix.conductor.dao.MetadataDAO;
 
 import io.github.jas34.scheduledwf.dao.ScheduledWfMetadataDAO;
@@ -19,7 +16,6 @@ import io.github.jas34.scheduledwf.metadata.ScheduleWfDef;
 /**
  * @author Jasbir Singh
  */
-@Singleton
 public class MetadataServiceImpl implements MetadataService {
 
     private static final CronParser QUARTZ_CRON_PARSER =
@@ -29,14 +25,12 @@ public class MetadataServiceImpl implements MetadataService {
 
     private final ScheduledWfMetadataDAO scheduleWorkflowMetadataDao;
 
-    @Inject
     public MetadataServiceImpl(MetadataDAO metadataDAO, ScheduledWfMetadataDAO scheduleWorkflowMetadataDao) {
         this.metadataDAO = metadataDAO;
         this.scheduleWorkflowMetadataDao = scheduleWorkflowMetadataDao;
     }
 
     @Override
-    @Service
     public void registerScheduleWorkflowDef(ScheduleWfDef def) {
         Optional<WorkflowDef> workflowDef = metadataDAO.getWorkflowDef(def.getWfName(), def.getWfVersion());
         if (!workflowDef.isPresent()) {
@@ -56,7 +50,6 @@ public class MetadataServiceImpl implements MetadataService {
     }
 
     @Override
-    @Service
     public void updateScheduledWorkflowDef(String name, ScheduleWfDef.Status status) {
 
         Optional<ScheduleWfDef> scheduledWorkflowDef =
@@ -71,7 +64,6 @@ public class MetadataServiceImpl implements MetadataService {
     }
 
     @Override
-    @Service
     public ScheduleWfDef getScheduledWorkflowDef(String name) {
         Optional<ScheduleWfDef> scheduledWorkflowDef =
                 scheduleWorkflowMetadataDao.getScheduledWorkflowDef(name);
@@ -79,7 +71,6 @@ public class MetadataServiceImpl implements MetadataService {
     }
 
     @Override
-    @Service
     public List<ScheduleWfDef> getScheduleWorkflowDefs() {
         Optional<List<ScheduleWfDef>> allScheduledWorkflowDefs =
                 scheduleWorkflowMetadataDao.getAllScheduledWorkflowDefs();
@@ -87,7 +78,6 @@ public class MetadataServiceImpl implements MetadataService {
     }
 
     @Override
-    @Service
     public void unregisterScheduleWorkflowDef(String name) {
         boolean isRemoved = scheduleWorkflowMetadataDao.removeScheduleWorkflow(name);
         if (!isRemoved) {

@@ -13,15 +13,12 @@ import com.coreoz.wisp.Job;
 import com.coreoz.wisp.Scheduler;
 import com.coreoz.wisp.schedule.Schedule;
 import com.coreoz.wisp.schedule.cron.CronSchedule;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 
 /**
  * @author Jasbir Singh
  */
-@Singleton
 public class CronBasedWorkflowScheduler
         implements WorkflowScheduler<CronBasedScheduledProcess>, SchedulerStats {
     private final Logger logger = LoggerFactory.getLogger(CronBasedWorkflowScheduler.class);
@@ -29,7 +26,6 @@ public class CronBasedWorkflowScheduler
     private Scheduler scheduler;
     private ScheduledTaskProvider taskProvider;
 
-    @Inject
     public CronBasedWorkflowScheduler(Scheduler scheduler, ScheduledTaskProvider taskProvider) {
         this.scheduler = scheduler;
         this.taskProvider = taskProvider;

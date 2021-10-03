@@ -8,7 +8,7 @@
       "taskReferenceName": "check-conductor-health-task",
       "inputParameters": {
         "http_request": {
-          "uri": "http://localhost:8080/api/health",
+          "uri": "http://localhost:8080/actuator/health",
           "method": "GET"
         }
       },

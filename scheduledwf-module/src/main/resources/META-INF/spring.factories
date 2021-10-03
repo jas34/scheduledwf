@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  io.github.jas34.scheduledwf.config.ScheduledWfModuleConfiguration

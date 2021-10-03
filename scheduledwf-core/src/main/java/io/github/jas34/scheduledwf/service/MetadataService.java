@@ -8,9 +8,12 @@ import javax.validation.constraints.NotNull;
 
 import io.github.jas34.scheduledwf.metadata.ScheduleWfDef;
 
+import org.springframework.validation.annotation.Validated;
+
 /**
  * @author Jasbir Singh
  */
+@Validated
 public interface MetadataService {
 
     void registerScheduleWorkflowDef(

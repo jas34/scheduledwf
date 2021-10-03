@@ -1,7 +1,5 @@
 package io.github.jas34.scheduledwf.scheduler;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 import io.github.jas34.scheduledwf.dao.IndexScheduledWfDAO;
 import io.github.jas34.scheduledwf.metadata.ScheduledTaskDef;
@@ -12,13 +10,11 @@ import io.github.jas34.scheduledwf.utils.CommonUtils;
 /**
  * @author Jasbir Singh
  */
-@Singleton
 public class DefaultIndexExecutionDataCallback implements IndexExecutionDataCallback {
 
     private final IndexScheduledWfDAO indexDAO;
     private final SchedulerStats schedule;
 
-    @Inject
     public DefaultIndexExecutionDataCallback(IndexScheduledWfDAO indexDAO, SchedulerStats schedule) {
         this.indexDAO = indexDAO;
         this.schedule = schedule;

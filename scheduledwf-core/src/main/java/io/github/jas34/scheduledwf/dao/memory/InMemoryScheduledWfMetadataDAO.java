@@ -10,15 +10,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.google.inject.Singleton;
-
 import io.github.jas34.scheduledwf.dao.ScheduledWfMetadataDAO;
 import io.github.jas34.scheduledwf.metadata.ScheduleWfDef;
 
 /**
  * @author Jasbir Singh
  */
-@Singleton
 public class InMemoryScheduledWfMetadataDAO implements ScheduledWfMetadataDAO {
 
     private final Map<String, ScheduleWfDef> scheduleWfDefStore = new ConcurrentHashMap<>();

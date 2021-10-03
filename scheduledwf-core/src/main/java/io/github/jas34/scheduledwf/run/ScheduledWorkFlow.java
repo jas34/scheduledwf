@@ -4,11 +4,10 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.netflix.conductor.common.metadata.Auditable;
 
 import io.github.jas34.scheduledwf.scheduler.ScheduledProcess;
-
-import net.minidev.json.annotate.JsonIgnore;
 
 /**
  * @author Jasbir Singh

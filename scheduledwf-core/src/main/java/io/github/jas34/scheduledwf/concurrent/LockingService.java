@@ -2,36 +2,32 @@ package io.github.jas34.scheduledwf.concurrent;
 
 import java.util.concurrent.TimeUnit;
 
+import com.netflix.conductor.core.sync.Lock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
-import com.netflix.conductor.core.utils.Lock;
 
 import io.github.jas34.scheduledwf.metadata.ScheduledTaskDef;
 import io.github.jas34.scheduledwf.utils.CommonUtils;
 
+import org.springframework.stereotype.Component;
+
 /**
  * @author Jasbir Singh
  */
-@Singleton
+@Component
 public class LockingService {
     private final Logger logger = LoggerFactory.getLogger(LockingService.class);
 
-    private Provider<Lock> lockProvider;
+    private Lock lock;
 
     private ExecutionPermitter permitter;
 
-    @Inject
-    public LockingService(Provider<Lock> lockProvider, ExecutionPermitter permitter) {
-        this.lockProvider = lockProvider;
+    public LockingService(Lock lock, ExecutionPermitter permitter) {
+        this.lock = lock;
         this.permitter = permitter;
     }
 
     public boolean acquireLock(ScheduledTaskDef taskDef) {
-        Lock lock = lockProvider.get();
         String lockId = resolveLockId(taskDef);
         if (lock.acquireLock(lockId, 100, 500, TimeUnit.MILLISECONDS)) {
             if (!permitter.issue(taskDef)) {
@@ -50,7 +46,6 @@ public class LockingService {
     }
 
     public void releaseLock(ScheduledTaskDef taskDef, boolean withDeleteLock) {
-        Lock lock = lockProvider.get();
         String lockId = resolveLockId(taskDef);
         permitter.giveBack(taskDef);
         lock.releaseLock(lockId);

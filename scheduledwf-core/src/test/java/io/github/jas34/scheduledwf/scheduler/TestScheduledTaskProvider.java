@@ -1,20 +1,15 @@
 package io.github.jas34.scheduledwf.scheduler;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-
 import io.github.jas34.scheduledwf.metadata.ScheduledTaskDef;
 import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 
 /**
  * @author Jasbir Singh
  */
-@Singleton
 public class TestScheduledTaskProvider implements ScheduledTaskProvider {
 
     private final IndexExecutionDataCallback callback;
 
-    @Inject
     public TestScheduledTaskProvider(IndexExecutionDataCallback callback) {
         this.callback = callback;
     }

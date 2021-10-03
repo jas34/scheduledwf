@@ -21,10 +21,10 @@
 			<version>${conductor-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.netflix.conductor</groupId>
-			<artifactId>conductor-postgres-persistence</artifactId>
-			<version>${conductor-version}</version>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>mysql</artifactId>
+			<version>${mysql-test-container}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
 </project>

@@ -12,10 +12,20 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TestName;
+import org.junit.runner.RunWith;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.utility.DockerImageName;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.conductor.common.run.SearchResult;
 import com.netflix.conductor.core.utils.IDGenerator;
 
+import io.github.jas34.scheduledwf.config.MySQLTestConfiguration;
 import io.github.jas34.scheduledwf.run.ManagerInfo;
 import io.github.jas34.scheduledwf.run.ScheduledWfExecData;
 import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
@@ -26,9 +36,14 @@ import io.github.jas34.scheduledwf.utils.CommonUtils;
  * @author Jasbir Singh
  */
 @Ignore
+@Import(MySQLTestConfiguration.class)
+@RunWith(SpringRunner.class)
 public class MySQLIndexScheduledWfDAOTest {
     private MySQLDAOTestUtil testUtil;
     private MySQLIndexScheduledWfDAO dao;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Rule
     public TestName name = new TestName();
@@ -37,16 +52,21 @@ public class MySQLIndexScheduledWfDAOTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Before
-    public void setup() throws Exception {
-        testUtil = new MySQLDAOTestUtil("conductor_unit_test");
+    public void setup() {
+        MySQLContainer<?> mySQLContainer =
+                new MySQLContainer<>(DockerImageName.parse("mysql")).withDatabaseName(name.getMethodName());
+        mySQLContainer.start();
+        testUtil = new MySQLDAOTestUtil(mySQLContainer, objectMapper);
         dao = new MySQLIndexScheduledWfDAO(testUtil.getObjectMapper(), testUtil.getDataSource());
     }
 
     @After
-    public void teardown() throws Exception {
-        testUtil.resetAllData();
-        testUtil.getDataSource().close();
+    public void teardown() {
+        if (testUtil != null) {
+            testUtil.getDataSource().close();
+        }
     }
+
 
     @Test
     public void testIndexManagerInfo() {
