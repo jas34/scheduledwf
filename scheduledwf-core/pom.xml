@@ -14,17 +14,17 @@
 			<groupId>com.netflix.conductor</groupId>
 			<artifactId>conductor-core</artifactId>
 			<version>${conductor-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.netflix.conductor</groupId>
+			<artifactId>conductor-common</artifactId>
+			<version>${conductor-version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.github.vmg.protogen</groupId>
 					<artifactId>protogen-annotations</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.netflix.conductor</groupId>
-			<artifactId>conductor-common</artifactId>
-			<version>${conductor-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.netflix.conductor</groupId>
