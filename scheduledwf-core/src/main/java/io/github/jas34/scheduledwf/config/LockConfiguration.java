@@ -19,7 +19,7 @@ import io.github.jas34.scheduledwf.concurrent.RedisPermitDAO;
  * Description:<br>
  * Date: 21/09/21-5:24 pm
  * 
- * @since
+ * @since v2.0.0
  * @author Jasbir Singh
  */
 @Configuration

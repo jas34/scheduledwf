@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Import;
 /**
  * Description:<br>
  * Date: 26/09/21-5:13 pm
- * @since
+ * @since v2.0.0
  * @author Jasbir Singh
  */
 @Configuration

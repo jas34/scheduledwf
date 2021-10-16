@@ -20,7 +20,7 @@ import io.github.jas34.scheduledwf.service.MetadataServiceImpl;
  * Description:<br>
  * Date: 26/09/21-12:09 pm
  * 
- * @since
+ * @since v2.0.0
  * @author Jasbir Singh
  */
 @Configuration

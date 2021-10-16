@@ -24,7 +24,7 @@ import io.github.jas34.scheduledwf.scheduler.WorkflowSchedulerFactory;
  * Description:<br>
  * Date: 21/09/21-2:46 pm
  * 
- * @since
+ * @since v2.0.0
  * @author Jasbir Singh
  */
 @Configuration

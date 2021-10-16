@@ -20,7 +20,7 @@ import org.springframework.util.StringUtils;
  * "https://docs.spring.io/spring-boot/docs/2.1.1.RELEASE/reference/htmlsingle/#howto-create-an-additional-executable-jar">documentation</a>.<br>
  * Date: 01/10/21-8:37 am
  * 
- * @since
+ * @since v2.0.0
  * @author Jasbir Singh
  */
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)

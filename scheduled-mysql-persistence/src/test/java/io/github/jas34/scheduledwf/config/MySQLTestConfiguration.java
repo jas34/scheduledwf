@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Description:<br>
  * Date: 26/09/21-5:45 pm
- * @since
+ * @since v2.0.0
  * @author Jasbir Singh
  */
 @Configuration

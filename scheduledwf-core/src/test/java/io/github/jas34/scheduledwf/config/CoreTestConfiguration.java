@@ -12,7 +12,7 @@ import io.github.jas34.scheduledwf.scheduler.TestScheduledTaskProvider;
  * Description:<br>
  * Date: 26/09/21-10:38 am
  * 
- * @since
+ * @since v2.0.0
  * @author Jasbir Singh
  */
 @Configuration

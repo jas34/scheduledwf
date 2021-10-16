@@ -16,7 +16,7 @@ import io.github.jas34.scheduledwf.dao.memory.InMemoryScheduledWfMetadataDAO;
  * Description:<br>
  * Date: 24/09/21-6:02 pm
  * 
- * @since
+ * @since v2.0.0
  * @author Jasbir Singh
  */
 @Configuration
