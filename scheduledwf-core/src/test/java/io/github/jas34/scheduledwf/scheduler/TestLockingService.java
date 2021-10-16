@@ -15,10 +15,9 @@ import com.coreoz.wisp.Job;
 import com.coreoz.wisp.Scheduler;
 import com.coreoz.wisp.schedule.Schedule;
 import com.coreoz.wisp.schedule.cron.CronSchedule;
-import com.google.inject.Provider;
+import com.netflix.conductor.contribs.lock.LocalOnlyLock;
+import com.netflix.conductor.core.sync.Lock;
 import com.netflix.conductor.core.utils.IDGenerator;
-import com.netflix.conductor.core.utils.LocalOnlyLock;
-import com.netflix.conductor.core.utils.Lock;
 
 import io.github.jas34.scheduledwf.concurrent.ExecutionPermitter;
 import io.github.jas34.scheduledwf.concurrent.LocalOnlyPermitDAO;
@@ -35,10 +34,12 @@ public class TestLockingService {
     private LockingService lockingService;
     private Scheduler scheduler;
 
+    private Lock lock;
+
     @Before
     public void setup() {
         lockingService =
-                new LockingService(new LockProvider(), new ExecutionPermitter(new LocalOnlyPermitDAO()));
+                new LockingService(new LocalOnlyLock(), new ExecutionPermitter(new LocalOnlyPermitDAO()));
         this.scheduler = new Scheduler();
     }
 
@@ -57,13 +58,6 @@ public class TestLockingService {
         log.info("Task Executed for: {} times", TestLockableTask.getExecutionCount());
         assertTrue(5 < scheduledJob1.executionsCount());
         assertTrue(5 < scheduledJob2.executionsCount());
-    }
-
-    static class LockProvider implements Provider<Lock> {
-        @Override
-        public Lock get() {
-            return new LocalOnlyLock();
-        }
     }
 
     private ScheduledTaskDef createScheduledTaskDef(String taskName) {

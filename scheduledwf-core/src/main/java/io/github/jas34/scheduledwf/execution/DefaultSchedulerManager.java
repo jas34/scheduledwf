@@ -15,8 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.cronutils.utils.VisibleForTesting;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
 import com.netflix.conductor.core.utils.IDGenerator;
 import com.netflix.conductor.dao.MetadataDAO;
@@ -30,11 +28,14 @@ import io.github.jas34.scheduledwf.run.SchedulingResult;
 import io.github.jas34.scheduledwf.run.ShutdownResult;
 import io.github.jas34.scheduledwf.run.Status;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 /**
  *
  * @author Jasbir Singh
  */
-@Singleton
+@Component
 public class DefaultSchedulerManager implements SchedulerManager {
 
     private final Logger logger = LoggerFactory.getLogger(DefaultSchedulerManager.class);
@@ -48,7 +49,7 @@ public class DefaultSchedulerManager implements SchedulerManager {
     private ManagerInfo managerInfo;
     private boolean isJunitRun;
 
-    @Inject
+    @Autowired
     public DefaultSchedulerManager(ScheduledWfMetadataDAO scheduledWfMetadataDAO,
             ScheduledProcessRegistry processRegistry, MetadataDAO metadataDAO, IndexScheduledWfDAO indexDAO,
             WorkflowSchedulingAssistant schedulingAssistant) {
@@ -201,8 +202,6 @@ public class DefaultSchedulerManager implements SchedulerManager {
         if (CollectionUtils.isEmpty(tobeShutDownProcesses)) {
             logger.debug("No running process found for shutdown with managerRef={}, with names={}",
                     managerInfo.getId(), names);
-
-//            cleanUpMetaDataIfApplicable(tobeShutDownScheduleWfDefsOptional.get());
             return null;
         }
 
@@ -225,7 +224,6 @@ public class DefaultSchedulerManager implements SchedulerManager {
             doIndexing(shutdownProcess);
             shutdownResults.add(result);
         });
-//        cleanUpMetaDataIfApplicable(tobeShutDownScheduleWfDefsOptional.get());
         return shutdownResults;
     }
 

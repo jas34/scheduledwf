@@ -11,20 +11,15 @@ import javax.sql.DataSource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.netflix.conductor.core.execution.ApplicationException;
-import com.netflix.conductor.dao.mysql.MySQLBaseDAO;
-import com.netflix.conductor.dao.postgres.Query;
+import com.netflix.conductor.mysql.dao.MySQLBaseDAO;
+import com.netflix.conductor.mysql.util.Query;
 
 import io.github.jas34.scheduledwf.dao.ScheduledWfMetadataDAO;
 import io.github.jas34.scheduledwf.metadata.ScheduleWfDef;
 
-@Singleton
 public class MySQLScheduledWfMetaDataDao extends MySQLBaseDAO implements ScheduledWfMetadataDAO {
 
-    @Inject
-    protected MySQLScheduledWfMetaDataDao(ObjectMapper om, DataSource dataSource) {
+    public MySQLScheduledWfMetaDataDao(ObjectMapper om, DataSource dataSource) {
         super(om, dataSource);
     }
 

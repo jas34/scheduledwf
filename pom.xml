@@ -55,12 +55,17 @@
 	</repositories>
 
 	<properties>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<conductor-version>2.30.4</conductor-version>
+		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.source>11</maven.compiler.source>
+		<conductor-version>3.3.0</conductor-version>
 		<wisp-version>2.2.0</wisp-version>
 		<cron-utils-version>8.0.0</cron-utils-version>
 		<redisson-version>3.11.4</redisson-version>
+		<spring-boot-version>2.3.1.RELEASE</spring-boot-version>
+		<guava-version>30.0-jre</guava-version>
+		<aws-jdk-version>1.11.86</aws-jdk-version>
+		<open-api-verion>1.4.8</open-api-verion>
+		<mysql-test-container>1.15.1</mysql-test-container>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -80,6 +85,12 @@
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
 			<version>1.10.19</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<version>${spring-boot-version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -119,6 +130,14 @@
 				<artifactId>scheduledwf-module</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-parent</artifactId>
+				<version>${spring-boot-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -223,7 +242,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.7.9</version>
+				<version>0.8.2</version>
 				<configuration>
 					<excludes>
 						<exclude>**/MySQLPersistenceModule.class</exclude>

@@ -2,70 +2,60 @@ package io.github.jas34.scheduledwf.resources;
 
 import java.util.List;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-
-import com.google.inject.Inject;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import io.github.jas34.scheduledwf.metadata.ScheduleWfDef;
 import io.github.jas34.scheduledwf.service.MetadataService;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 
 /**
  * Populates metadata definitions {@link ScheduleWfDef} of objects.
  *
  * @author Jasbir Singh
  */
-@Api(value = "/scheduling/metadata", produces = MediaType.APPLICATION_JSON,
-        consumes = MediaType.APPLICATION_JSON, tags = "Scheduled Worfkflow Metadata Management")
-@Path("/scheduling/metadata")
-@Produces({MediaType.APPLICATION_JSON})
-@Consumes({MediaType.APPLICATION_JSON})
+// @Api(value = "/scheduling/metadata", produces = MediaType.APPLICATION_JSON,
+// consumes = MediaType.APPLICATION_JSON, tags = "Scheduled Worfkflow Metadata Management")
+@RestController
+@RequestMapping(value = "/api/scheduling/metadata")
 public class ScheduleWfResource {
 
     private MetadataService metadataService;
 
-    @Inject
     public ScheduleWfResource(MetadataService metadataService) {
         this.metadataService = metadataService;
     }
 
-    @POST
-    @Path("/scheduleWf")
-    @ApiOperation("Schedule a new workflow")
-    public void create(ScheduleWfDef scheduleWfDef) {
+    @PostMapping("/scheduleWf")
+    @Operation(summary = "Schedule a new workflow")
+    public void create(@RequestBody ScheduleWfDef scheduleWfDef) {
         metadataService.registerScheduleWorkflowDef(scheduleWfDef);
     }
 
-    @PUT
-    @Path("/scheduleWf/{name}")
-    @ApiOperation("Update status of a schedule workflow definition.")
-    public void update(@ApiParam(value = "Scheduled workflow name.") @PathParam("name") String name,
-            @ApiParam(
-                    value = "status=SHUTDOWN/DELETE are equal. Either of them can be used.") @QueryParam("status") ScheduleWfDef.Status status) {
+    @PutMapping("/scheduleWf/{name}")
+    @Operation(summary = "Update status of a schedule workflow definition.")
+    public void update(@Parameter(description = "Scheduled workflow name.") @PathVariable("name") String name,
+            @Parameter(
+                    description = "status=SHUTDOWN/DELETE are equal. Either of them can be used.") @RequestParam("status") ScheduleWfDef.Status status) {
         metadataService.updateScheduledWorkflowDef(name, status);
     }
 
-    @GET
-    @ApiOperation("Retrieves schedule workflow definition")
-    @Path("/scheduleWf/{name}")
-    public ScheduleWfDef get(@PathParam("name") String name) {
+    @GetMapping("/scheduleWf/{name}")
+    @Operation(summary = "Retrieves schedule workflow definition")
+    public ScheduleWfDef get(@PathVariable("name") String name) {
         return metadataService.getScheduledWorkflowDef(name);
     }
 
-    @GET
-    @ApiOperation("Retrieves all schedule workflow definitions")
-    @Path("/scheduleWf")
+    @GetMapping("/scheduleWf")
+    @Operation(summary = "Retrieves all schedule workflow definitions")
     public List<ScheduleWfDef> getAll() {
         return metadataService.getScheduleWorkflowDefs();
     }

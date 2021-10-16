@@ -1,7 +1,5 @@
 package io.github.jas34.scheduledwf.scheduler;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.netflix.conductor.service.WorkflowService;
 
 import io.github.jas34.scheduledwf.concurrent.LockingService;
@@ -11,7 +9,6 @@ import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 /**
  * @author Jasbir Singh
  */
-@Singleton
 public class DefaultScheduledTaskProvider implements ScheduledTaskProvider {
 
     private final IndexExecutionDataCallback callback;
@@ -20,7 +17,6 @@ public class DefaultScheduledTaskProvider implements ScheduledTaskProvider {
 
     private LockingService lockingService;
 
-    @Inject
     public DefaultScheduledTaskProvider(IndexExecutionDataCallback callback, WorkflowService workflowService,
             LockingService lockingService) {
         this.callback = callback;

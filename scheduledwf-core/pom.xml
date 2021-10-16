@@ -19,6 +19,17 @@
 			<groupId>com.netflix.conductor</groupId>
 			<artifactId>conductor-common</artifactId>
 			<version>${conductor-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.github.vmg.protogen</groupId>
+					<artifactId>protogen-annotations</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.netflix.conductor</groupId>
+			<artifactId>conductor-contribs</artifactId>
+			<version>${conductor-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.coreoz</groupId>
@@ -45,9 +56,31 @@
 			<groupId>com.netflix.conductor</groupId>
 			<artifactId>conductor-redis-lock</artifactId>
 			<version>${conductor-version}</version>
-			<scope>test</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<version>${spring-boot-version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+			<version>${spring-boot-version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava-version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-core</artifactId>
+			<version>${aws-jdk-version}</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 </project>

@@ -4,21 +4,17 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import org.apache.commons.lang3.StringUtils;
 import org.redisson.Redisson;
 import org.redisson.api.RMapCache;
 
+import org.springframework.util.StringUtils;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.netflix.conductor.core.config.Configuration;
 
 /**
  * @author Jasbir Singh
  */
-@Singleton
 public class RedisPermitDAO implements PermitDAO {
 
     private RMapCache<String, String> mapCache;
@@ -29,10 +25,9 @@ public class RedisPermitDAO implements PermitDAO {
 
     private static final String PERMITTER_NAME_SPACE_DEFAULT_VALUE = "permitter";
 
-    @Inject
-    public RedisPermitDAO(Redisson redisson, Configuration configuration, ObjectMapper objectMapper) {
+    public RedisPermitDAO(Redisson redisson, String mapName, ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
-        this.mapCache = redisson.getMapCache(resolveMapName(configuration));
+        this.mapCache = redisson.getMapCache(mapName);
     }
 
     @Override
@@ -43,11 +38,6 @@ public class RedisPermitDAO implements PermitDAO {
     @Override
     public Optional<Permit> fetchByName(String name) {
         return Optional.ofNullable(readValue(mapCache.get(name)));
-    }
-
-    private String resolveMapName(Configuration configuration) {
-        return configuration.getProperty(PERMITTER_NAME_SPACE, PERMITTER_NAME_SPACE_DEFAULT_VALUE) + "."
-                + configuration.getStack() + ".mapCache";
     }
 
     private String toJson(Object value) {

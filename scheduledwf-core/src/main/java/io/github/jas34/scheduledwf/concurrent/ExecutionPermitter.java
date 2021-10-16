@@ -5,22 +5,22 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import io.github.jas34.scheduledwf.metadata.ScheduledTaskDef;
 
 /**
  * @author Jasbir Singh
  */
-@Singleton
+@Component
 public class ExecutionPermitter {
 
     private Logger logger = LoggerFactory.getLogger(ExecutionPermitter.class);
 
     private PermitDAO permitDAO;
 
-    @Inject
+    @Autowired
     public ExecutionPermitter(PermitDAO permitDAO) {
         this.permitDAO = permitDAO;
     }

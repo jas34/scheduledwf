@@ -3,25 +3,24 @@ package io.github.jas34.scheduledwf.service;
 import java.util.List;
 import java.util.Objects;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.netflix.conductor.common.run.SearchResult;
-import com.netflix.conductor.core.execution.ApplicationException;
+import com.netflix.conductor.core.exception.ApplicationException;
 
 import io.github.jas34.scheduledwf.dao.IndexScheduledWfDAO;
 import io.github.jas34.scheduledwf.run.ManagerInfo;
 import io.github.jas34.scheduledwf.run.ScheduledWfExecData;
 import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 
+import org.springframework.stereotype.Service;
+
 /**
  * @author Jasbir Singh
  */
-@Singleton
+@Service
 public class SchedulerExecutionService {
 
     private IndexScheduledWfDAO indexScheduledWfDAO;
 
-    @Inject
     public SchedulerExecutionService(IndexScheduledWfDAO indexScheduledWfDAO) {
         this.indexScheduledWfDAO = indexScheduledWfDAO;
     }

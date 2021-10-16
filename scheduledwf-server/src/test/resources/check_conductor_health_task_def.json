@@ -1,7 +1,7 @@
 [
   {
     "name": "check-conductor-health-task",
-    "description": "This task will check health of conductor server at http://localhost:8080/api/health",
+    "description": "This task will check health of conductor server at http://localhost:8080/actuator/health",
     "inputKeys": [],
     "outputKeys": [],
     "timeoutPolicy": "TIME_OUT_WF",
