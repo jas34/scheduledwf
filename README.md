@@ -36,13 +36,15 @@ of control.
 - _Schedule Conductor workflow_ is extendable to work with all persistence stores supported by conductor.
 
 *Quickly use able in _PRODUCTION_*:
-- Scheduling module can be enabled with property `conductor.additional.modules=io.github.jas34.scheduledwf.config.ScheduledWfServerModule` 
-- Deploy `scheduledwf-server` instead of `conductor-server`. 
+- version **2.0.0+**
+  - This version is compatible to conductor-boot **v3.3.0** requires **Java 11**.
+  - Refer Getting started section below.
+- upto version **1.2.2**
+  - Scheduling module can be enabled with property `conductor.additional.modules=io.github.jas34.scheduledwf.config.ScheduledWfServerModule` 
+  - Deploy `scheduledwf-server` instead of `conductor-server`.
+  - Schedule Conductor is compatible with Java 8 and has embedded Conductor v2.30.4
 
 You are done!
-
-Schedule Conductor is compatible with Java 8 and has embedded Conductor v2.30.4
-
 
 Architecture 
 ---------
@@ -71,11 +73,17 @@ Getting started
 - Download jar from maven central [scheduledwf-server
 ](https://search.maven.org/artifact/io.github.jas34/scheduledwf-server) 
 - Alternatively:
-	- you can fork a branch from [master](https://github.com/jas34/scheduledwf.git)
-	- run `mvn --settings settings.xml -P bintray clean install`
+    - you can fork a branch from [master](https://github.com/jas34/scheduledwf.git)
+    - run `mvn --settings settings.xml -P bintray clean install`
 - Executable jar can be found at `scheduledwf/scheduledwf-server/target/scheduledwf-server-{version}.jar`
 - start server with command:
-	`java -jar scheduledwf-server-{version}.jar [PATH TO PROPERTY FILE] [log4j.properties file path]`
+  - upto version **1.2.2**
+    - `java -jar scheduledwf-server-{version}.jar [PATH TO PROPERTY FILE] [log4j.properties file path]`
+  - version **2.0.0+**
+    - if running with default classpath property file application.properties
+      - `java -jar scheduledwf-server-{version}.jar`
+    - if running with external property file:
+      - `java -DCONDUCTOR_CONFIG_FILE={properties_file_path} -jar scheduledwf-server-{version}.jar`
 	
 ##### Running scheduled workflow as a module
 - If you are already running conductor server forked from [Netflix conductor](https://github.com/Netflix/conductor)
@@ -102,17 +110,23 @@ Scheduling And Managing A Workflow
 	2. [check-conductor-health-workflow def](scheduledwf-server/src/test/resources/check_conductor_health_workflow_def.json)
 	2. [check-conductor-health-schedule def](scheduledwf-server/src/test/resources/check_conductor_health_schedule_def.json) <br/>
 (Tip: You can use [Cron Maker](http://www.cronmaker.com/) to generate cron expression.)	
-	- From swagger use`Scheduled Workflow Metadata Management`
-		- POST /scheduling/metadata/scheduleWf: Schedule new workflow
-		- GET /scheduling/metadata/scheduleWf: Get scheduling metadata of scheduled workflows.
-		- GET /scheduling/metadata/scheduleWf/{name}: Get scheduling metadata of scheduled workflows by workflow name.
-		- PUT /scheduling/metadata/scheduleWf/{name}: Update the status of scheduled workflow metadata.
-	
-	- From swagger use`Scheduler Management`:
-		- to search about schedule manager running on different nodes of cluster.
-		- to search about scheduled jobs based upon scheduling metadata.
-		- to search about different runs of scheduled jobs at scheduled time. The detailed data returned by [IndexScheduledWfDAO](#IndexScheduledWfDAO) 
-	- Glimpse of workflow scheduling.
+    - Upto version **1.2.2**
+      - From swagger use`Scheduled Workflow Metadata Management`
+          - POST `/scheduling/metadata/scheduleWf`: Schedule new workflow
+          - GET `/scheduling/metadata/scheduleWf`: Get scheduling metadata of scheduled workflows.
+          - GET `/scheduling/metadata/scheduleWf/{name}`: Get scheduling metadata of scheduled workflows by workflow name.
+          - PUT `/scheduling/metadata/scheduleWf/{name}`: Update the status of scheduled workflow metadata.
+  - Version **2.0.0+**
+	  - From swagger use`Scheduled Workflow Metadata Management`
+		  - POST `/api/scheduling/metadata/scheduleWf`: Schedule new workflow
+		  - GET `/api/scheduling/metadata/scheduleWf`: Get scheduling metadata of scheduled workflows.
+		  - GET `/api/scheduling/metadata/scheduleWf/{name}`: Get scheduling metadata of scheduled workflows by workflow name.
+		  - PUT `/api/scheduling/metadata/scheduleWf/{name}`: Update the status of scheduled workflow metadata.
+    - From swagger use`Scheduler Management`:
+        - to search about schedule manager running on different nodes of cluster.
+        - to search about scheduled jobs based upon scheduling metadata.
+        - to search about different runs of scheduled jobs at scheduled time. The detailed data returned by [IndexScheduledWfDAO](#IndexScheduledWfDAO) 
+    - Glimpse of workflow scheduling.
 	![caption](docs/img/demo.gif)
 	 
 ### Runtime Model
@@ -138,7 +152,7 @@ Component Details
 - This is an abstract layer for job scheduling.
 - It comes with default implementation of [DefaultWorkflowSchedulingAssistant](scheduledwf-core/src/main/java/io/github/jas34/scheduledwf/execution/DefaultWorkflowSchedulingAssistant.java).
 - It:	
-	1. creates jobs.
+	1. create jobs.
 	2. pause jobs.
 	3. delete scheduled jobs.
 - It contains factory [WorkflowSchedulerFactory](scheduledwf-core/src/main/java/io/github/jas34/scheduledwf/scheduler/WorkflowSchedulerFactory.java) that returns an instance of [WorkflowScheduler](scheduledwf-core/src/main/java/io/github/jas34/scheduledwf/scheduler/WorkflowScheduler.java) interface.
@@ -147,7 +161,7 @@ Component Details
 	- This is core abstraction to define Scheduled process of your choice. (`WorkflowSchedulerFactory<T extends ScheduledProcess>`)
 	- `ScheduledProcess` is one of the granular entity that is expected to have reference to scheduled process/thread. Currently implemented as [CronBasedScheduledProcess](scheduledwf-core/src/main/java/io/github/jas34/scheduledwf/scheduler/CronBasedScheduledProcess.java).
 	- The default implementation can be found here [DefaultWorkflowSchedulerFactory](scheduledwf-core/src/main/java/io/github/jas34/scheduledwf/scheduler/DefaultWorkflowSchedulerFactory.java).
-	- Currently returns [CronBasedWorkflowScheduler](scheduledwf-core/src/main/java/io/github/jas34/scheduledwf/scheduler/CronBasedWorkflowScheduler.java). 
+	- Currently, returns [CronBasedWorkflowScheduler](scheduledwf-core/src/main/java/io/github/jas34/scheduledwf/scheduler/CronBasedWorkflowScheduler.java). 
 
 ### Cron Based Workflow Scheduler (Jobs Scheduling)
 - The scheduling capability is completely customizable by implementing [WorkflowScheduler](scheduledwf-core/src/main/java/io/github/jas34/scheduledwf/scheduler/WorkflowScheduler.java) interface and by returning applicable instance from `WorkflowSchedulerFactory`.
