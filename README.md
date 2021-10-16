@@ -1,6 +1,6 @@
 ## Schedule Conductor Workflows ([A Netflix Conductor Community Project](https://github.com/Netflix/conductor/blob/main/RELATED.md#schedule-conductor-workflow))
-Schedule Conductor workflow is a _scheduler as a service_ that runs in the cloud with [Netflix conductor](https://github.com/Netflix/conductor)
-embedded in it. It runs as an extension module of conductor. This is one of community project of netflix conductor community.
+Schedule Conductor workflow is a spring boot based (version 2.0.0+)_scheduler as a service_ that runs in the cloud with [Netflix conductor](https://github.com/Netflix/conductor)
+embedded in it. It can run as an extension module of conductor. This is one of community project of netflix conductor community.
 
 [![Build Status](https://travis-ci.com/jas34/scheduledwf.svg?token=k2Upd1dy5qz2VgAZDCYD&branch=master)]()
 [![GitHub Release](https://img.shields.io/github/release/jas34/scheduledwf.svg?style=flat)](https://github.com/jas34/scheduledwf/releases)
@@ -38,7 +38,7 @@ of control.
 *Quickly use able in _PRODUCTION_*:
 - version **2.0.0+**
   - This version is compatible to conductor-boot **v3.3.0** requires **Java 11**.
-  - Refer Getting started section below.
+  - Refer **Getting started** section below.
 - upto version **1.2.2**
   - Scheduling module can be enabled with property `conductor.additional.modules=io.github.jas34.scheduledwf.config.ScheduledWfServerModule` 
   - Deploy `scheduledwf-server` instead of `conductor-server`.
@@ -80,7 +80,7 @@ Getting started
   - upto version **1.2.2**
     - `java -jar scheduledwf-server-{version}.jar [PATH TO PROPERTY FILE] [log4j.properties file path]`
   - version **2.0.0+**
-    - if running with default classpath property file application.properties
+    - if running with default classpath property file `application.properties`
       - `java -jar scheduledwf-server-{version}.jar`
     - if running with external property file:
       - `java -DCONDUCTOR_CONFIG_FILE={properties_file_path} -jar scheduledwf-server-{version}.jar`
@@ -110,24 +110,23 @@ Scheduling And Managing A Workflow
 	2. [check-conductor-health-workflow def](scheduledwf-server/src/test/resources/check_conductor_health_workflow_def.json)
 	2. [check-conductor-health-schedule def](scheduledwf-server/src/test/resources/check_conductor_health_schedule_def.json) <br/>
 (Tip: You can use [Cron Maker](http://www.cronmaker.com/) to generate cron expression.)	
-    - Upto version **1.2.2**
-      - From swagger use`Scheduled Workflow Metadata Management`
+    - From swagger use`Scheduled Workflow Metadata Management`
+      - Upto version **1.2.2**
           - POST `/scheduling/metadata/scheduleWf`: Schedule new workflow
           - GET `/scheduling/metadata/scheduleWf`: Get scheduling metadata of scheduled workflows.
           - GET `/scheduling/metadata/scheduleWf/{name}`: Get scheduling metadata of scheduled workflows by workflow name.
           - PUT `/scheduling/metadata/scheduleWf/{name}`: Update the status of scheduled workflow metadata.
-  - Version **2.0.0+**
-	  - From swagger use`Scheduled Workflow Metadata Management`
-		  - POST `/api/scheduling/metadata/scheduleWf`: Schedule new workflow
-		  - GET `/api/scheduling/metadata/scheduleWf`: Get scheduling metadata of scheduled workflows.
-		  - GET `/api/scheduling/metadata/scheduleWf/{name}`: Get scheduling metadata of scheduled workflows by workflow name.
-		  - PUT `/api/scheduling/metadata/scheduleWf/{name}`: Update the status of scheduled workflow metadata.
+      - Version **2.0.0+**
+          - POST `/api/scheduling/metadata/scheduleWf`: Schedule new workflow
+          - GET `/api/scheduling/metadata/scheduleWf`: Get scheduling metadata of scheduled workflows.
+          - GET `/api/scheduling/metadata/scheduleWf/{name}`: Get scheduling metadata of scheduled workflows by workflow name.
+          - PUT `/api/scheduling/metadata/scheduleWf/{name}`: Update the status of scheduled workflow metadata.
     - From swagger use`Scheduler Management`:
         - to search about schedule manager running on different nodes of cluster.
         - to search about scheduled jobs based upon scheduling metadata.
         - to search about different runs of scheduled jobs at scheduled time. The detailed data returned by [IndexScheduledWfDAO](#IndexScheduledWfDAO) 
-    - Glimpse of workflow scheduling.
-	![caption](docs/img/demo.gif)
+        - Glimpse of workflow scheduling.
+      ![caption](docs/img/demo.gif)
 	 
 ### Runtime Model
 
