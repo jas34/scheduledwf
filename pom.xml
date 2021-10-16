@@ -5,7 +5,7 @@
 	<groupId>io.github.jas34</groupId>
 	<artifactId>scheduledwf-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>2.0.1-SNAPSHOT</version>
+	<version>2.0.0</version>
 	<name>Scheduled Conductor Workflow</name>
 	<description>Scheduled Conductor-Workflow is an extension of netflix conductor to provide capability to schedule a
 		workflow in micro service architecture
@@ -30,7 +30,7 @@
 		<developerConnection>scm:git:git@github.com:jas34/scheduledwf.git</developerConnection>
 		<connection>scm:git:git@github.com:jas34/scheduledwf.git</connection>
 		<url>https://github.com/jas34/scheduledwf</url>
-		<tag>HEAD</tag>
+		<tag>v2.0.0</tag>
 	</scm>
 
 	<distributionManagement>
