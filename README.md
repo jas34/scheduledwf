@@ -5,8 +5,9 @@ embedded in it. It can run as an extension module of conductor. This is one of c
 [![Build Status](https://travis-ci.com/jas34/scheduledwf.svg?token=k2Upd1dy5qz2VgAZDCYD&branch=master)]()
 [![GitHub Release](https://img.shields.io/github/release/jas34/scheduledwf.svg?style=flat)](https://github.com/jas34/scheduledwf/releases)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.jas34/scheduledwf-parent.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.jas34%22%20AND%20a:%22scheduledwf-parent%22)
-[![Coverage Status](https://coveralls.io/repos/github/jas34/scheduledwf/badge.svg?branch=master)](https://coveralls.io/github/jas34/scheduledwf?branch=master) 
-
+[![Coverage Status](https://coveralls.io/repos/github/jas34/scheduledwf/badge.svg?branch=master)](https://coveralls.io/github/jas34/scheduledwf?branch=master)
+[![GitHub license](https://img.shields.io/github/license/jas34/scheduledwf)](https://github.com/jas34/scheduledwf/blob/master/LICENSE)
+![GitHub Release Date](https://img.shields.io/github/release-date/jas34/scheduledwf)
 
 ## Builds
 | Module |                                                     Build                                                     |
