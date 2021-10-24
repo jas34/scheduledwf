@@ -173,6 +173,7 @@
 						</executions>
 						<configuration>
 							<stylesheet>java</stylesheet>
+							<source>8</source>
 						</configuration>
 					</plugin>
 					<plugin>

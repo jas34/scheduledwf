@@ -11,6 +11,7 @@
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>io.github.jas34</groupId>
 			<artifactId>scheduledwf-core</artifactId>
