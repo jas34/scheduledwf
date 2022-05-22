@@ -189,8 +189,8 @@ Component Details
 	- For any other type of data store, one can implement `PermitDAO`.
 
 ### Persistence Layer
-- The persistence layer has been designed in a way to be completely aligned with [persistence](https://netflix.github.io/conductor/technicaldetails) architecture of conductor.
-- This will be automatically enabled with conductor property `db=MYSQL`. 
+- The persistence layer has been designed in a way to be completely aligned with [persistence](https://conductor.netflix.com/technicaldetails.html) architecture of conductor.
+- This will be automatically enabled with conductor property `db=MYSQL`(Upto version 1.2.2) or `conductor.db.type=mysql`(Version 2.0.0+). 
 - Currently it has following DAO interfaces:
 	##### ScheduledWfMetadataDAO
 	- This is used to persist scheduling metadata definitions of workflow through swagger operations under `Scheduled Workflow Metadata Management`
