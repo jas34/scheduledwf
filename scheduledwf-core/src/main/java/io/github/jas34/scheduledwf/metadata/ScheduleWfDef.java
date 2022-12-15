@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.validation.constraints.NotEmpty;
-
+import javax.validation.constraints.NotNull;
 import com.netflix.conductor.common.constraints.NoSemiColonConstraint;
 import com.netflix.conductor.common.metadata.Auditable;
 
@@ -19,7 +19,7 @@ public class ScheduleWfDef extends Auditable {
 
     private int wfVersion = 1;
 
-    @NotEmpty(message = "status cannot be empty")
+    @NotNull(message = "status cannot be empty")
     private Status status;
 
     private Map<String, Object> wfInput = new HashMap<>();
