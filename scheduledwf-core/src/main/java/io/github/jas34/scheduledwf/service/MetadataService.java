@@ -20,7 +20,7 @@ public interface MetadataService {
             @NotNull(message = "ScheduleWfDef cannot be null") @Valid ScheduleWfDef def);
 
     void updateScheduledWorkflowDef(@NotEmpty(message = "Workflow name cannot be null or empty") String name,
-            @NotEmpty(message = "scheduling status cannot be null or empty") ScheduleWfDef.Status status);
+            @NotNull(message = "scheduling status cannot be null or empty") ScheduleWfDef.Status status);
 
     ScheduleWfDef getScheduledWorkflowDef(
             @NotEmpty(message = "Workflow name cannot be null or empty") String name);
