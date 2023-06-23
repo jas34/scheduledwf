@@ -8,12 +8,15 @@ import io.github.jas34.scheduledwf.dao.ScheduledWfMetadataDAO;
 import io.github.jas34.scheduledwf.dao.mysql.MySQLIndexScheduledWfDAO;
 import io.github.jas34.scheduledwf.dao.mysql.MySQLScheduledWfMetaDataDao;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
+import org.springframework.retry.backoff.FixedBackOffPolicy;
+import org.springframework.retry.support.RetryTemplate;
 
 /**
  * Description:<br>
@@ -27,13 +30,23 @@ import org.springframework.context.annotation.Import;
 public class MySQLPersistenceConfiguration {
 	@Bean
 	@DependsOn({"flyway", "flywayInitializer"})
-	public ScheduledWfMetadataDAO scheduledWfMetadataDAO(ObjectMapper objectMapper, DataSource dataSource) {
-		return new MySQLScheduledWfMetaDataDao(objectMapper, dataSource);
+	public ScheduledWfMetadataDAO scheduledWfMetadataDAO(@Qualifier("mySQLRetryTemplate") RetryTemplate retryTemplate, ObjectMapper objectMapper, DataSource dataSource) {
+		return new MySQLScheduledWfMetaDataDao(retryTemplate, objectMapper, dataSource);
 	}
 
 	@Bean
 	@DependsOn({"flyway", "flywayInitializer"})
-	public IndexScheduledWfDAO indexScheduledWfDAO(ObjectMapper objectMapper, DataSource dataSource) {
-		return new MySQLIndexScheduledWfDAO(objectMapper, dataSource);
+	public IndexScheduledWfDAO indexScheduledWfDAO(@Qualifier("mySQLRetryTemplate") RetryTemplate retryTemplate, ObjectMapper objectMapper, DataSource dataSource) {
+		return new MySQLIndexScheduledWfDAO(retryTemplate, objectMapper, dataSource);
+	}
+
+	//Similar to es6RetryTemplate() in com.netflix.conductor.es6.config ElasticSearchV6Configuration
+	@Bean
+	public RetryTemplate mySQLRetryTemplate() {
+		RetryTemplate retryTemplate = new RetryTemplate();
+		FixedBackOffPolicy fixedBackOffPolicy = new FixedBackOffPolicy();
+		fixedBackOffPolicy.setBackOffPeriod(1000L);
+		retryTemplate.setBackOffPolicy(fixedBackOffPolicy);
+		return retryTemplate;
 	}
 }

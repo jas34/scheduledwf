@@ -12,13 +12,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import io.github.jas34.scheduledwf.utils.IDGenerator_;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
-import com.netflix.conductor.core.utils.IDGenerator;
 import com.netflix.conductor.dao.MetadataDAO;
 
 import io.github.jas34.scheduledwf.dao.ScheduledWfMetadataDAO;
@@ -172,14 +172,14 @@ public class TestDefaultSchedulerManager extends TestBase {
     }
 
     private SchedulingResult createSchedulingResult(String wfName, Status status) {
-        SchedulingResult result = new SchedulingResult(IDGenerator.generate());
+        SchedulingResult result = new SchedulingResult(IDGenerator_.generate());
         result.setStatus(status);
         result.setProcessReference(createScheduledProcess(wfName));
         return result;
     }
 
     private ShutdownResult createShutdownResult(Status status) {
-        ShutdownResult result = new ShutdownResult(IDGenerator.generate());
+        ShutdownResult result = new ShutdownResult(IDGenerator_.generate());
         result.setStatus(status);
         if (Status.FAILURE == status) {
             result.setException(new RuntimeException("this exception is to simulate shutdow failure"));

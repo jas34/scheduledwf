@@ -18,7 +18,7 @@
 		<dependency>
 			<groupId>com.netflix.conductor</groupId>
 			<artifactId>conductor-common</artifactId>
-			<version>${conductor-version}</version>
+			<version>3.13.0</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.github.vmg.protogen</groupId>
@@ -26,11 +26,16 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
-			<groupId>com.netflix.conductor</groupId>
-			<artifactId>conductor-contribs</artifactId>
-			<version>${conductor-version}</version>
-		</dependency>
+		<!--
+			Conductor 3.13.5+ = conductor 3.3.0 + conductor-contribs 3.3.0,
+			conductor 3.13.5+ removed conductor-contribs 3.3.0, do not import.
+		-->
+
+		<!--		<dependency>-->
+		<!--			<groupId>com.netflix.conductor</groupId>-->
+		<!--			<artifactId>conductor-contribs</artifactId>-->
+		<!--			<version>3.3.0</version>-->
+		<!--		</dependency>-->
 		<dependency>
 			<groupId>com.coreoz</groupId>
 			<artifactId>wisp</artifactId>
@@ -61,6 +66,14 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 			<version>${spring-boot-version}</version>
+
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 
+import io.github.jas34.scheduledwf.utils.IDGenerator_;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -15,9 +16,8 @@ import com.coreoz.wisp.Job;
 import com.coreoz.wisp.Scheduler;
 import com.coreoz.wisp.schedule.Schedule;
 import com.coreoz.wisp.schedule.cron.CronSchedule;
-import com.netflix.conductor.contribs.lock.LocalOnlyLock;
+import io.github.jas34.scheduledwf.utils.LocalOnlyLock;
 import com.netflix.conductor.core.sync.Lock;
-import com.netflix.conductor.core.utils.IDGenerator;
 
 import io.github.jas34.scheduledwf.concurrent.ExecutionPermitter;
 import io.github.jas34.scheduledwf.concurrent.LocalOnlyPermitDAO;
@@ -61,7 +61,7 @@ public class TestLockingService {
     }
 
     private ScheduledTaskDef createScheduledTaskDef(String taskName) {
-        return new ScheduledTaskDef(taskName, taskName, 1, null, IDGenerator.generate(),
-                IDGenerator.generate());
+        return new ScheduledTaskDef(taskName, taskName, 1, null, IDGenerator_.generate(),
+                IDGenerator_.generate());
     }
 }

@@ -1,27 +1,20 @@
-package io.github.jas34.scheduledwf.dao.mysql;
-
-import java.util.List;
-import java.util.Optional;
-
-import javax.sql.DataSource;
+package io.github.jas34.scheduledwf.dao.postgres;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.conductor.common.run.SearchResult;
-import com.netflix.conductor.mysql.dao.MySQLBaseDAO;
-
+import com.netflix.conductor.postgres.dao.PostgresBaseDAO;
 import io.github.jas34.scheduledwf.dao.IndexScheduledWfDAO;
 import io.github.jas34.scheduledwf.run.ManagerInfo;
 import io.github.jas34.scheduledwf.run.ScheduledWfExecData;
 import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
-
 import org.springframework.retry.support.RetryTemplate;
 
-/**
- * @author Jasbir Singh
- */
-public class MySQLIndexScheduledWfDAO extends MySQLBaseDAO implements IndexScheduledWfDAO {
+import javax.sql.DataSource;
+import java.util.List;
+import java.util.Optional;
 
-    public MySQLIndexScheduledWfDAO(RetryTemplate retryTemplate, ObjectMapper om, DataSource dataSource) {
+public class PostgreSQLIndexScheduledWfDAO extends PostgresBaseDAO implements IndexScheduledWfDAO {
+    public PostgreSQLIndexScheduledWfDAO(RetryTemplate retryTemplate, ObjectMapper om, DataSource dataSource) {
         //retryTemplate is required in conductor 3.13.5+
         super(retryTemplate, om, dataSource);
     }
@@ -60,6 +53,7 @@ public class MySQLIndexScheduledWfDAO extends MySQLBaseDAO implements IndexSched
         });
     }
 
+
     /**
      * Pagination not implemented in MVP release
      *
@@ -85,6 +79,7 @@ public class MySQLIndexScheduledWfDAO extends MySQLBaseDAO implements IndexSched
                 .orElse(null);
     }
 
+
     /**
      * Pagination not implemented in MVP release
      *
@@ -104,6 +99,7 @@ public class MySQLIndexScheduledWfDAO extends MySQLBaseDAO implements IndexSched
         return scheduledWorkFlows.map(workFlows -> new SearchResult<>(workFlows.size(), workFlows))
                 .orElse(null);
     }
+
 
     /**
      * Pagination not implemented in MVP release
@@ -161,6 +157,7 @@ public class MySQLIndexScheduledWfDAO extends MySQLBaseDAO implements IndexSched
         return managerInfos.get();
     }
 
+
     @Override
     public List<ManagerInfo> getManagerInfo() {
         final String GET_ALL_MANAGER_INFO_QUERY = "SELECT json_input FROM manager_info";
@@ -169,4 +166,5 @@ public class MySQLIndexScheduledWfDAO extends MySQLBaseDAO implements IndexSched
                 queryWithTransaction(GET_ALL_MANAGER_INFO_QUERY, q -> q.executeAndFetch(ManagerInfo.class)));
         return managerInfos.get();
     }
+
 }

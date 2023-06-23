@@ -1,43 +1,35 @@
-package io.github.jas34.scheduledwf.dao.mysql;
+package io.github.jas34.scheduledwf.dao.postgres;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.jas34.scheduledwf.config.PostgreSQLTestConfiguration;
+import io.github.jas34.scheduledwf.metadata.ScheduleWfDef;
+import org.junit.*;
+import org.junit.rules.ExpectedException;
+import org.junit.rules.TestName;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.retry.support.RetryTemplate;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.utility.DockerImageName;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.rules.TestName;
-import org.junit.runner.RunWith;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
-import org.springframework.retry.support.RetryTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.utility.DockerImageName;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import io.github.jas34.scheduledwf.config.MySQLTestConfiguration;
-import io.github.jas34.scheduledwf.metadata.ScheduleWfDef;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Jasbir Singh
  */
 @Ignore
-@Import(MySQLTestConfiguration.class)
+@Import(PostgreSQLTestConfiguration.class)
 @RunWith(SpringRunner.class)
-public class MySQLScheduledWfMetaDataDaoTest {
-    private MySQLDAOTestUtil testUtil;
-    private MySQLScheduledWfMetaDataDao dao;
+public class PostgreSQLScheduledWfMetaDataDaoTest {
+    private PostgreSQLDAOTestUtil testUtil;
+    private PostgreSQLScheduledWfMetaDataDao dao;
 
     private RetryTemplate retryTemplate;
 
@@ -52,12 +44,12 @@ public class MySQLScheduledWfMetaDataDaoTest {
 
     @Before
     public void setup() {
-        MySQLContainer<?> mySQLContainer =
-                new MySQLContainer<>(DockerImageName.parse("mysql")).withDatabaseName(name.getMethodName());
-        mySQLContainer.start();
-        testUtil = new MySQLDAOTestUtil(mySQLContainer, objectMapper);
+        PostgreSQLContainer<?> postgreSQLContainer =
+                new PostgreSQLContainer<>(DockerImageName.parse("postgres")).withDatabaseName(name.getMethodName());
+        postgreSQLContainer.start();
+        testUtil = new PostgreSQLDAOTestUtil(postgreSQLContainer, objectMapper);
         retryTemplate = new RetryTemplate();
-        dao = new MySQLScheduledWfMetaDataDao(retryTemplate, testUtil.getObjectMapper(), testUtil.getDataSource());
+        dao = new PostgreSQLScheduledWfMetaDataDao(retryTemplate, testUtil.getObjectMapper(), testUtil.getDataSource());
     }
 
     @After

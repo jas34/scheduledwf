@@ -1,5 +1,15 @@
-package io.github.jas34.scheduledwf.dao.mysql;
+package io.github.jas34.scheduledwf.dao.postgres;
 
+import com.google.common.base.Preconditions;
+import com.netflix.conductor.postgres.dao.PostgresBaseDAO;
+import com.netflix.conductor.postgres.util.Query;
+import io.github.jas34.scheduledwf.metadata.ScheduleWfDef;
+import org.springframework.retry.support.RetryTemplate;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.jas34.scheduledwf.dao.ScheduledWfMetadataDAO;
+
+
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.util.Arrays;
 import java.util.List;
@@ -7,21 +17,9 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
-import javax.sql.DataSource;
+public class PostgreSQLScheduledWfMetaDataDao extends PostgresBaseDAO implements ScheduledWfMetadataDAO{
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Preconditions;
-import com.netflix.conductor.mysql.dao.MySQLBaseDAO;
-import com.netflix.conductor.mysql.util.Query;
-
-import io.github.jas34.scheduledwf.dao.ScheduledWfMetadataDAO;
-import io.github.jas34.scheduledwf.metadata.ScheduleWfDef;
-import org.springframework.retry.support.RetryTemplate;
-
-
-public class MySQLScheduledWfMetaDataDao extends MySQLBaseDAO implements ScheduledWfMetadataDAO {
-
-    public MySQLScheduledWfMetaDataDao(RetryTemplate retryTemplate, ObjectMapper om, DataSource dataSource) {
+    public PostgreSQLScheduledWfMetaDataDao(RetryTemplate retryTemplate, ObjectMapper om, DataSource dataSource) {
         //retryTemplate is required in conductor 3.13.5+
         super(retryTemplate, om, dataSource);
     }
@@ -51,6 +49,7 @@ public class MySQLScheduledWfMetaDataDao extends MySQLBaseDAO implements Schedul
         });
         return isRemoved.get();
     }
+
 
     @Override
     public boolean removeScheduleWorkflows(List<String> names) {
@@ -83,6 +82,7 @@ public class MySQLScheduledWfMetaDataDao extends MySQLBaseDAO implements Schedul
         return scheduleWfDefs;
     }
 
+
     @Override
     public Optional<List<ScheduleWfDef>> getAllScheduledWorkflowDefs() {
         final String GET_ALL_WORKFLOW_DEFS = "SELECT json_input FROM schedule_wf_def";
@@ -91,11 +91,18 @@ public class MySQLScheduledWfMetaDataDao extends MySQLBaseDAO implements Schedul
         return scheduleWfDefs;
     }
 
+
     private Boolean scheduleWorkflowDefExists(Connection connection, ScheduleWfDef def) {
         final String CHECK_WORKFLOW_DEF_EXISTS_QUERY = "SELECT COUNT(*) FROM schedule_wf_def WHERE name = ?";
 
         return query(connection, CHECK_WORKFLOW_DEF_EXISTS_QUERY,
                 q -> q.addParameter(def.getWfName()).exists());
+    }
+
+
+    private void validate(ScheduleWfDef def) {
+        Preconditions.checkNotNull(def, "ScheduleWfDef object cannot be null");
+        Preconditions.checkNotNull(def.getWfName(), "ScheduleWfDef name cannot be null");
     }
 
     private void insertOrUpdatescheduleWorkflowDef(Connection tx, ScheduleWfDef def) {
@@ -124,10 +131,4 @@ public class MySQLScheduledWfMetaDataDao extends MySQLBaseDAO implements Schedul
         }
 
     }
-
-    private void validate(ScheduleWfDef def) {
-        Preconditions.checkNotNull(def, "ScheduleWfDef object cannot be null");
-        Preconditions.checkNotNull(def.getWfName(), "ScheduleWfDef name cannot be null");
-    }
-
 }

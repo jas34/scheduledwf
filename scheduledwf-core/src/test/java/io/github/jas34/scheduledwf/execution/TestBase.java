@@ -1,12 +1,12 @@
 package io.github.jas34.scheduledwf.execution;
 
 import com.coreoz.wisp.Job;
-import com.netflix.conductor.core.utils.IDGenerator;
 
 import io.github.jas34.scheduledwf.run.ManagerInfo;
 import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 import io.github.jas34.scheduledwf.scheduler.ScheduledProcess;
 import io.github.jas34.scheduledwf.utils.CommonUtils;
+import io.github.jas34.scheduledwf.utils.IDGenerator_;
 
 /**
  * @author Jasbir Singh
@@ -17,7 +17,7 @@ public class TestBase {
 
     public ScheduledWorkFlow createScheduledWorkFlow(ManagerInfo managerInfo, ScheduledWorkFlow.State state) {
         ScheduledWorkFlow scheduledWorkFlow = new ScheduledWorkFlow();
-        scheduledWorkFlow.setId(IDGenerator.generate());
+        scheduledWorkFlow.setId(IDGenerator_.generate());
         scheduledWorkFlow.setName(TEST_WF_NAME);
         scheduledWorkFlow.setNodeAddress(managerInfo.getNodeAddress());
         scheduledWorkFlow.setWfName(TEST_WF_NAME);
@@ -32,7 +32,7 @@ public class TestBase {
     }
 
     public ScheduledWorkFlow createScheduledWorkFlow(ManagerInfo managerInfo, String name,
-            ScheduledWorkFlow.State state) {
+                                                     ScheduledWorkFlow.State state) {
         ScheduledWorkFlow scheduledWorkFlow = createScheduledWorkFlow(managerInfo, state);
         scheduledWorkFlow.setName(name);
         scheduledWorkFlow.setScheduledProcess(createScheduledProcess(name));
@@ -41,7 +41,7 @@ public class TestBase {
 
     public ManagerInfo createManagerInfo() {
         ManagerInfo managerInfo = new ManagerInfo();
-        managerInfo.setId(IDGenerator.generate());
+        managerInfo.setId(IDGenerator_.generate());
         managerInfo.setName(DefaultSchedulerManager.class.getSimpleName());
         managerInfo.setNodeAddress(CommonUtils.resolveNodeAddress());
         managerInfo.setCreateTime(System.currentTimeMillis());
