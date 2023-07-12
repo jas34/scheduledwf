@@ -24,8 +24,6 @@
 		<dependency>
 			<groupId>io.github.jas34</groupId>
 			<artifactId>scheduled-postgres-persistence</artifactId>
-			<version>2.0.2-SNAPSHOT</version>
-			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 </project>

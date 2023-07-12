@@ -17,10 +17,13 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
+/**
+ * @author Vivian Zheng
+ */
+
 public class PostgreSQLScheduledWfMetaDataDao extends PostgresBaseDAO implements ScheduledWfMetadataDAO{
 
     public PostgreSQLScheduledWfMetaDataDao(RetryTemplate retryTemplate, ObjectMapper om, DataSource dataSource) {
-        //retryTemplate is required in conductor 3.13.5+
         super(retryTemplate, om, dataSource);
     }
 
@@ -117,11 +120,9 @@ public class PostgreSQLScheduledWfMetaDataDao extends PostgresBaseDAO implements
                             .addParameter(def.getStatus() != null ? def.getStatus().name() : null)
                             .addJsonParameter(def).addParameter(def.getCronExpression()).executeUpdate());
         } else {
-            // @formatter:off
             final String UPDATE_WORKFLOW_DEF_QUERY = "UPDATE schedule_wf_def "
                     + "SET json_input = ?,status=?, cron_expression=?, version=?, updated_on = CURRENT_TIMESTAMP "
                     + "WHERE name = ?";
-            // @formatter:on
 
             execute(tx, UPDATE_WORKFLOW_DEF_QUERY,
                     q -> q.addJsonParameter(def)

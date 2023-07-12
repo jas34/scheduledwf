@@ -39,7 +39,7 @@ of control.
 *Quickly use able in _PRODUCTION_*:
 - version **2.0.2+**
   - This version is compatible to conductor-boot **v3.13.5**
-  - Supports PostgreSQL for persistent storage
+  - Besides mySQL, additionally supports PostgreSQL for persistent storage
 - version **2.0.0 - 2.0.1**
   - This version is compatible to conductor-boot **v3.3.0** requires **Java 11**.
   - Refer **Getting started** section below.

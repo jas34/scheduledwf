@@ -30,7 +30,7 @@ import io.github.jas34.scheduledwf.config.MySQLTestConfiguration;
 import io.github.jas34.scheduledwf.metadata.ScheduleWfDef;
 
 /**
- * @author Jasbir Singh
+ * @author Jasbir Singh Vivian Zheng
  */
 @Ignore
 @Import(MySQLTestConfiguration.class)
@@ -38,8 +38,6 @@ import io.github.jas34.scheduledwf.metadata.ScheduleWfDef;
 public class MySQLScheduledWfMetaDataDaoTest {
     private MySQLDAOTestUtil testUtil;
     private MySQLScheduledWfMetaDataDao dao;
-
-    private RetryTemplate retryTemplate;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -56,8 +54,7 @@ public class MySQLScheduledWfMetaDataDaoTest {
                 new MySQLContainer<>(DockerImageName.parse("mysql")).withDatabaseName(name.getMethodName());
         mySQLContainer.start();
         testUtil = new MySQLDAOTestUtil(mySQLContainer, objectMapper);
-        retryTemplate = new RetryTemplate();
-        dao = new MySQLScheduledWfMetaDataDao(retryTemplate, testUtil.getObjectMapper(), testUtil.getDataSource());
+        dao = new MySQLScheduledWfMetaDataDao(new RetryTemplate(), testUtil.getObjectMapper(), testUtil.getDataSource());
     }
 
     @After

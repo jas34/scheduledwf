@@ -17,6 +17,9 @@ import java.time.Duration;
 
 import static org.mockito.Mockito.when;
 
+/**
+ * @author Vivian Zheng
+ */
 public class PostgreSQLDAOTestUtil {
 
     private final HikariDataSource dataSource;

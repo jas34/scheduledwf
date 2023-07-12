@@ -14,7 +14,7 @@ import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 import org.springframework.stereotype.Service;
 
 /**
- * @author Jasbir Singh
+ * @author Jasbir Singh Vivian Zheng
  */
 @Service
 public class SchedulerExecutionService {

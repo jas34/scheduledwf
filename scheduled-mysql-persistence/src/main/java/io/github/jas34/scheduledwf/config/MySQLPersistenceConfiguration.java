@@ -3,6 +3,7 @@ package io.github.jas34.scheduledwf.config;
 import javax.sql.DataSource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.netflix.conductor.mysql.config.MySQLConfiguration;
 import io.github.jas34.scheduledwf.dao.IndexScheduledWfDAO;
 import io.github.jas34.scheduledwf.dao.ScheduledWfMetadataDAO;
 import io.github.jas34.scheduledwf.dao.mysql.MySQLIndexScheduledWfDAO;
@@ -16,13 +17,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
+import org.springframework.retry.backoff.NoBackOffPolicy;
+import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
 /**
  * Description:<br>
  * Date: 26/09/21-5:13 pm
  * @since v2.0.0
- * @author Jasbir Singh
+ * @author Jasbir Singh Vivian Zheng
  */
 @Configuration
 @Import(DataSourceAutoConfiguration.class)
@@ -40,13 +43,4 @@ public class MySQLPersistenceConfiguration {
 		return new MySQLIndexScheduledWfDAO(retryTemplate, objectMapper, dataSource);
 	}
 
-	//Similar to es6RetryTemplate() in com.netflix.conductor.es6.config ElasticSearchV6Configuration
-	@Bean
-	public RetryTemplate mySQLRetryTemplate() {
-		RetryTemplate retryTemplate = new RetryTemplate();
-		FixedBackOffPolicy fixedBackOffPolicy = new FixedBackOffPolicy();
-		fixedBackOffPolicy.setBackOffPeriod(1000L);
-		retryTemplate.setBackOffPolicy(fixedBackOffPolicy);
-		return retryTemplate;
-	}
 }

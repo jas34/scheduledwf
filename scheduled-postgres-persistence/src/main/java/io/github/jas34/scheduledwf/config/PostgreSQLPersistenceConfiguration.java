@@ -13,6 +13,11 @@ import org.springframework.context.annotation.*;
 import org.springframework.retry.support.RetryTemplate;
 
 import javax.sql.DataSource;
+
+/**
+ * @author Vivian Zheng
+ */
+
 @Configuration
 @Import(DataSourceAutoConfiguration.class)
 @ConditionalOnProperty(name = "conductor.db.type", havingValue = "postgres")

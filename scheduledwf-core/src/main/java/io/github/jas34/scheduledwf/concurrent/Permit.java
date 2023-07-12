@@ -3,7 +3,7 @@ package io.github.jas34.scheduledwf.concurrent;
 import io.github.jas34.scheduledwf.utils.IDGenerator_;
 
 /**
- * @author Jasbir Singh
+ * @author Jasbir Singh Vivian Zheng
  */
 public class Permit {
 

@@ -17,12 +17,11 @@ import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 import org.springframework.retry.support.RetryTemplate;
 
 /**
- * @author Jasbir Singh
+ * @author Jasbir Singh Vivian Zheng
  */
 public class MySQLIndexScheduledWfDAO extends MySQLBaseDAO implements IndexScheduledWfDAO {
 
     public MySQLIndexScheduledWfDAO(RetryTemplate retryTemplate, ObjectMapper om, DataSource dataSource) {
-        //retryTemplate is required in conductor 3.13.5+
         super(retryTemplate, om, dataSource);
     }
 
@@ -72,7 +71,7 @@ public class MySQLIndexScheduledWfDAO extends MySQLBaseDAO implements IndexSched
      */
     @Override
     public SearchResult<ScheduledWorkFlow> getScheduledWorkflow(String name, String managerId,
-                                                                String nodeAddress, int start, int size) {
+            String nodeAddress, int start, int size) {
         final String GET_SCHEDULED_WFS_QUERY =
                 "SELECT json_input FROM scheduled_wf WHERE name = ? AND manager_id = ? AND nodeAddress = ?";
 
@@ -117,7 +116,7 @@ public class MySQLIndexScheduledWfDAO extends MySQLBaseDAO implements IndexSched
      */
     @Override
     public SearchResult<ScheduledWfExecData> getScheduledWfExecData(String name, String managerId,
-                                                                    String nodeAddress, int start, int size) {
+            String nodeAddress, int start, int size) {
         final String GET_SCHEDULED_WFS_EXEC_DATA_QUERY =
                 "SELECT json_input FROM scheduled_wf_execution WHERE name = ? AND manager_id = ? AND nodeAddress = ?";
 

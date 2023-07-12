@@ -16,7 +16,7 @@ import com.coreoz.wisp.Job;
 import com.coreoz.wisp.Scheduler;
 import com.coreoz.wisp.schedule.Schedule;
 import com.coreoz.wisp.schedule.cron.CronSchedule;
-import io.github.jas34.scheduledwf.utils.LocalOnlyLock;
+import com.netflix.conductor.core.sync.local.LocalOnlyLock;
 import com.netflix.conductor.core.sync.Lock;
 
 import io.github.jas34.scheduledwf.concurrent.ExecutionPermitter;
@@ -25,7 +25,7 @@ import io.github.jas34.scheduledwf.concurrent.LockingService;
 import io.github.jas34.scheduledwf.metadata.ScheduledTaskDef;
 
 /**
- * @author Jasbir Singh
+ * @author Jasbir Singh Vivian Zheng
  */
 public class TestLockingService {
     Logger log = LoggerFactory.getLogger(TestLockingService.class);

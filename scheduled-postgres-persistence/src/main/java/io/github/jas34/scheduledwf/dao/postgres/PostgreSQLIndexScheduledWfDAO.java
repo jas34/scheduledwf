@@ -13,9 +13,13 @@ import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
+
+/**
+ * @author Vivian Zheng
+ */
+
 public class PostgreSQLIndexScheduledWfDAO extends PostgresBaseDAO implements IndexScheduledWfDAO {
     public PostgreSQLIndexScheduledWfDAO(RetryTemplate retryTemplate, ObjectMapper om, DataSource dataSource) {
-        //retryTemplate is required in conductor 3.13.5+
         super(retryTemplate, om, dataSource);
     }
 

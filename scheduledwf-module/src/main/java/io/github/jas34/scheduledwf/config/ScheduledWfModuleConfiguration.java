@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
  * Date: 27/09/21-8:47 am
  *
  * @since v2.0.0
- * @author Jasbir Singh
+ * @author Jasbir Singh Vivian Zheng
  */
 @Configuration
 @Import(value = {CoreConfiguration.class, MySQLPersistenceConfiguration.class, PostgreSQLPersistenceConfiguration.class})

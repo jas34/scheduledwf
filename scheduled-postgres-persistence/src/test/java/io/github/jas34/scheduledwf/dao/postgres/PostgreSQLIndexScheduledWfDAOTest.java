@@ -27,14 +27,15 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+/**
+ * @author Vivian Zheng
+ */
 @Ignore
 @Import(PostgreSQLTestConfiguration.class)
 @RunWith(SpringRunner.class)
 public class PostgreSQLIndexScheduledWfDAOTest {
     private PostgreSQLDAOTestUtil testUtil;
     private PostgreSQLIndexScheduledWfDAO dao;
-
-    private RetryTemplate retryTemplate;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -51,8 +52,7 @@ public class PostgreSQLIndexScheduledWfDAOTest {
                 new PostgreSQLContainer<>(DockerImageName.parse("postgres")).withDatabaseName(name.getMethodName());
         postgreSQLContainer.start();
         testUtil = new PostgreSQLDAOTestUtil(postgreSQLContainer, objectMapper);
-        retryTemplate = new RetryTemplate();
-        dao = new PostgreSQLIndexScheduledWfDAO(retryTemplate, testUtil.getObjectMapper(), testUtil.getDataSource());
+        dao = new PostgreSQLIndexScheduledWfDAO(new RetryTemplate(), testUtil.getObjectMapper(), testUtil.getDataSource());
     }
 
     @After

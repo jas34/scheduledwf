@@ -12,7 +12,7 @@ import io.github.jas34.scheduledwf.run.Status;
 import io.github.jas34.scheduledwf.run.TriggerResult;
 
 /**
- * @author Jasbir Singh
+ * @author Jasbir Singh Vivian Zheng
  */
 public class TriggerScheduledWorkFlowTask implements Runnable {
 

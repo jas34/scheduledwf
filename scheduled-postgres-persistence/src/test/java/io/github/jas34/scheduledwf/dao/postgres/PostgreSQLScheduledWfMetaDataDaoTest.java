@@ -22,16 +22,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * @author Jasbir Singh
+ * @author Vivian Zheng
  */
+
 @Ignore
 @Import(PostgreSQLTestConfiguration.class)
 @RunWith(SpringRunner.class)
 public class PostgreSQLScheduledWfMetaDataDaoTest {
     private PostgreSQLDAOTestUtil testUtil;
     private PostgreSQLScheduledWfMetaDataDao dao;
-
-    private RetryTemplate retryTemplate;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -48,8 +47,7 @@ public class PostgreSQLScheduledWfMetaDataDaoTest {
                 new PostgreSQLContainer<>(DockerImageName.parse("postgres")).withDatabaseName(name.getMethodName());
         postgreSQLContainer.start();
         testUtil = new PostgreSQLDAOTestUtil(postgreSQLContainer, objectMapper);
-        retryTemplate = new RetryTemplate();
-        dao = new PostgreSQLScheduledWfMetaDataDao(retryTemplate, testUtil.getObjectMapper(), testUtil.getDataSource());
+        dao = new PostgreSQLScheduledWfMetaDataDao(new RetryTemplate(), testUtil.getObjectMapper(), testUtil.getDataSource());
     }
 
     @After

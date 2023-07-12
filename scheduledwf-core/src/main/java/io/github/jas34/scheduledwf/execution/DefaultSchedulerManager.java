@@ -33,7 +33,7 @@ import org.springframework.stereotype.Component;
 
 /**
  *
- * @author Jasbir Singh
+ * @author Jasbir Singh Vivian Zheng
  */
 @Component
 public class DefaultSchedulerManager implements SchedulerManager {
