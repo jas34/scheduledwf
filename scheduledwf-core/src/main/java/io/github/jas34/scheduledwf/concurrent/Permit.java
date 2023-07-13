@@ -1,9 +1,9 @@
 package io.github.jas34.scheduledwf.concurrent;
 
-import com.netflix.conductor.core.utils.IDGenerator;
+import io.github.jas34.scheduledwf.utils.IDGenerator_;
 
 /**
- * @author Jasbir Singh
+ * @author Jasbir Singh Vivian Zheng
  */
 public class Permit {
 
@@ -20,7 +20,7 @@ public class Permit {
 
     public Permit(String name) {
         this.name = name;
-        this.id = IDGenerator.generate();
+        this.id = IDGenerator_.generate();
         this.inUseUpto = System.currentTimeMillis() + 500;
     }
 

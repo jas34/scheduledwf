@@ -1,48 +1,41 @@
-package io.github.jas34.scheduledwf.dao.mysql;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.List;
-
-import io.github.jas34.scheduledwf.utils.IDGenerator_;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.rules.TestName;
-import org.junit.runner.RunWith;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
-import org.springframework.retry.support.RetryTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.utility.DockerImageName;
+package io.github.jas34.scheduledwf.dao.postgres;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.conductor.common.run.SearchResult;
-
-import io.github.jas34.scheduledwf.config.MySQLTestConfiguration;
+import io.github.jas34.scheduledwf.config.PostgreSQLTestConfiguration;
 import io.github.jas34.scheduledwf.run.ManagerInfo;
 import io.github.jas34.scheduledwf.run.ScheduledWfExecData;
 import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 import io.github.jas34.scheduledwf.run.Status;
 import io.github.jas34.scheduledwf.utils.CommonUtils;
+import io.github.jas34.scheduledwf.utils.IDGenerator_;
+import org.junit.*;
+import org.junit.rules.ExpectedException;
+import org.junit.rules.TestName;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.retry.support.RetryTemplate;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.testcontainers.utility.DockerImageName;
 
+import org.testcontainers.containers.PostgreSQLContainer;
+
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
- * @author Jasbir Singh Vivian Zheng
+ * @author Vivian Zheng
  */
 @Ignore
-@Import(MySQLTestConfiguration.class)
+@Import(PostgreSQLTestConfiguration.class)
 @RunWith(SpringRunner.class)
-public class MySQLIndexScheduledWfDAOTest {
-    private MySQLDAOTestUtil testUtil;
-    private MySQLIndexScheduledWfDAO dao;
+public class PostgreSQLIndexScheduledWfDAOTest {
+    private PostgreSQLDAOTestUtil testUtil;
+    private PostgreSQLIndexScheduledWfDAO dao;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -55,11 +48,11 @@ public class MySQLIndexScheduledWfDAOTest {
 
     @Before
     public void setup() {
-        MySQLContainer<?> mySQLContainer =
-                new MySQLContainer<>(DockerImageName.parse("mysql")).withDatabaseName(name.getMethodName());
-        mySQLContainer.start();
-        testUtil = new MySQLDAOTestUtil(mySQLContainer, objectMapper);
-        dao = new MySQLIndexScheduledWfDAO(new RetryTemplate(), testUtil.getObjectMapper(), testUtil.getDataSource());
+        PostgreSQLContainer<?> postgreSQLContainer =
+                new PostgreSQLContainer<>(DockerImageName.parse("postgres")).withDatabaseName(name.getMethodName());
+        postgreSQLContainer.start();
+        testUtil = new PostgreSQLDAOTestUtil(postgreSQLContainer, objectMapper);
+        dao = new PostgreSQLIndexScheduledWfDAO(new RetryTemplate(), testUtil.getObjectMapper(), testUtil.getDataSource());
     }
 
     @After

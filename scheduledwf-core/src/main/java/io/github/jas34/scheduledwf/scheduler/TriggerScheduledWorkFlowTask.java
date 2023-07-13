@@ -12,7 +12,7 @@ import io.github.jas34.scheduledwf.run.Status;
 import io.github.jas34.scheduledwf.run.TriggerResult;
 
 /**
- * @author Jasbir Singh
+ * @author Jasbir Singh Vivian Zheng
  */
 public class TriggerScheduledWorkFlowTask implements Runnable {
 
@@ -28,9 +28,11 @@ public class TriggerScheduledWorkFlowTask implements Runnable {
 
     private SchedulerStats schedulerStats;
 
+    private final Integer priority = 1;
+
     public TriggerScheduledWorkFlowTask(ScheduledTaskDef taskDef,
-            IndexExecutionDataCallback indexExecutionDataCallback, WorkflowService workflowService,
-            LockingService lockingService, SchedulerStats schedulerStats) {
+                                        IndexExecutionDataCallback indexExecutionDataCallback, WorkflowService workflowService,
+                                        LockingService lockingService, SchedulerStats schedulerStats) {
         this.taskDef = taskDef;
         this.indexExecutionDataCallback = indexExecutionDataCallback;
         this.workflowService = workflowService;
@@ -50,8 +52,13 @@ public class TriggerScheduledWorkFlowTask implements Runnable {
             // TODO: we can add throttling here by looking at number of running of workflows .... Let revisit
 
             logger.debug("Going to start workflow with name={}", taskDef.getName());
+            /* Conductor v3.13.5+ requires priority to be passed in, omission is not allowed.
+                Set priority to be 1 for now. Will add to scheduled workflow and tasks later.
+                Priority level is for the tasks within this workflow execution. Possible values are between 0 - 99.
+            	https://conductor.netflix.com/documentation/api/startworkflow.html
+             */
             String workflowId = workflowService.startWorkflow(taskDef.getWfName(), taskDef.getWfVersion(),
-                    taskDef.getSchedulerId(), taskDef.getInput());
+                    taskDef.getSchedulerId(), priority, taskDef.getInput());
             result.setId(workflowId);
             result.setStatus(Status.SUCCESS);
             logger.debug("Workflow with name={} started and workflowId={}", taskDef.getName(), workflowId);

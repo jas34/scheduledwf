@@ -14,9 +14,10 @@ import io.github.jas34.scheduledwf.run.Status;
 import io.github.jas34.scheduledwf.scheduler.ScheduledProcess;
 import io.github.jas34.scheduledwf.scheduler.WorkflowScheduler;
 import io.github.jas34.scheduledwf.scheduler.WorkflowSchedulerFactory;
+import io.github.jas34.scheduledwf.utils.IDGenerator_;
 
 /**
- * @author Jasbir Singh
+ * @author Jasbir Singh Vivian Zheng
  */
 public class DefaultWorkflowSchedulingAssistant implements WorkflowSchedulingAssistant {
 
@@ -30,7 +31,7 @@ public class DefaultWorkflowSchedulingAssistant implements WorkflowSchedulingAss
     public SchedulingResult scheduleSchedulerWithFailSafety(ScheduledWorkFlow scheduledWorkFlow) {
         WorkflowScheduler<ScheduledProcess> workflowScheduler =
                 factory.getWorkflowSchedulerFactory(scheduledWorkFlow);
-        SchedulingResult result = new SchedulingResult(IDGenerator.generate());
+        SchedulingResult result = new SchedulingResult(IDGenerator_.generate());
         ScheduledProcess scheduledProcess =
                 executeAndpopulateResult(result, () -> workflowScheduler.schedule(scheduledWorkFlow));
         result.setProcessReference(scheduledProcess);
@@ -41,7 +42,7 @@ public class DefaultWorkflowSchedulingAssistant implements WorkflowSchedulingAss
     public ShutdownResult shutdownSchedulerWithFailSafety(ScheduledWorkFlow scheduledWorkFlow) {
         WorkflowScheduler<ScheduledProcess> workflowScheduler =
                 factory.getWorkflowSchedulerFactory(scheduledWorkFlow);
-        ShutdownResult result = new ShutdownResult(IDGenerator.generate());
+        ShutdownResult result = new ShutdownResult(IDGenerator_.generate());
         executeAndpopulateResult(result,
                 () -> workflowScheduler.shutdown(scheduledWorkFlow.getScheduledProcess()));
         return result;

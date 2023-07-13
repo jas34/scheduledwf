@@ -21,5 +21,9 @@
 			<groupId>io.github.jas34</groupId>
 			<artifactId>scheduled-mysql-persistence</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>io.github.jas34</groupId>
+			<artifactId>scheduled-postgres-persistence</artifactId>
+		</dependency>
 	</dependencies>
 </project>

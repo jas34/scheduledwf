@@ -37,7 +37,10 @@ of control.
 - _Schedule Conductor workflow_ is extendable to work with all persistence stores supported by conductor.
 
 *Quickly use able in _PRODUCTION_*:
-- version **2.0.0+**
+- version **2.0.2+**
+  - This version is compatible to conductor-boot **v3.13.5**
+  - Besides mySQL, additionally supports PostgreSQL for persistent storage
+- version **2.0.0 - 2.0.1**
   - This version is compatible to conductor-boot **v3.3.0** requires **Java 11**.
   - Refer **Getting started** section below.
 - upto version **1.2.2**

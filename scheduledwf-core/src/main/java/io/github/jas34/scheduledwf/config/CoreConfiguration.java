@@ -1,7 +1,6 @@
 package io.github.jas34.scheduledwf.config;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -21,7 +20,7 @@ import io.github.jas34.scheduledwf.service.MetadataServiceImpl;
  * Date: 26/09/21-12:09 pm
  * 
  * @since v2.0.0
- * @author Jasbir Singh
+ * @author Jasbir Singh Vivian Zheng
  */
 @Configuration
 @Import(value = {LockConfiguration.class, InMemoryPersistenceConfiguration.class, CommonConfiguration.class})

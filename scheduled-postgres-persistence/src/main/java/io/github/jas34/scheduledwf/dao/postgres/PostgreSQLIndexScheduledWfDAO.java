@@ -1,27 +1,25 @@
-package io.github.jas34.scheduledwf.dao.mysql;
-
-import java.util.List;
-import java.util.Optional;
-
-import javax.sql.DataSource;
+package io.github.jas34.scheduledwf.dao.postgres;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.conductor.common.run.SearchResult;
-import com.netflix.conductor.mysql.dao.MySQLBaseDAO;
-
+import com.netflix.conductor.postgres.dao.PostgresBaseDAO;
 import io.github.jas34.scheduledwf.dao.IndexScheduledWfDAO;
 import io.github.jas34.scheduledwf.run.ManagerInfo;
 import io.github.jas34.scheduledwf.run.ScheduledWfExecData;
 import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
-
 import org.springframework.retry.support.RetryTemplate;
 
-/**
- * @author Jasbir Singh Vivian Zheng
- */
-public class MySQLIndexScheduledWfDAO extends MySQLBaseDAO implements IndexScheduledWfDAO {
+import javax.sql.DataSource;
+import java.util.List;
+import java.util.Optional;
 
-    public MySQLIndexScheduledWfDAO(RetryTemplate retryTemplate, ObjectMapper om, DataSource dataSource) {
+
+/**
+ * @author Vivian Zheng
+ */
+
+public class PostgreSQLIndexScheduledWfDAO extends PostgresBaseDAO implements IndexScheduledWfDAO {
+    public PostgreSQLIndexScheduledWfDAO(RetryTemplate retryTemplate, ObjectMapper om, DataSource dataSource) {
         super(retryTemplate, om, dataSource);
     }
 
@@ -59,6 +57,7 @@ public class MySQLIndexScheduledWfDAO extends MySQLBaseDAO implements IndexSched
         });
     }
 
+
     /**
      * Pagination not implemented in MVP release
      *
@@ -71,7 +70,7 @@ public class MySQLIndexScheduledWfDAO extends MySQLBaseDAO implements IndexSched
      */
     @Override
     public SearchResult<ScheduledWorkFlow> getScheduledWorkflow(String name, String managerId,
-            String nodeAddress, int start, int size) {
+                                                                String nodeAddress, int start, int size) {
         final String GET_SCHEDULED_WFS_QUERY =
                 "SELECT json_input FROM scheduled_wf WHERE name = ? AND manager_id = ? AND nodeAddress = ?";
 
@@ -83,6 +82,7 @@ public class MySQLIndexScheduledWfDAO extends MySQLBaseDAO implements IndexSched
         return scheduledWorkFlows.map(workFlows -> new SearchResult<>(workFlows.size(), workFlows))
                 .orElse(null);
     }
+
 
     /**
      * Pagination not implemented in MVP release
@@ -104,6 +104,7 @@ public class MySQLIndexScheduledWfDAO extends MySQLBaseDAO implements IndexSched
                 .orElse(null);
     }
 
+
     /**
      * Pagination not implemented in MVP release
      *
@@ -116,7 +117,7 @@ public class MySQLIndexScheduledWfDAO extends MySQLBaseDAO implements IndexSched
      */
     @Override
     public SearchResult<ScheduledWfExecData> getScheduledWfExecData(String name, String managerId,
-            String nodeAddress, int start, int size) {
+                                                                    String nodeAddress, int start, int size) {
         final String GET_SCHEDULED_WFS_EXEC_DATA_QUERY =
                 "SELECT json_input FROM scheduled_wf_execution WHERE name = ? AND manager_id = ? AND nodeAddress = ?";
 
@@ -160,6 +161,7 @@ public class MySQLIndexScheduledWfDAO extends MySQLBaseDAO implements IndexSched
         return managerInfos.get();
     }
 
+
     @Override
     public List<ManagerInfo> getManagerInfo() {
         final String GET_ALL_MANAGER_INFO_QUERY = "SELECT json_input FROM manager_info";
@@ -168,4 +170,5 @@ public class MySQLIndexScheduledWfDAO extends MySQLBaseDAO implements IndexSched
                 queryWithTransaction(GET_ALL_MANAGER_INFO_QUERY, q -> q.executeAndFetch(ManagerInfo.class)));
         return managerInfos.get();
     }
+
 }

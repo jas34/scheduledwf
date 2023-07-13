@@ -10,13 +10,13 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PreDestroy;
 
+import io.github.jas34.scheduledwf.utils.IDGenerator_;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.cronutils.utils.VisibleForTesting;
 import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
-import com.netflix.conductor.core.utils.IDGenerator;
 import com.netflix.conductor.dao.MetadataDAO;
 
 import io.github.jas34.scheduledwf.dao.IndexScheduledWfDAO;
@@ -33,7 +33,7 @@ import org.springframework.stereotype.Component;
 
 /**
  *
- * @author Jasbir Singh
+ * @author Jasbir Singh Vivian Zheng
  */
 @Component
 public class DefaultSchedulerManager implements SchedulerManager {
@@ -51,14 +51,14 @@ public class DefaultSchedulerManager implements SchedulerManager {
 
     @Autowired
     public DefaultSchedulerManager(ScheduledWfMetadataDAO scheduledWfMetadataDAO,
-            ScheduledProcessRegistry processRegistry, MetadataDAO metadataDAO, IndexScheduledWfDAO indexDAO,
-            WorkflowSchedulingAssistant schedulingAssistant) {
+                                   ScheduledProcessRegistry processRegistry, MetadataDAO metadataDAO, IndexScheduledWfDAO indexDAO,
+                                   WorkflowSchedulingAssistant schedulingAssistant) {
         this(scheduledWfMetadataDAO, processRegistry, metadataDAO, indexDAO, schedulingAssistant, false);
     }
 
     public DefaultSchedulerManager(ScheduledWfMetadataDAO scheduledWfMetadataDAO,
-            ScheduledProcessRegistry processRegistry, MetadataDAO metadataDAO, IndexScheduledWfDAO indexDAO,
-            WorkflowSchedulingAssistant schedulingAssistant, boolean isJunitRun) {
+                                   ScheduledProcessRegistry processRegistry, MetadataDAO metadataDAO, IndexScheduledWfDAO indexDAO,
+                                   WorkflowSchedulingAssistant schedulingAssistant, boolean isJunitRun) {
         this.scheduledWfMetadataDAO = scheduledWfMetadataDAO;
         this.processRegistry = processRegistry;
         this.metadataDAO = metadataDAO;
@@ -81,7 +81,7 @@ public class DefaultSchedulerManager implements SchedulerManager {
     @Override
     public void registerManager() {
         managerInfo = new ManagerInfo();
-        managerInfo.setId(IDGenerator.generate());
+        managerInfo.setId(IDGenerator_.generate());
         managerInfo.setName(DefaultSchedulerManager.class.getSimpleName());
         managerInfo.setNodeAddress(getNodeAddress());
         managerInfo.setStatus(ManagerInfo.Status.RUNNING);
@@ -146,7 +146,7 @@ public class DefaultSchedulerManager implements SchedulerManager {
             logger.info("Going to schedule workflow with name={} on node={}", unScheduledWorkflow.getWfName(),
                     managerInfo.getName());
             ScheduledWorkFlow scheduledWorkFlow = new ScheduledWorkFlow();
-            scheduledWorkFlow.setId(IDGenerator.generate());
+            scheduledWorkFlow.setId(IDGenerator_.generate());
             scheduledWorkFlow.setName(unScheduledWorkflow.getWfName());
             scheduledWorkFlow.setNodeAddress(managerInfo.getNodeAddress());
             scheduledWorkFlow.setWfName(unScheduledWorkflow.getWfName());

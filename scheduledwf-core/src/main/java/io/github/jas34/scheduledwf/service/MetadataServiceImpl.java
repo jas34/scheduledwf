@@ -7,14 +7,14 @@ import com.cronutils.model.CronType;
 import com.cronutils.model.definition.CronDefinitionBuilder;
 import com.cronutils.parser.CronParser;
 import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
-import com.netflix.conductor.core.exception.ApplicationException;
+import io.github.jas34.scheduledwf.exception.ApplicationException;
 import com.netflix.conductor.dao.MetadataDAO;
 
 import io.github.jas34.scheduledwf.dao.ScheduledWfMetadataDAO;
 import io.github.jas34.scheduledwf.metadata.ScheduleWfDef;
 
 /**
- * @author Jasbir Singh
+ * @author Jasbir Singh Vivian Zheng
  */
 public class MetadataServiceImpl implements MetadataService {
 
