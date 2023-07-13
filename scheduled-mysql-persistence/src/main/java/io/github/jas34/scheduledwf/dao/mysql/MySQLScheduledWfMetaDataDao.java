@@ -109,9 +109,10 @@ public class MySQLScheduledWfMetaDataDao extends MySQLBaseDAO implements Schedul
                             .addParameter(def.getStatus() != null ? def.getStatus().name() : null)
                             .addJsonParameter(def).addParameter(def.getCronExpression()).executeUpdate());
         } else {
-			final String UPDATE_WORKFLOW_DEF_QUERY = "UPDATE schedule_wf_def "
-					+ "SET json_input = ?,status=?, cron_expression=?, version=?, updated_on = CURRENT_TIMESTAMP "
-					+ "WHERE name = ?";
+            final String UPDATE_WORKFLOW_DEF_QUERY = "UPDATE schedule_wf_def "
+                    + "SET json_input = ?,status=?, cron_expression=?, version=?, updated_on = CURRENT_TIMESTAMP "
+                    + "WHERE name = ?";
+
             execute(tx, UPDATE_WORKFLOW_DEF_QUERY,
                     q -> q.addJsonParameter(def)
                             .addParameter(def.getStatus() != null ? def.getStatus().name() : null)
