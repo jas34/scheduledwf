@@ -14,7 +14,9 @@ import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 import org.springframework.stereotype.Service;
 
 /**
- * @author Jasbir Singh Vivian Zheng
+ * @author Jasbir Singh
+ * @since v3.0.0
+ * @author Vivian Zheng
  */
 @Service
 public class SchedulerExecutionService {
@@ -26,7 +28,7 @@ public class SchedulerExecutionService {
     }
 
     public SearchResult<ScheduledWorkFlow> searchScheduledWorkflow(String name, String managerId,
-                                                                   String nodeAddress, String schedulerId, int start, int size) {
+            String nodeAddress, String schedulerId, int start, int size) {
         if (Objects.nonNull(schedulerId)) {
             return indexScheduledWfDAO.getScheduledWorkflow(schedulerId, start, size);
         }
@@ -38,7 +40,7 @@ public class SchedulerExecutionService {
     }
 
     public SearchResult<ScheduledWfExecData> searchScheduledWfExecData(String name, String managerId,
-                                                                       String nodeAddress, String schedulerId, int start, int size) {
+            String nodeAddress, String schedulerId, int start, int size) {
         if (Objects.nonNull(schedulerId)) {
             return indexScheduledWfDAO.getScheduledWfExecData(schedulerId, start, size);
         }

@@ -5,7 +5,7 @@
 	<groupId>io.github.jas34</groupId>
 	<artifactId>scheduledwf-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>2.0.2-SNAPSHOT</version>
+	<version>3.0.0-SNAPSHOT</version>
 	<name>Scheduled Conductor Workflow</name>
 	<description>Scheduled Conductor-Workflow is an extension of netflix conductor to provide capability to schedule a
 		workflow in micro service architecture
@@ -80,11 +80,19 @@
 			<version>4.4</version>
 		</dependency>
 		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter</artifactId>
-			<version>5.7.0</version>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.1</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
+			<version>5.10.0</version>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
@@ -101,7 +109,7 @@
 		<dependency>
 			<groupId>org.springframework.retry</groupId>
 			<artifactId>spring-retry</artifactId>
-			<version>1.3.0</version> <!--2.0.0 is not compatible with Java 11-->
+			<version>1.3.3</version> <!--2.0.0 is not compatible with Java 11-->
 		</dependency>
 
 

@@ -25,7 +25,9 @@ import org.springframework.retry.support.RetryTemplate;
  * Description:<br>
  * Date: 26/09/21-5:13 pm
  * @since v2.0.0
- * @author Jasbir Singh Vivian Zheng
+ * @author Jasbir Singh
+ * @since v3.0.0
+ * @author Vivian Zheng
  */
 @Configuration
 @Import(DataSourceAutoConfiguration.class)

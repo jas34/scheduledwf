@@ -22,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
+ * @since v3.0.0
  * @author Vivian Zheng
  */
 

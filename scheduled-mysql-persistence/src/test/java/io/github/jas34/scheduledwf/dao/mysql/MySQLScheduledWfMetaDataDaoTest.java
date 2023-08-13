@@ -30,7 +30,9 @@ import io.github.jas34.scheduledwf.config.MySQLTestConfiguration;
 import io.github.jas34.scheduledwf.metadata.ScheduleWfDef;
 
 /**
- * @author Jasbir Singh Vivian Zheng
+ * @author Jasbir Singh
+ * @since v3.0.0
+ * @author Vivian Zheng
  */
 @Ignore
 @Import(MySQLTestConfiguration.class)

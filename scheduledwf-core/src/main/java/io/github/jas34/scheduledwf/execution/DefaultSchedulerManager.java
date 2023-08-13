@@ -33,7 +33,9 @@ import org.springframework.stereotype.Component;
 
 /**
  *
- * @author Jasbir Singh Vivian Zheng
+ * @author Jasbir Singh
+ * @since v3.0.0
+ * @author Vivian Zheng
  */
 @Component
 public class DefaultSchedulerManager implements SchedulerManager {
@@ -51,14 +53,14 @@ public class DefaultSchedulerManager implements SchedulerManager {
 
     @Autowired
     public DefaultSchedulerManager(ScheduledWfMetadataDAO scheduledWfMetadataDAO,
-                                   ScheduledProcessRegistry processRegistry, MetadataDAO metadataDAO, IndexScheduledWfDAO indexDAO,
-                                   WorkflowSchedulingAssistant schedulingAssistant) {
+            ScheduledProcessRegistry processRegistry, MetadataDAO metadataDAO, IndexScheduledWfDAO indexDAO,
+            WorkflowSchedulingAssistant schedulingAssistant) {
         this(scheduledWfMetadataDAO, processRegistry, metadataDAO, indexDAO, schedulingAssistant, false);
     }
 
     public DefaultSchedulerManager(ScheduledWfMetadataDAO scheduledWfMetadataDAO,
-                                   ScheduledProcessRegistry processRegistry, MetadataDAO metadataDAO, IndexScheduledWfDAO indexDAO,
-                                   WorkflowSchedulingAssistant schedulingAssistant, boolean isJunitRun) {
+            ScheduledProcessRegistry processRegistry, MetadataDAO metadataDAO, IndexScheduledWfDAO indexDAO,
+            WorkflowSchedulingAssistant schedulingAssistant, boolean isJunitRun) {
         this.scheduledWfMetadataDAO = scheduledWfMetadataDAO;
         this.processRegistry = processRegistry;
         this.metadataDAO = metadataDAO;

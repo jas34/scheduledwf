@@ -15,6 +15,7 @@ import org.springframework.retry.support.RetryTemplate;
 import javax.sql.DataSource;
 
 /**
+ * @since v3.0.0
  * @author Vivian Zheng
  */
 

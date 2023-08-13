@@ -32,7 +32,9 @@ import io.github.jas34.scheduledwf.run.Status;
 import io.github.jas34.scheduledwf.utils.TestSchedulingAssistant;
 
 /**
- * @author Jasbir Singh Vivian Zheng
+ * @author Jasbir Singh
+ * @since v3.0.0
+ * @author Vivian Zheng
  */
 public class TestDefaultSchedulerManager extends TestBase {
 

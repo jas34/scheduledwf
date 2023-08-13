@@ -17,7 +17,9 @@ import io.github.jas34.scheduledwf.scheduler.WorkflowSchedulerFactory;
 import io.github.jas34.scheduledwf.utils.IDGenerator_;
 
 /**
- * @author Jasbir Singh Vivian Zheng
+ * @author Jasbir Singh
+ * @since v3.0.0
+ * @author Vivian Zheng
  */
 public class DefaultWorkflowSchedulingAssistant implements WorkflowSchedulingAssistant {
 

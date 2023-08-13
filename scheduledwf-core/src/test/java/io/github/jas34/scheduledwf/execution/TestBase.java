@@ -9,7 +9,9 @@ import io.github.jas34.scheduledwf.utils.CommonUtils;
 import io.github.jas34.scheduledwf.utils.IDGenerator_;
 
 /**
- * @author Jasbir Singh Vivian Zheng
+ * @author Jasbir Singh
+ * @since v3.0.0
+ * @author Vivian Zheng
  */
 public class TestBase {
 
@@ -32,7 +34,7 @@ public class TestBase {
     }
 
     public ScheduledWorkFlow createScheduledWorkFlow(ManagerInfo managerInfo, String name,
-                                                     ScheduledWorkFlow.State state) {
+            ScheduledWorkFlow.State state) {
         ScheduledWorkFlow scheduledWorkFlow = createScheduledWorkFlow(managerInfo, state);
         scheduledWorkFlow.setName(name);
         scheduledWorkFlow.setScheduledProcess(createScheduledProcess(name));

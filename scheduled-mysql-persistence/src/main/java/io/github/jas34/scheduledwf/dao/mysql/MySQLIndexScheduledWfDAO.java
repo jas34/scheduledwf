@@ -17,7 +17,9 @@ import io.github.jas34.scheduledwf.run.ScheduledWorkFlow;
 import org.springframework.retry.support.RetryTemplate;
 
 /**
- * @author Jasbir Singh Vivian Zheng
+ * @author Jasbir Singh
+ * @since v3.0.0
+ * @author Vivian Zheng
  */
 public class MySQLIndexScheduledWfDAO extends MySQLBaseDAO implements IndexScheduledWfDAO {
 

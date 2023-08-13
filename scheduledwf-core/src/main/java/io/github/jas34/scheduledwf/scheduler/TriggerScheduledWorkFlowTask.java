@@ -12,7 +12,9 @@ import io.github.jas34.scheduledwf.run.Status;
 import io.github.jas34.scheduledwf.run.TriggerResult;
 
 /**
- * @author Jasbir Singh Vivian Zheng
+ * @author Jasbir Singh
+ * @since v3.0.0
+ * @author Vivian Zheng
  */
 public class TriggerScheduledWorkFlowTask implements Runnable {
 
@@ -31,8 +33,8 @@ public class TriggerScheduledWorkFlowTask implements Runnable {
     private final Integer priority = 1;
 
     public TriggerScheduledWorkFlowTask(ScheduledTaskDef taskDef,
-                                        IndexExecutionDataCallback indexExecutionDataCallback, WorkflowService workflowService,
-                                        LockingService lockingService, SchedulerStats schedulerStats) {
+            IndexExecutionDataCallback indexExecutionDataCallback, WorkflowService workflowService,
+            LockingService lockingService, SchedulerStats schedulerStats) {
         this.taskDef = taskDef;
         this.indexExecutionDataCallback = indexExecutionDataCallback;
         this.workflowService = workflowService;

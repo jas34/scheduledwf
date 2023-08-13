@@ -25,7 +25,9 @@ import io.github.jas34.scheduledwf.concurrent.LockingService;
 import io.github.jas34.scheduledwf.metadata.ScheduledTaskDef;
 
 /**
- * @author Jasbir Singh Vivian Zheng
+ * @author Jasbir Singh
+ * @since v3.0.0
+ * @author Vivian Zheng
  */
 public class TestLockingService {
     Logger log = LoggerFactory.getLogger(TestLockingService.class);

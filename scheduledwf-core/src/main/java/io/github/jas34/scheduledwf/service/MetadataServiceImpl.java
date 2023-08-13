@@ -14,7 +14,9 @@ import io.github.jas34.scheduledwf.dao.ScheduledWfMetadataDAO;
 import io.github.jas34.scheduledwf.metadata.ScheduleWfDef;
 
 /**
- * @author Jasbir Singh Vivian Zheng
+ * @author Jasbir Singh
+ * @since v3.0.0
+ * @author Vivian Zheng
  */
 public class MetadataServiceImpl implements MetadataService {
 
