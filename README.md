@@ -1,3 +1,7 @@
+# ⚠️ Warning
+**This project is no longer maintained.**
+Please note that there will be no further updates, bug fixes, or official support. Users are encouraged to seek alternative solutions or fork the project if continued development is required.
+
 ## Schedule Conductor Workflows ([A Netflix Conductor Community Project](https://github.com/Netflix/conductor/blob/main/docs/docs/resources/related.md#schedule-conductor-workflow))
 Schedule Conductor workflow is a spring boot based (version 2.0.0+) _scheduler as a service_ that runs in the cloud with [Netflix conductor](https://github.com/Netflix/conductor)
 embedded in it. It can run as an extension module of conductor. This is one of community project of netflix conductor community.
